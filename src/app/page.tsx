@@ -1,101 +1,154 @@
-import Image from "next/image";
+import {
+  ChapterHeading,
+  ImageCarousel,
+  AboutSection,
+  СhapterContainer,
+  ProductCategories,
+  ShopCarousel,
+  ProductGroupList,
+} from "@/components/shared";
+import { NewCollection } from "@/components/shared/slides";
+
+const cats = [
+  { id: 1, name: "Популярное" },
+  { id: 2, name: "Свечи" },
+  { id: 3, name: "Аромадиффузоры" },
+  { id: 4, name: "Аромасаше" },
+  { id: 5, name: "Прочее" },
+];
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      <ImageCarousel>
+        <NewCollection />
+        <NewCollection />
+        <NewCollection />
+        <NewCollection />
+      </ImageCarousel>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      <СhapterContainer>
+        <ChapterHeading>Наши продукты</ChapterHeading>
+
+        <ShopCarousel cats={cats}>
+          <ProductGroupList
+            categoryTitle={cats[1].name}
+            categoryId={cats[1].id}
+            products={[
+              {
+                id: 1,
+                title: "Она влюбилась в простака, Он убил её на закате и они долго и счастливо что-то делали",
+                compound: "Ирис, ваниль, пачули, персик, манго, белини, привет",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 2,
+                title: "Еще один заголовок",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "https://i.pinimg.com/originals/10/0a/ee/100aee44974916e10da52482ba1a26db.jpg",
+              },
+              {
+                id: 3,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 4,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 5,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 6,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 7,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 8,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+            ]}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <ProductGroupList
+            categoryTitle={cats[2].name}
+            categoryId={cats[2].id}
+            products={[
+              {
+                id: 1,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 2,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+              {
+                id: 3,
+                title: "Она влюбилась в простака, Он убил её на закате",
+                compound: "Ирис, ваниль, пачули",
+                size: "100мл",
+                price: 450,
+                imageUrl: "/main.jpg",
+              },
+            ]}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </ShopCarousel>
+      </СhapterContainer>
+
+      <СhapterContainer>
+        <ChapterHeading>О нас</ChapterHeading>
+        <AboutSection
+          heading="Идея компании"
+          description="Наша фишка - истории.
+Каждый наш аромат имеет название, которое связано с другими названиями ароматов линейки. Собрав всю линейку, ты сможешь целиком погрузиться в атмосферу истории.
+Аромат не привязан к конкретному изделию - то есть свечи, диффузоры и саше с одинаковым ароматом называются одинаково"
+          link="ссылка куда-то"
+        ></AboutSection>
+        <AboutSection
+          heading="Что-то ещё"
+          description=""
+          link="ссылка куда-то"
+        ></AboutSection>
+      </СhapterContainer>
+    </>
   );
 }
