@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## **Области хранения данных**
 
-## Getting Started
+- **БД (PostgreSQL)** → основное хранилище данных
+- **BFF (API)** → управление сессией пользователя и бизнес-логика
+- **Стор (Redux)** → управление состоянием на клиенте
+- **LocalStorage** → хранение токена для неавторизованного пользователя
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## **Сущности приложения**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### **Пользователь**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **БД** → хранит список пользователей
+- **BFF** → управляет сессией текущего пользователя
+- **Стор** → используется на клиенте для отображения
+- **LocalStorage** → хранение токена для неавторизованного пользователя
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **Роль пользователя**
 
-## Learn More
+- **БД** → хранит список ролей
+- **BFF** → передаёт роль пользователя
+- **Стор** → используется на клиенте
 
-To learn more about Next.js, take a look at the following resources:
+### **Товар**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **БД** → хранит список товаров
+- **Стор** → отображение товаров в браузере
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### **Категория товаров**
 
-## Deploy on Vercel
+- **БД** → хранит категории товаров
+- **Стор** → используется на клиенте для фильтрации
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### **Корзина**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **БД** → хранит список заказов
+- **Стор** → управление состоянием корзины на клиенте
+- **LocalStorage** → хранение товаров в корзине для неавторизованных пользователей
+
+### **Заказ**
+
+- **БД** → хранит оформленные заказы
+- **BFF** → управление статусом заказа
+
+---
+
+## **Таблицы БД (PostgreSQL)**
+
+### **Пользователи (`Users`)**
+
+| id | phone_number | password | registered_at | role_id |
+
+### **Роли (`Roles`)**
+
+| id | name |
+
+### **Товары (`Products`)**
+
+| id | name | image_url | description | price | category_id | history_id | quantity_in_stock
+
+### **Категории (`Categories`)**
+
+| id | name |
+
+### **Корзина (`Cart`)**
+
+| id | user_id | product_id | quantity |
+
+### **Заказы (`Orders`)**
+
+| id | user_id | total_price | status | created_at |
+
+---
+
+## **Схема состояния на BFF**
+
+### **Текущий пользователь**
+
+| phone_number | password | role |
+
+---
+
+## **Схема для Zustand (на клиенте)**
+
+### **user**
+
+| id | phone_number | role |
+
+### **products**
+
+Массив товаров:  
+| id | name | image_url | price | category |
+
+### **cart**
+
+Массив товаров в корзине:  
+| id | product_id | quantity |
+
+### **orders**
+
+Массив заказов:  
+| id | total_price | status | created_at |
+
+### **LocalStorage**
+
+- `token` → токен для неавторизованного пользователя
+- `cart` → данные корзины для неавторизованного пользователя

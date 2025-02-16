@@ -4,5 +4,6 @@ export interface Product {
   compound: string;
   size: string;
   price: number;
-  imageUrl: string;
+  category_id: number;
+  image_url: string;
 }

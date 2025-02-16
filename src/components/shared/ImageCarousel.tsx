@@ -9,8 +9,8 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/Carousel";
-import { cn } from "@/libs";
+} from "@/components/shadcn-ui/Carousel";
+import { cn } from "@/lib";
 
 interface ImageCarouselProps {
   children: React.ReactNode;

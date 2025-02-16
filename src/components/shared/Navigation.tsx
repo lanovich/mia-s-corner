@@ -1,4 +1,4 @@
-import { cn } from "@/libs";
+import { cn } from "@/lib";
 import Link from "next/link";
 import React from "react";
 import { CustomLink } from "./CustomLink";

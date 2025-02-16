@@ -1,9 +1,9 @@
-import { cn } from '@/libs';
-import React from 'react';
+import { cn } from "@/lib";
+import React from "react";
 
 interface Props {
   className?: string;
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export const СhapterContainer: React.FC<Props> = ({ className, children }) => {

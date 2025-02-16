@@ -1,4 +1,4 @@
-import { cn } from "@/libs";
+import { cn } from "@/lib";
 import React from "react";
 
 interface Props {

@@ -1,4 +1,4 @@
-import { cn } from "@/libs";
+import { cn } from "@/lib";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,7 +15,13 @@ export const Header: React.FC<Props> = ({ className }) => {
       <Container className="flex justify-between items-center py-4 bg-gray70">
         {/* Логотип сайта */}
         <Link href={"/"} className="select-none">
-          <Image  className="pointer-events-none select-none" src="/logo.svg" alt="logo" width={96} height={96}></Image>
+          <Image
+            className="pointer-events-none select-none"
+            src="/logo.svg"
+            alt="logo"
+            width={96}
+            height={96}
+          ></Image>
         </Link>
 
         {/* Корзина и навигация */}
