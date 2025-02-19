@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { CategoryWithProducts } from "../types";
+import { CategoryWithProducts } from "@/types";
 
 export async function getCategoriesWithProducts(): Promise<
   CategoryWithProducts[]

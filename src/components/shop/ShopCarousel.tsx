@@ -8,14 +8,15 @@ import {
   CarouselItem,
 } from "@/components/shadcn-ui/Carousel";
 import { ProductCategories } from "./ProductCategories";
-import { CategoryWithProducts } from "./types";
+import { CategoryWithProducts } from "@/types";
 import { ProductGroupList } from "./ProductGroupList";
+import { GoToCatalogButton } from "./ui";
 
 interface Props {
-  cats: CategoryWithProducts[];
+  categoriesWithProducts: CategoryWithProducts[];
 }
 
-export function ShopCarousel({ cats }: Props) {
+export function ShopCarousel({ categoriesWithProducts }: Props) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -38,16 +39,17 @@ export function ShopCarousel({ cats }: Props) {
   return (
     <div className="max-w-[1380px] m-auto w-full">
       <ProductCategories
-        cats={cats}
+        categoriesWithProducts={categoriesWithProducts}
         count={count}
         current={current}
         handleCategoryClick={handleCategoryClick}
       />
       <Carousel setApi={setApi}>
         <CarouselContent>
-          {cats.map((category, index) => (
+          {categoriesWithProducts.map((category) => (
             <CarouselItem key={category.id}>
               <ProductGroupList category={category} />
+              <GoToCatalogButton category={category} />
             </CarouselItem>
           ))}
         </CarouselContent>

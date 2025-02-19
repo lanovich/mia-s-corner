@@ -1,4 +1,4 @@
-import { Product } from "./types";
+import { Product } from "@/types";
 import Image from "next/image";
 import { AddToCartButton } from "./ui";
 import Link from "next/link";
@@ -34,7 +34,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             <p className="text-[0.675rem] text-black/50 line-clamp-2">
               {product.compound}
             </p>
-            <AddToCartButton product={product} />
+            <AddToCartButton
+              product={product}
+            />
           </div>
         </div>
       </div>

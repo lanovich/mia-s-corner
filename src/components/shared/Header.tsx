@@ -2,8 +2,9 @@ import { cn } from "@/lib";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { CartButton, Navigation, Container } from ".";
+import { Navigation, Container } from ".";
 import { Menu } from "lucide-react";
+import { CartButtonWithPrice } from ".";
 
 interface Props {
   className?: string;
@@ -21,13 +22,13 @@ export const Header: React.FC<Props> = ({ className }) => {
             alt="logo"
             width={96}
             height={96}
-          ></Image>
+          />
         </Link>
 
         {/* Корзина и навигация */}
         <div className="flex justify-between items-center gap-5">
           <Navigation className="hidden md:flex gap-5" />
-          <CartButton></CartButton>
+          <CartButtonWithPrice />
           <button className="md:hidden">
             <Menu />
           </button>

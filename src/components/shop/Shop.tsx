@@ -2,7 +2,7 @@ import { ShopCarousel } from "./ShopCarousel";
 import { getCategoriesWithProducts } from "./lib";
 
 export default async function Shop() {
-  const categories = await getCategoriesWithProducts();
+  const categoriesWithProducts = await getCategoriesWithProducts();
 
-  return <ShopCarousel cats={categories} />;
+  return <ShopCarousel categoriesWithProducts={categoriesWithProducts} />;
 }

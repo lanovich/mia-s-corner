@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { ProductCard } from "./ProductCard";
-import { CategoryWithProducts } from "./types";
+import { CategoryWithProducts } from "@/types";
 import { calcNumberOfProducts } from "./lib";
+import { Product } from "@/types/Product";
 
 interface Props {
   category: CategoryWithProducts;
@@ -22,7 +23,7 @@ export const ProductGroupList: React.FC<Props> = React.memo(({ category }) => {
 
   return (
     <div className="my-5 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 lg:grid-cols-4 gap-[20px] md:gap-[30px] mx-5">
-      {productsToShow.map((product) => (
+      {productsToShow.map((product: Product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
