@@ -29,6 +29,7 @@ export const NewCollection: React.FC<Props> = ({ className }) => {
             width={250}
             height={250}
             className="transition delay-150 duration-150 ease-in-out hover:scale-110 z-30"
+            priority
           />
           <Image
             src={"/Imbir.svg"}
@@ -36,6 +37,7 @@ export const NewCollection: React.FC<Props> = ({ className }) => {
             width={350}
             height={250}
             className="transition delay-150 duration-150 ease-in-out hover:scale-110 z-40"
+            priority
           />
           <Image
             src={"/Imbir.svg"}
@@ -43,6 +45,7 @@ export const NewCollection: React.FC<Props> = ({ className }) => {
             width={250}
             height={250}
             className="transition delay-150 duration-150 ease-in-out hover:scale-110 z-30"
+            priority
           />
         </div>
 

@@ -4,16 +4,15 @@ import { cn } from "@/lib/utils";
 import { Category } from "@/types";
 
 interface Props {
-  categoriesWithProducts: Category[];
-  count: number;
+  categories: Category[];
   current: number;
   handleCategoryClick: (index: number) => void;
 }
 
-export const ProductCategories: React.FC<Props> = ({ categoriesWithProducts, current, handleCategoryClick }) => {
+export const ProductCategories: React.FC<Props> = ({ categories, current, handleCategoryClick }) => {
   return (
     <div className="inline-flex gap-7 overflow-x-auto whitespace-nowrap mx-auto w-full sticky top-0 z-50 h-1/6 bg-white snap-x snap-mandatory flex-nowrap scroll-px-4 justify-start ml-5 md:justify-center md:ml-0">
-      {categoriesWithProducts.map(({ id, name }, index) => (
+      {categories.map(({ id, name }, index) => (
         <button
           key={id}
           className={cn(

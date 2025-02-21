@@ -1,32 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  type CarouselApi,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/shadcn-ui/Carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/shadcn-ui/Carousel";
 import { ProductCategories } from "./ProductCategories";
+import { GoToCatalogButton } from "./ui";
+import { ProductsLoader } from "./ProductsLoader";
 import { CategoryWithProducts } from "@/types";
 import { ProductGroupList } from "./ProductGroupList";
-import { GoToCatalogButton } from "./ui";
 
 interface Props {
-  categoriesWithProducts: CategoryWithProducts[];
+  categories: CategoryWithProducts[];
 }
 
-export function ShopCarousel({ categoriesWithProducts }: Props) {
-  const [api, setApi] = useState<CarouselApi>();
+export function ShopCarousel({ categories }: Props) {
+  const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!api) return;
-
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
-
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
@@ -38,18 +32,13 @@ export function ShopCarousel({ categoriesWithProducts }: Props) {
 
   return (
     <div className="max-w-[1380px] m-auto w-full">
-      <ProductCategories
-        categoriesWithProducts={categoriesWithProducts}
-        count={count}
-        current={current}
-        handleCategoryClick={handleCategoryClick}
-      />
+      <ProductCategories categories={categories} current={current} handleCategoryClick={handleCategoryClick} />
       <Carousel setApi={setApi}>
         <CarouselContent>
-          {categoriesWithProducts.map((category) => (
-            <CarouselItem key={category.id}>
-              <ProductGroupList category={category} />
-              <GoToCatalogButton category={category} />
+          {categories.map(({id, name, products}: CategoryWithProducts) => (
+            <CarouselItem key={id}>
+              <ProductGroupList products={products}/>
+              <GoToCatalogButton categoryId={id} categoryName={name} />
             </CarouselItem>
           ))}
         </CarouselContent>

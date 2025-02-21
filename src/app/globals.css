@@ -127,3 +127,28 @@ body {
 .group:hover .ProductHeading {
   max-height: 6rem;
 }
+
+
+.glassy-bg {
+  --bg-opacity: 1;
+  --blur-amount: 0px;
+  background: rgba(255, 255, 255, var(--bg-opacity));
+  backdrop-filter: blur(var(--blur-amount));
+  transition: --bg-opacity 0.3s ease-out, --blur-amount 0.3s ease-out;
+}
+
+.glassy-bg.animate {
+  --bg-opacity: 0.6;
+  --blur-amount: 10px;
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

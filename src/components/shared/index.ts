@@ -11,3 +11,4 @@ export { ProductCategories } from "../shop/ProductCategories";
 export { ShopCarousel } from "../shop/ShopCarousel";
 export { ProductCard } from "../shop/ProductCard";
 export { CartButtonWithPrice } from "../cart/CartButtonWithPrice";
+export { CategoryButton } from "./CategoryButton";

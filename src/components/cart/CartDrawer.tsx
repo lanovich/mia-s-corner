@@ -16,6 +16,7 @@ import { ArrowRight } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { CartDrawerItem } from ".";
 import { CartItem } from "@/store/useCartStore";
+import { InfoAboutCartPrice } from "./ui";
 
 interface Props {
   children?: React.ReactNode;
@@ -49,12 +50,7 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
         </div>
 
         {/* Итоговая сумма */}
-        <div className="pt-4 border-t">
-          <div className="flex justify-between text-lg font-medium">
-            <span>Итого:</span>
-            <span className="font-bold">{totalAmount} ₽</span>
-          </div>
-        </div>
+        <InfoAboutCartPrice totalAmount={totalAmount} cartDiscount={300} deliveryPrice={500} />
 
         {/* Кнопка оформления заказа */}
         <SheetFooter className="mt-auto">

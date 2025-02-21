@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { Header } from "@/components/shared";
+import { Toaster } from "sonner";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -23,10 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.variable} antialiased`}>
-        <main className="min-h-screen">
-          <Header />
-          {children}
-        </main>
+        <Header hideCartButton={true} />
+        {children}
       </body>
     </html>
   );
