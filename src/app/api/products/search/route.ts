@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+// переписать для получения по массивуу запахов или убрать вовсе
+
 export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams.get("query") || "";
 

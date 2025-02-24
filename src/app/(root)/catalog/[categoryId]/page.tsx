@@ -1,6 +1,11 @@
 import { getCategories } from "@/lib/cache";
-import { CatalogProductsLoader, Categories } from "@/components/catalog";
+import {
+  CatalogProductsLoader,
+  Categories,
+  Filters,
+} from "@/components/catalog";
 import { Container } from "@/components/shared";
+import { filterSmells } from "@/constants";
 
 interface Props {
   params: { categoryId: string };
@@ -18,6 +23,7 @@ export default async function CatalogPage({ params }: Props) {
         currentCategoryId={formattedCategoryId}
       />
       <Container>
+      {/* <Filters smells={filterSmells}></Filters> */}
         <CatalogProductsLoader categoryId={formattedCategoryId} />
       </Container>
     </>

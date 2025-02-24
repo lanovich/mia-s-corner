@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   className?: string;
@@ -7,54 +8,55 @@ interface Props {
 
 export const NewCollection: React.FC<Props> = ({ className }) => {
   return (
-    <>
-      {/* Первый слайд */}
-      <div className="relative flex h-[75vh] flex-col bg-slate-100 p-1 text-center">
-        {/* Фон */}
-        <div className="absolute left-1/3 -top-[350px] h-[1300px] w-[400px] rotate-45 overflow-hidden bg-slate-200 z-10"></div>
+    <div className={`relative flex h-[80vh] flex-col bg-gradient-to-b from-gray-50 to-gray-200 p-6 text-center ${className}`}>
+      {/* Декоративные элементы */}
+      <div className="absolute top-0 left-0 w-40 h-40 bg-red-300 rounded-full opacity-30 blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-60 h-60 bg-blue-300 rounded-full opacity-30 blur-3xl"></div>
 
-        {/* Текст */}
-        <h2 className="m-auto mt-5 text-center font-semibold text-[calc(40px+8*(100vw-320px)/880)] z-20">
-          Встречайте новую коллекцию историй
-        </h2>
-        <p className="mx-auto mt-4 max-w-3xl text-center text-md z-30">
-          Однажды Эрнест Хемингуэй поспорил...
-        </p>
+      {/* Текст */}
+      <h2 className="m-auto mt-10 text-center font-bold text-4xl sm:text-5xl md:text-6xl text-gray-800 z-20">
+        Откройте новую коллекцию
+      </h2>
+      <p className="mx-auto mt-4 max-w-3xl text-lg text-gray-600 z-30">
+        Окунитесь в мир ароматов с нашей новой серией эксклюзивных свечей, созданных с любовью.
+      </p>
 
-        {/* Изображения */}
-        <div className="flex flex-wrap justify-center items-end gap-5 mt-6">
-          <Image
-            src={"/Imbir.svg"}
-            alt={"банка 1"}
-            width={250}
-            height={250}
-            className="transition delay-150 duration-150 ease-in-out hover:scale-110 z-30"
-            priority
-          />
-          <Image
-            src={"/Imbir.svg"}
-            alt={"банка 2"}
-            width={350}
-            height={250}
-            className="transition delay-150 duration-150 ease-in-out hover:scale-110 z-40"
-            priority
-          />
-          <Image
-            src={"/Imbir.svg"}
-            alt={"банка 3"}
-            width={250}
-            height={250}
-            className="transition delay-150 duration-150 ease-in-out hover:scale-110 z-30"
-            priority
-          />
-        </div>
+      {/* Изображения */}
+      <div className="relative flex flex-wrap justify-center items-end gap-6 mt-10">
+        <Image
+          src="/Imbir.svg"
+          alt="банка 1"
+          width={200}
+          height={200}
+          className="transition-transform duration-300 hover:scale-110 z-30 drop-shadow-lg"
+          priority
+        />
+        <Image
+          src="/Imbir.svg"
+          alt="банка 2"
+          width={260}
+          height={200}
+          className="transition-transform duration-300 hover:scale-110 z-40 drop-shadow-lg"
+          priority
+        />
+        <Image
+          src="/Imbir.svg"
+          alt="банка 3"
+          width={200}
+          height={200}
+          className="transition-transform duration-300 hover:scale-110 z-30 drop-shadow-lg"
+          priority
+        />
+      </div>
 
-        <div className="flex flex-grow items-center justify-center">
-          <button className="rounded-full border border-black px-6 py-2 text-black bg-transparent hover:bg-black hover:text-white transition z-50">
+      {/* Кнопка */}
+      <div className="relative mt-10 flex justify-center md:justify-end md:pr-10">
+        <Link href="/collection">
+          <button className="rounded-full bg-black px-8 py-3 text-lg font-medium text-white transition-all duration-300 hover:bg-gray-800 shadow-lg">
             Перейти к коллекции
           </button>
-        </div>
+        </Link>
       </div>
-    </>
+    </div>
   );
 };

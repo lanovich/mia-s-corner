@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { candles } from "@/constants";
 
+// TODO: Не работает, переписать польностью
 export async function GET() {
   const { error: roleError } = await supabase
     .from("roles")

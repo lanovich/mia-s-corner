@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { CategoryWithProducts } from "@/types";
 
-export const getCategoriesWithProducts = async (): Promise<CategoryWithProducts[]> => {
+export const getCategoriesWithProductsAndSmells = async (): Promise<CategoryWithProducts[]> => {
   console.log("🔄 Запрос категорий с товарами...");
 
   const { data, error } = await supabase

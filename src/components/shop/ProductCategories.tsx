@@ -11,7 +11,7 @@ interface Props {
 
 export const ProductCategories: React.FC<Props> = ({ categories, current, handleCategoryClick }) => {
   return (
-    <div className="inline-flex gap-7 overflow-x-auto whitespace-nowrap mx-auto w-full sticky top-0 z-50 h-1/6 bg-white snap-x snap-mandatory flex-nowrap scroll-px-4 justify-start ml-5 md:justify-center md:ml-0">
+    <div className="px-5 inline-flex gap-7 overflow-x-auto whitespace-nowrap mx-auto w-full sticky top-0 z-50 h-1/6 bg-white snap-x snap-mandatory flex-nowrap scroll-px-4 justify-start  md:justify-center md:ml-0">
       {categories.map(({ id, name }, index) => (
         <button
           key={id}

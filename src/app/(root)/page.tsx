@@ -3,6 +3,8 @@ import {
   ImageCarousel,
   AboutSection,
   СhapterContainer,
+  HeroSection,
+  HeroSectionTelegram,
 } from "@/components/shared";
 import Shop from "@/components/shop/Shop";
 import { NewCollection } from "@/components/shared/slides";
@@ -12,9 +14,8 @@ export default function Home() {
     <>
       <ImageCarousel>
         <NewCollection />
-        <NewCollection />
-        <NewCollection />
-        <NewCollection />
+        <HeroSection />
+        <HeroSectionTelegram />
       </ImageCarousel>
 
       <СhapterContainer>

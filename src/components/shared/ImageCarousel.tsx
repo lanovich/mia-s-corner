@@ -22,7 +22,7 @@ export function ImageCarousel({ children }: ImageCarouselProps) {
   const [count, setCount] = React.useState(0);
 
   const plugin = React.useRef(
-    Autoplay({ delay: 30000, stopOnInteraction: true })
+    Autoplay({ delay: 3000, stopOnInteraction: true })
   );
 
   React.useEffect(() => {

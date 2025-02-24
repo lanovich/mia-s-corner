@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { CartButtonWithPrice, Container } from "@/components/shared";
 import { useEffect, useState, useRef } from "react";

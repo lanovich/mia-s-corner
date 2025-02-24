@@ -10,6 +10,8 @@ export default async function ProductPage({
 }) {
   const { id } = await params;
 
+  // TODO: переписать для получения через группы запахов
+
   const { data: product, error } = await supabase
     .from("products")
     .select("*")
