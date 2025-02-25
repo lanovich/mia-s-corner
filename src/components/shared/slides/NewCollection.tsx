@@ -23,30 +23,7 @@ export const NewCollection: React.FC<Props> = ({ className }) => {
 
       {/* Изображения */}
       <div className="relative flex flex-wrap justify-center items-end gap-6 mt-10">
-        <Image
-          src="/Imbir.svg"
-          alt="банка 1"
-          width={200}
-          height={200}
-          className="transition-transform duration-300 hover:scale-110 z-30 drop-shadow-lg"
-          priority
-        />
-        <Image
-          src="/Imbir.svg"
-          alt="банка 2"
-          width={260}
-          height={200}
-          className="transition-transform duration-300 hover:scale-110 z-40 drop-shadow-lg"
-          priority
-        />
-        <Image
-          src="/Imbir.svg"
-          alt="банка 3"
-          width={200}
-          height={200}
-          className="transition-transform duration-300 hover:scale-110 z-30 drop-shadow-lg"
-          priority
-        />
+        
       </div>
 
       {/* Кнопка */}

@@ -13,17 +13,16 @@ interface Props {
 
 export const Header: React.FC<Props> = ({ className, hideCartButton }) => {
   return (
-    <header className={cn("mx-4 xl:mx-0 mt-5", className)}>
-      <Container className="flex justify-between items-center py-4 bg-gray70">
+    <header className={cn("mx-4 xl:mx-0", className)}>
+      <Container className="flex justify-between items-center py-4 bg-gray70 h-20">
         {/* Логотип сайта */}
-        <Link href={"/"} className="select-none">
+        <Link href={"/"} className="select-none w-24 h-full">
           <Image
-            className="pointer-events-none select-none"
+            className="pointer-events-none select-none object-contain w-24 h-[100%]"
             src="/logo.svg"
             alt="logo"
             width={96}
             height={96}
-            style={{ objectFit: "contain" }} 
           />
         </Link>
 

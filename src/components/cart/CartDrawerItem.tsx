@@ -57,7 +57,7 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
           <ChangeQuantityButton
             type="increase"
             quantity={quantity}
-            onIncrease={() => addToCart(product)}
+            onIncrease={() => addToCart(product.id)}
           />
         </div>
       </div>

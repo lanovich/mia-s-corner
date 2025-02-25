@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { supabase } from "@/lib/supabase";
-import { getUserToken } from "@/lib";
+import { cartService } from "@/services/cartService";
 import { Product } from "@/types";
+import { calcFullPrice } from "@/components/cart/lib/calcFullPrice";
 
 export interface CartItem {
   product: Product;
@@ -11,204 +11,125 @@ export interface CartItem {
 
 interface CartStore {
   cart: CartItem[];
-  totalAmount: number;
-  addToCart: (product: Product) => void;
-  removeFromCart: (productId: number) => void;
-  decreaseQuantity: (productId: number) => void;
+  productTotalAmount: number;
+  fullPrice: number;
   loadCart: () => Promise<void>;
-  mergeCart: () => Promise<void>;
+  addToCart: (productId: number) => Promise<void>;
+  removeFromCart: (productId: number) => Promise<void>;
+  decreaseQuantity: (productId: number) => Promise<void>;
+  clearCart: () => Promise<void>;
 }
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cart: [],
-      totalAmount: 0,
+      productTotalAmount: 0,
+      fullPrice: 0,
 
-      addToCart: async (product) => {
-        const token = getUserToken();
-        const userId = 3;
+      loadCart: async () => {
+        const cartItems = await cartService.loadCartItems();
+        const productTotalAmount = cartItems.reduce(
+          (acc, item) => acc + item.product.price * item.quantity,
+          0
+        );
 
-        set((state) => {
-          const existingItem = state.cart.find(
-            (item) => item.product.id === product.id
-          );
-          const updatedCart = existingItem
-            ? state.cart.map((item) =>
-                item.product.id === product.id
-                  ? { ...item, quantity: item.quantity + 1 }
-                  : item
-              )
-            : [...state.cart, { product, quantity: 1 }];
-
-          supabase.from("cart").upsert([
-            {
-              token,
-              user_id: userId,
-              cart: JSON.stringify(updatedCart),
-              updated_at: new Date().toISOString(),
-            },
-          ]);
-
-          return {
-            cart: updatedCart,
-            totalAmount: updatedCart.reduce(
-              (acc, item) => acc + item.product.price * item.quantity,
-              0
-            ),
-          };
+        set({
+          cart: cartItems,
+          productTotalAmount,
+          fullPrice: calcFullPrice(productTotalAmount).finalAmount,
         });
       },
 
-      removeFromCart: async (productId) => {
-        const token = getUserToken();
-        const userId = 3;
+      addToCart: async (productId) => {
+        const { cart } = get();
+        const existingItem = cart.find((item) => item.product.id === productId);
+        let newTotal = get().productTotalAmount;
 
-        set((state) => {
-          const updatedCart = state.cart.filter(
-            (item) => item.product.id !== productId
-          );
+        if (existingItem) {
+          newTotal += existingItem.product.price;
+        }
 
-          supabase.from("cart").upsert([
-            {
-              token,
-              user_id: userId,
-              cart: JSON.stringify(updatedCart),
-              updated_at: new Date().toISOString(),
-            },
-          ]);
-
-          return {
-            cart: updatedCart,
-            totalAmount: updatedCart.reduce(
-              (acc, item) => acc + item.product.price * item.quantity,
-              0
+        if (existingItem) {
+          set({
+            cart: cart.map((item) =>
+              item.product.id === productId
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
             ),
-          };
-        });
+            productTotalAmount: newTotal,
+            fullPrice: calcFullPrice(newTotal).finalAmount,
+          });
+        } else {
+          const product = await cartService.getProductById(productId);
+          if (!product) return;
+
+          newTotal += product.price;
+
+          set({
+            cart: [...cart, { product, quantity: 1 }],
+            productTotalAmount: newTotal,
+            fullPrice: calcFullPrice(newTotal).finalAmount,
+          });
+        }
+
+        cartService.addToCart(productId).catch(() => get().loadCart());
       },
 
       decreaseQuantity: async (productId) => {
-        const token = getUserToken();
-        const userId = 3;
+        const { cart } = get();
+        const existingItem = cart.find((item) => item.product.id === productId);
+        if (!existingItem) return;
 
-        set((state) => {
-          const updatedCart = state.cart.map((item) =>
-            item.product.id === productId && item.quantity > 1
-              ? { ...item, quantity: item.quantity - 1 }
-              : item
-          );
+        let newTotal = get().productTotalAmount;
 
-          supabase.from("cart").upsert([
-            {
-              token,
-              user_id: userId,
-              cart: JSON.stringify(updatedCart),
-              updated_at: new Date().toISOString(),
-            },
-          ]);
-
-          return {
-            cart: updatedCart,
-            totalAmount: updatedCart.reduce(
-              (acc, item) => acc + item.product.price * item.quantity,
-              0
-            ),
-          };
-        });
-      },
-
-      loadCart: async () => {
-        const token = getUserToken();
-        const userId = 3;
-
-        let data;
-        if (userId) {
-          const response = await supabase
-            .from("cart")
-            .select("cart")
-            .eq("user_id", userId)
-            .single();
-          data = response.data;
-        } else {
-          const response = await supabase
-            .from("cart")
-            .select("cart")
-            .eq("token", token)
-            .single();
-          data = response.data;
+        if (existingItem.quantity > 1) {
+          newTotal -= existingItem.product.price;
         }
 
-        if (data) {
-          const parsedCart = JSON.parse(data.cart);
+        if (existingItem.quantity > 1) {
           set({
-            cart: parsedCart,
-            totalAmount: parsedCart.reduce(
-              (
-                acc: number,
-                item: { product: { price: number }; quantity: number }
-              ) => acc + item.product.price * item.quantity,
-              0
+            cart: cart.map((item) =>
+              item.product.id === productId
+                ? { ...item, quantity: item.quantity - 1 }
+                : item
             ),
+            productTotalAmount: newTotal,
+            fullPrice: calcFullPrice(newTotal).finalAmount,
+          });
+        } else {
+          newTotal -= existingItem.product.price;
+          set({
+            cart: cart.filter((item) => item.product.id !== productId),
+            productTotalAmount: newTotal,
+            fullPrice: calcFullPrice(newTotal).finalAmount,
           });
         }
+
+        cartService.decreaseQuantity(productId).catch(() => get().loadCart());
       },
 
-      mergeCart: async () => {
-        const token = getUserToken();
-        const userId = 3;
-        if (!userId) return;
+      removeFromCart: async (productId) => {
+        const { cart } = get();
+        const existingItem = cart.find((item) => item.product.id === productId);
+        if (!existingItem) return;
 
-        const guestCartResponse = await supabase
-          .from("cart")
-          .select("cart")
-          .eq("token", token)
-          .single();
-        const userCartResponse = await supabase
-          .from("cart")
-          .select("cart")
-          .eq("user_id", userId)
-          .single();
-
-        const guestCart = guestCartResponse.data
-          ? JSON.parse(guestCartResponse.data.cart)
-          : [];
-        const userCart = userCartResponse.data
-          ? JSON.parse(userCartResponse.data.cart)
-          : [];
-
-        const mergedCart = [...userCart];
-
-        guestCart.forEach(
-          (guestItem: { product: { id: any }; quantity: any }) => {
-            const existingItem = mergedCart.find(
-              (item) => item.product.id === guestItem.product.id
-            );
-            if (existingItem) {
-              existingItem.quantity += guestItem.quantity;
-            } else {
-              mergedCart.push(guestItem);
-            }
-          }
-        );
-
-        await supabase.from("cart").upsert([
-          {
-            user_id: userId,
-            cart: JSON.stringify(mergedCart),
-            updated_at: new Date().toISOString(),
-          },
-        ]);
-
-        await supabase.from("cart").delete().eq("token", token);
+        let newTotal =
+          get().productTotalAmount -
+          existingItem.product.price * existingItem.quantity;
 
         set({
-          cart: mergedCart,
-          totalAmount: mergedCart.reduce(
-            (acc, item) => acc + item.product.price * item.quantity,
-            0
-          ),
+          cart: cart.filter((item) => item.product.id !== productId),
+          productTotalAmount: newTotal,
+          fullPrice: calcFullPrice(newTotal).finalAmount,
         });
+
+        cartService.removeFromCart(productId).catch(() => get().loadCart());
+      },
+
+      clearCart: async () => {
+        await cartService.clearCart();
+        set({ cart: [], productTotalAmount: 0, fullPrice: 0 });
       },
     }),
     { name: "cart-storage" }

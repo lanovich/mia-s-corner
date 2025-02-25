@@ -20,7 +20,7 @@ export const AddToCartButton: React.FC<Props> = ({ product, className }) => {
   const handleAddToCart = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     try {
-      await addToCart(product);
+      await addToCart(product.id);
       toast.success("Товар добавлен в корзину", { position: "bottom-right" });
     } catch (error) {
       toast.error("Ошибка добавления товара!");

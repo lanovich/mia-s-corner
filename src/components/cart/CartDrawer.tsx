@@ -17,13 +17,14 @@ import { useCartStore } from "@/store/useCartStore";
 import { CartDrawerItem } from ".";
 import { CartItem } from "@/store/useCartStore";
 import { InfoAboutCartPrice } from "./ui";
+import { calcFullPrice } from "./lib/calcFullPrice";
 
 interface Props {
   children?: React.ReactNode;
 }
 
 export const CartDrawer: React.FC<Props> = ({ children }) => {
-  const { cart, totalAmount } = useCartStore();
+  const { cart, fullPrice, productTotalAmount } = useCartStore();
 
   return (
     <Sheet>
@@ -42,15 +43,16 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
         {/* Список товаров */}
         <div className="flex-1 overflow-y-auto space-y-4">
           {cart.map((cartItem: CartItem) => (
-            <CartDrawerItem
-              key={cartItem.product.id}
-              cartItem={cartItem}
-            />
+            <CartDrawerItem key={cartItem.product.id} cartItem={cartItem} />
           ))}
         </div>
 
         {/* Итоговая сумма */}
-        <InfoAboutCartPrice totalAmount={totalAmount} cartDiscount={300} deliveryPrice={500} />
+        <InfoAboutCartPrice
+          fullPrice={fullPrice}
+          cartDiscount={calcFullPrice(productTotalAmount).discount}
+          productTotalPrice={productTotalAmount}
+        />
 
         {/* Кнопка оформления заказа */}
         <SheetFooter className="mt-auto">

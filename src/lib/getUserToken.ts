@@ -7,18 +7,16 @@ export const getUserToken = async () => {
 
   if (!token) {
     token = uuidv4();
-    console.log(token);
     Cookies.set("user_token", token, { expires: 365, path: "/" });
 
-    // const { error } = await supabase
-    //   .from("cart")
-    //   .update({ token: token })
-    //   .eq("user_id", 3)
-    //   .select();
+    const { error } = await supabase
+      .from("cart")
+      .upsert([{ token }], { onConflict: "token" })
+      .select();
 
-    // if (error) {
-    //   console.log("Ошибка загрузки токена в БД");
-    // }
+    if (error) {
+      console.error("Ошибка создания корзины:", error.message);
+    }
   }
 
   return token;
