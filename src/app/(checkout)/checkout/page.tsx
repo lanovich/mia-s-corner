@@ -1,101 +1,101 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Input } from "@/components/shadcn-ui/input";
 import { Button } from "@/components/shadcn-ui/button";
-import { Card, CardContent } from "@/components/shadcn-ui/card";
 import { motion } from "framer-motion";
+import { Container } from "@/components/shared";
+import {
+  OrderSummary,
+  ContactInfo,
+  DeliveryForm,
+  TotalAmount,
+  PaymentMethods,
+  OrderWishes,
+  TotalAmountLoader,
+} from "@/components/checkout";
+import { FormProvider, useForm } from "react-hook-form";
+import {
+  CheckoutFormValues,
+  orderSchema,
+} from "@/constants/checkoutFormSchema";
+import { createOrder } from "@/app/actions";
+import { toast } from "sonner";
 import { useCartStore } from "@/store/useCartStore";
-import { calcFullPrice } from "@/components/cart/lib/calcFullPrice";
 
 export default function CheckoutPage() {
-  const [paymentMethod, setPaymentMethod] = useState("transfer");
-  const productTotalAmount = useCartStore((state) => state.productTotalAmount)
-  const discount = calcFullPrice(productTotalAmount).discount
-  const fullPrice = useCartStore((state) => state.fullPrice);
-  const products = useCartStore((state) => state.cart);
+  const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
+    "transfer"
+  );
+  const [submiting, setSubmiting] = useState(false);
+  const loading = useCartStore((state) => state.loading);
+
+  const form = useForm<CheckoutFormValues>({
+    resolver: zodResolver(orderSchema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      email: "",
+      deliveryAddress: "",
+      wishes: "",
+      comment: "",
+    },
+  });
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    try {
+      setSubmiting(true);
+      const url = await createOrder(data);
+      toast.success("Заказ успешно оформлен! Переход на оплату...");
+
+      if (url) {
+        location.href = url;
+      }
+    } catch (error) {
+      console.log("Ошибка при создании заказа", error);
+      toast.error("Не удалось создать заказ!");
+    } finally {
+      setSubmiting(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-white text-black py-10 px-4 md:px-10">
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-10">
-        {/* Список товаров (50% ширины на ПК) */}
-        <div className="md:w-1/2">
-          <h1 className="text-2xl font-semibold border-b pb-4 mb-6">
-            Ваш заказ
-          </h1>
-          <div className="mb-6">
-            {products.map(({ product, quantity }) => (
-              <Card key={product.id} className="mb-3 border-gray-300">
-                <CardContent className="flex justify-between py-3">
-                  <div>
-                    <span>{product.title}</span>
-                    <span className="text-xs ml-5 text-gray-300">
-                      {product.price} * {quantity}
-                    </span>
-                  </div>
-                  <span className="font-medium">
-                    {product.price * quantity} ₽
-                  </span>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+    <Container className="min-h-screen bg-white text-black py-8 px-4 md:px-8 overflow-visible">
+      <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-6">
+        <div className="md:w-3/5 space-y-6">
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} id="orderForm">
+              <ContactInfo />
+              <DeliveryForm />
+              <OrderWishes />
+              <OrderSummary />
+            </form>
+          </FormProvider>
         </div>
-
-        {/* Оформление заказа (50% ширины на ПК) */}
-        <div className="md:w-1/2">
-          <h1 className="text-2xl font-semibold border-b pb-4 mb-6">
-            Оформление заказа
+        <div className="md:w-2/5 space-y-6 sticky top-4 self-start">
+          <h1 className="text-xl font-semibold border-b pb-3">
+            Оплата и подтверждение
           </h1>
 
-          {/* Контактные данные */}
-          <div className="mb-6">
-            <h2 className="text-lg font-medium mb-3">Контактные данные</h2>
-            <Input className="mb-3" placeholder="Ваше имя" />
-            <Input className="mb-3" placeholder="Телефон" type="tel" />
-            <Input className="mb-3" placeholder="Адрес доставки" />
-          </div>
+          <TotalAmount />
+          <PaymentMethods
+            paymentMethod={paymentMethod}
+            setPaymentMethod={setPaymentMethod}
+          />
 
-          {/* Способы оплаты */}
-          <div className="mb-6">
-            <h2 className="text-lg font-medium mb-3">Способ оплаты</h2>
-            <div className="space-y-2">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  value="transfer"
-                  checked={paymentMethod === "transfer"}
-                  onChange={() => setPaymentMethod("transfer")}
-                />
-                <span>Перевод на карту</span>
-              </label>
-              <label className="flex items-center space-x-2">
-                <input
-                  type="radio"
-                  value="cash"
-                  checked={paymentMethod === "cash"}
-                  onChange={() => setPaymentMethod("cash")}
-                />
-                <span>Оплата при получении</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Итоговая сумма */}
-            
-          <div className="border-gray-300 border-y flex justify-between my-5 py-5">
-            <h1 className="text-2xl font-medium">Итого</h1>
-            <p className="text-2xl font-semibold">{fullPrice} ₽</p>
-          </div>
-
-          {/* Кнопка подтверждения */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button className="w-full bg-black text-white py-3 rounded-lg">
-              Оформить заказ
+            <Button
+              loading={loading}
+              className="w-full bg-black text-white py-3 rounded-lg"
+              type="submit"
+              form="orderForm"
+              disabled={loading}
+            >
+              {submiting ? "Оформление..." : "Подтвердить заказ"}
             </Button>
           </motion.div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }

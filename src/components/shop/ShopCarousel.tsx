@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/shadcn-ui/Carousel";
 import { ProductCategories } from "./ProductCategories";
 import { GoToCatalogButton } from "./ui";
-import { ProductsLoader } from "./ProductsLoader";
 import { CategoryWithProducts } from "@/types";
 import { ProductGroupList } from "./ProductGroupList";
 

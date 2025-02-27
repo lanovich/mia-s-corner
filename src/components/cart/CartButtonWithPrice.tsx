@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
 import React from "react";
 import { Button } from "../shadcn-ui/button";
 import { ShoppingBag } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { useCartStore } from "@/store/useCartStore";
-import { calcFullPrice } from "./lib/calcFullPrice";
+import { calcFullPrice } from "../../lib/calcFullPrice";
 
 interface Props {
   className?: string;

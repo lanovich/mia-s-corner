@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -10,14 +11,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/shadcn-ui/sheet";
-import Link from "next/link";
 import { Button } from "../shadcn-ui/button";
 import { ArrowRight } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { CartDrawerItem } from ".";
 import { CartItem } from "@/store/useCartStore";
 import { InfoAboutCartPrice } from "./ui";
-import { calcFullPrice } from "./lib/calcFullPrice";
+import { calcFullPrice } from "../../lib/calcFullPrice";
 
 interface Props {
   children?: React.ReactNode;
@@ -25,6 +25,16 @@ interface Props {
 
 export const CartDrawer: React.FC<Props> = ({ children }) => {
   const { cart, fullPrice, productTotalAmount } = useCartStore();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const handleCheckout = () => {
+    startTransition(() => {
+      router.push("/checkout");
+    });
+  };
+
+  // TODO: разделить этот компонент на более мелкие
 
   return (
     <Sheet>
@@ -56,12 +66,14 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
 
         {/* Кнопка оформления заказа */}
         <SheetFooter className="mt-auto">
-          <Link href="/checkout" className="w-full">
-            <Button className="w-full h-12 flex items-center justify-center gap-2">
-              Оформить заказ
-              <ArrowRight className="w-5" />
-            </Button>
-          </Link>
+          <Button
+            onClick={handleCheckout}
+            loading={isPending}
+            className="w-full h-12 flex items-center justify-center gap-2"
+          >
+            Оформить заказ
+            <ArrowRight className="w-5" />
+          </Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

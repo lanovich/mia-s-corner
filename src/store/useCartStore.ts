@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { cartService } from "@/services/cartService";
 import { Product } from "@/types";
-import { calcFullPrice } from "@/components/cart/lib/calcFullPrice";
+import { calcFullPrice } from "@/lib/calcFullPrice";
 
 export interface CartItem {
   product: Product;
@@ -13,6 +13,7 @@ interface CartStore {
   cart: CartItem[];
   productTotalAmount: number;
   fullPrice: number;
+  loading: boolean;
   loadCart: () => Promise<void>;
   addToCart: (productId: number) => Promise<void>;
   removeFromCart: (productId: number) => Promise<void>;
@@ -26,22 +27,25 @@ export const useCartStore = create<CartStore>()(
       cart: [],
       productTotalAmount: 0,
       fullPrice: 0,
+      loading: true,
 
       loadCart: async () => {
+        set({ loading: true });
         const cartItems = await cartService.loadCartItems();
         const productTotalAmount = cartItems.reduce(
           (acc, item) => acc + item.product.price * item.quantity,
           0
         );
-
         set({
           cart: cartItems,
           productTotalAmount,
           fullPrice: calcFullPrice(productTotalAmount).finalAmount,
+          loading: false,
         });
       },
 
       addToCart: async (productId) => {
+        set({ loading: true });
         const { cart } = get();
         const existingItem = cart.find((item) => item.product.id === productId);
         let newTotal = get().productTotalAmount;
@@ -59,10 +63,11 @@ export const useCartStore = create<CartStore>()(
             ),
             productTotalAmount: newTotal,
             fullPrice: calcFullPrice(newTotal).finalAmount,
+            loading: false,
           });
         } else {
           const product = await cartService.getProductById(productId);
-          if (!product) return;
+          if (!product) return set({ loading: false });
 
           newTotal += product.price;
 
@@ -70,6 +75,7 @@ export const useCartStore = create<CartStore>()(
             cart: [...cart, { product, quantity: 1 }],
             productTotalAmount: newTotal,
             fullPrice: calcFullPrice(newTotal).finalAmount,
+            loading: false,
           });
         }
 
@@ -77,9 +83,10 @@ export const useCartStore = create<CartStore>()(
       },
 
       decreaseQuantity: async (productId) => {
+        set({ loading: true });
         const { cart } = get();
         const existingItem = cart.find((item) => item.product.id === productId);
-        if (!existingItem) return;
+        if (!existingItem) return set({ loading: false });
 
         let newTotal = get().productTotalAmount;
 
@@ -96,6 +103,7 @@ export const useCartStore = create<CartStore>()(
             ),
             productTotalAmount: newTotal,
             fullPrice: calcFullPrice(newTotal).finalAmount,
+            loading: false,
           });
         } else {
           newTotal -= existingItem.product.price;
@@ -103,6 +111,7 @@ export const useCartStore = create<CartStore>()(
             cart: cart.filter((item) => item.product.id !== productId),
             productTotalAmount: newTotal,
             fullPrice: calcFullPrice(newTotal).finalAmount,
+            loading: false,
           });
         }
 
@@ -110,9 +119,10 @@ export const useCartStore = create<CartStore>()(
       },
 
       removeFromCart: async (productId) => {
+        set({ loading: true });
         const { cart } = get();
         const existingItem = cart.find((item) => item.product.id === productId);
-        if (!existingItem) return;
+        if (!existingItem) return set({ loading: false });
 
         let newTotal =
           get().productTotalAmount -
@@ -122,14 +132,16 @@ export const useCartStore = create<CartStore>()(
           cart: cart.filter((item) => item.product.id !== productId),
           productTotalAmount: newTotal,
           fullPrice: calcFullPrice(newTotal).finalAmount,
+          loading: false,
         });
 
         cartService.removeFromCart(productId).catch(() => get().loadCart());
       },
 
       clearCart: async () => {
+        set({ loading: true });
         await cartService.clearCart();
-        set({ cart: [], productTotalAmount: 0, fullPrice: 0 });
+        set({ cart: [], productTotalAmount: 0, fullPrice: 0, loading: false });
       },
     }),
     { name: "cart-storage" }

@@ -7,7 +7,7 @@ interface Props {
   cartItem: CartItem;
 }
 
-// TODO: переписать compound иои изменить в store
+// TODO: разделить этот компонент на более мелкие
 
 export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
   const { decreaseQuantity, removeFromCart, addToCart } = useCartStore();
