@@ -2,7 +2,6 @@
 
 import { toast } from "sonner";
 import { cn } from "@/lib";
-import { Product } from "@/types";
 import { useCartStore } from "@/store/useCartStore";
 import { MouseEvent } from "react";
 

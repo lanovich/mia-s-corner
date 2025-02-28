@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-import { Product } from "@/types";
 
 export const getProductsByCategory = async (categoryId: number): Promise<Product[]> => {
   console.log(`🔄 Запрос продуктов для категории ${categoryId}...`);

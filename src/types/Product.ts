@@ -1,11 +1,15 @@
-export interface Product {
+type Product = {
   id: number;
   title: string;
-  compound: string;
   size: string;
   price: number;
+  quantity_in_stock: number;
+  history_id: number;
   category_id: number;
-  category_slug: string;
-  slug: string;
   image_url: string;
-}
+  compound: string;
+  slug: string;
+  category_slug: string;
+  scent_pyramid: ScentPyramid;
+  description: string;
+};

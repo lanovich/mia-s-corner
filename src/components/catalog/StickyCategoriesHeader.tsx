@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { CartButtonWithPrice, Container } from "@/components/shared";
 import { useEffect, useState, useRef } from "react";
 import { CategoriesList } from "./CategoriesList";
-import { Category } from "@/types/Category";
 import { cn } from "@/lib";
 
 interface StickyHeaderProps {

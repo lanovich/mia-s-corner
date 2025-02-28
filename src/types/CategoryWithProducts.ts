@@ -1,8 +1,3 @@
-import { Product } from "./Product";
-
-export interface CategoryWithProducts {
-  id: number;
-  name: string;
-  slug: string;
+export interface CategoryWithProducts extends Category {
   products: Product[];
 }

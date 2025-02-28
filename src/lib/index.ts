@@ -1,9 +1,9 @@
 export { cn } from "./utils";
 export { getUserToken } from "./getUserToken";
-export { fetcher } from "./fetcher";
 export { getCategories } from "./getCategories";
 export { getProductsByCategory } from "./getProductsByCategory";
 export { getCategoriesWithProducts } from "./getCategoriesWithProducts";
 export { sendEmail } from "./sendEmail";
 export { createPayment } from "./createPayment";
 export { updateSlugs } from "./updateSlugs";
+export { getProductWithHistory } from "./getProductWithHistory";
