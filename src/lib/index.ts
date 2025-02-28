@@ -4,3 +4,5 @@ export { fetcher } from "./fetcher";
 export { getCategories } from "./getCategories";
 export { getProductsByCategory } from "./getProductsByCategory";
 export { getCategoriesWithProducts } from "./getCategoriesWithProducts";
+export { sendEmail } from "./sendEmail";
+export { createPayment } from "./createPayment";

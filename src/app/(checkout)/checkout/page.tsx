@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/shadcn-ui/button";
 import { motion } from "framer-motion";
 import { Container } from "@/components/shared";
@@ -24,11 +25,13 @@ import { toast } from "sonner";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
     "transfer"
   );
-  const [submiting, setSubmiting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const loading = useCartStore((state) => state.loading);
+  const clearCart = useCartStore((state) => state.clearCart);
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(orderSchema),
@@ -44,18 +47,17 @@ export default function CheckoutPage() {
 
   const onSubmit = async (data: CheckoutFormValues) => {
     try {
-      setSubmiting(true);
-      const url = await createOrder(data);
-      toast.success("Заказ успешно оформлен! Переход на оплату...");
+      setSubmitting(true);
+      const paymentUrl = await createOrder(data);
 
-      if (url) {
-        location.href = url;
-      }
+      await clearCart();
+
+      router.push(paymentUrl);
     } catch (error) {
-      console.log("Ошибка при создании заказа", error);
+      console.error("Ошибка при создании заказа", error);
       toast.error("Не удалось создать заказ!");
     } finally {
-      setSubmiting(false);
+      setSubmitting(false);
     }
   };
 
@@ -91,7 +93,7 @@ export default function CheckoutPage() {
               form="orderForm"
               disabled={loading}
             >
-              {submiting ? "Оформление..." : "Подтвердить заказ"}
+              {submitting ? "Оформление..." : "Подтвердить заказ"}
             </Button>
           </motion.div>
         </div>

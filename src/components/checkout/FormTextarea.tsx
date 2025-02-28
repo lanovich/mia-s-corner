@@ -1,19 +1,19 @@
-import React from "react";
-import { Input } from "../shadcn-ui/input";
-import * as RHF from "react-hook-form";
-import { ErrorText } from "./ErrorText";
-import { ClearButton } from "./ClearButton";
 import { cn } from "@/lib";
-
+import { Textarea } from "@/components/shadcn-ui/textarea";
+import React from "react";
+import { ClearButton } from "./ClearButton";
+import { ErrorText } from "./ErrorText";
+import * as RHF from "react-hook-form";
 const { useFormContext } = RHF;
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+
+interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string;
   name: string;
   label?: string;
   required?: boolean;
 }
 
-export const FormInput: React.FC<Props> = ({
+export const FormTextarea: React.FC<Props> = ({
   className,
   name,
   label,
@@ -33,12 +33,11 @@ export const FormInput: React.FC<Props> = ({
 
   const value = watch(name);
   const errorText = errors[name]?.message as string;
-
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       {label && <label className="text-xs mb-1">{label}</label>}
       <div className="relative">
-        <Input
+        <Textarea
           {...props}
           {...register(name)}
           className={cn(

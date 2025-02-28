@@ -1,9 +1,7 @@
 import React from "react";
 import { Textarea } from "../shadcn-ui/textarea";
 import { AboutWishesTooltip } from "./AboutWishesTooltip";
-
-
-
+import { FormTextarea } from "./FormTextarea";
 
 export const OrderWishes = () => {
   return (
@@ -14,13 +12,14 @@ export const OrderWishes = () => {
       </div>
 
       <div className="mt-3 space-y-2">
-        <Textarea
+        <FormTextarea
           placeholder="Ваши пожелания к заказу"
           className="resize-none"
           rows={7}
+          name="wishes"
         />
       </div>
       <div className="mt-4 flex justify-end"></div>
     </div>
   );
-}; 
+};

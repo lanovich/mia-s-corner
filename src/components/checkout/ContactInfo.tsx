@@ -1,4 +1,4 @@
-import { Input } from "@/components/shadcn-ui/input";
+"use client";
 import { FormInput } from "./FormInput";
 
 export const ContactInfo = () => (
@@ -9,7 +9,7 @@ export const ContactInfo = () => (
     <div className="mt-3 space-y-2">
       <FormInput placeholder="Ваше имя" name="name" />
       <FormInput placeholder="Телефон" type="tel" name="phone" />
-      <FormInput placeholder="E-mail" type="email" name="email"/>
+      <FormInput placeholder="E-mail" type="email" name="email" />
     </div>
   </div>
 );

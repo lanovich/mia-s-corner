@@ -31,117 +31,154 @@ export const useCartStore = create<CartStore>()(
 
       loadCart: async () => {
         set({ loading: true });
-        const cartItems = await cartService.loadCartItems();
-        const productTotalAmount = cartItems.reduce(
-          (acc, item) => acc + item.product.price * item.quantity,
-          0
-        );
-        set({
-          cart: cartItems,
-          productTotalAmount,
-          fullPrice: calcFullPrice(productTotalAmount).finalAmount,
-          loading: false,
-        });
+        try {
+          const cartItems = await cartService.loadCartItems();
+          const productTotalAmount = cartItems.reduce(
+            (acc, item) => acc + item.product.price * item.quantity,
+            0
+          );
+          const fullPrice = calcFullPrice(productTotalAmount).finalAmount;
+
+          set({
+            cart: cartItems,
+            productTotalAmount,
+            fullPrice,
+            loading: false,
+          });
+
+          await cartService.updateCartFullPrice(fullPrice);
+        } catch (error) {
+          console.error("Ошибка при загрузке корзины:", error);
+          set({ loading: false });
+        }
       },
 
       addToCart: async (productId) => {
         set({ loading: true });
-        const { cart } = get();
-        const existingItem = cart.find((item) => item.product.id === productId);
-        let newTotal = get().productTotalAmount;
+        try {
+          const { cart } = get();
+          const existingItem = cart.find((item) => item.product.id === productId);
+          let newTotal = get().productTotalAmount;
 
-        if (existingItem) {
-          newTotal += existingItem.product.price;
+          if (existingItem) {
+            newTotal += existingItem.product.price;
+          }
+
+          if (existingItem) {
+            set({
+              cart: cart.map((item) =>
+                item.product.id === productId
+                  ? { ...item, quantity: item.quantity + 1 }
+                  : item
+              ),
+              productTotalAmount: newTotal,
+              fullPrice: calcFullPrice(newTotal).finalAmount,
+              loading: false,
+            });
+          } else {
+            const product = await cartService.getProductById(productId);
+            if (!product) return set({ loading: false });
+
+            newTotal += product.price;
+
+            set({
+              cart: [...cart, { product, quantity: 1 }],
+              productTotalAmount: newTotal,
+              fullPrice: calcFullPrice(newTotal).finalAmount,
+              loading: false,
+            });
+          }
+
+          await cartService.addToCart(productId);
+
+          await cartService.updateCartFullPrice(get().fullPrice);
+        } catch (error) {
+          console.error("Ошибка при добавлении товара:", error);
+          set({ loading: false });
         }
-
-        if (existingItem) {
-          set({
-            cart: cart.map((item) =>
-              item.product.id === productId
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
-            ),
-            productTotalAmount: newTotal,
-            fullPrice: calcFullPrice(newTotal).finalAmount,
-            loading: false,
-          });
-        } else {
-          const product = await cartService.getProductById(productId);
-          if (!product) return set({ loading: false });
-
-          newTotal += product.price;
-
-          set({
-            cart: [...cart, { product, quantity: 1 }],
-            productTotalAmount: newTotal,
-            fullPrice: calcFullPrice(newTotal).finalAmount,
-            loading: false,
-          });
-        }
-
-        cartService.addToCart(productId).catch(() => get().loadCart());
       },
 
       decreaseQuantity: async (productId) => {
         set({ loading: true });
-        const { cart } = get();
-        const existingItem = cart.find((item) => item.product.id === productId);
-        if (!existingItem) return set({ loading: false });
+        try {
+          const { cart } = get();
+          const existingItem = cart.find((item) => item.product.id === productId);
+          if (!existingItem) return set({ loading: false });
 
-        let newTotal = get().productTotalAmount;
+          let newTotal = get().productTotalAmount;
 
-        if (existingItem.quantity > 1) {
-          newTotal -= existingItem.product.price;
+          if (existingItem.quantity > 1) {
+            newTotal -= existingItem.product.price;
+          }
+
+          if (existingItem.quantity > 1) {
+            set({
+              cart: cart.map((item) =>
+                item.product.id === productId
+                  ? { ...item, quantity: item.quantity - 1 }
+                  : item
+              ),
+              productTotalAmount: newTotal,
+              fullPrice: calcFullPrice(newTotal).finalAmount,
+              loading: false,
+            });
+          } else {
+            newTotal -= existingItem.product.price;
+            set({
+              cart: cart.filter((item) => item.product.id !== productId),
+              productTotalAmount: newTotal,
+              fullPrice: calcFullPrice(newTotal).finalAmount,
+              loading: false,
+            });
+          }
+
+          await cartService.decreaseQuantity(productId);
+
+          await cartService.updateCartFullPrice(get().fullPrice);
+        } catch (error) {
+          console.error("Ошибка при уменьшении количества товара:", error);
+          set({ loading: false });
         }
+      },
 
-        if (existingItem.quantity > 1) {
-          set({
-            cart: cart.map((item) =>
-              item.product.id === productId
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-            ),
-            productTotalAmount: newTotal,
-            fullPrice: calcFullPrice(newTotal).finalAmount,
-            loading: false,
-          });
-        } else {
-          newTotal -= existingItem.product.price;
+      removeFromCart: async (productId) => {
+        set({ loading: true });
+        try {
+          const { cart } = get();
+          const existingItem = cart.find((item) => item.product.id === productId);
+          if (!existingItem) return set({ loading: false });
+
+          let newTotal =
+            get().productTotalAmount -
+            existingItem.product.price * existingItem.quantity;
+
           set({
             cart: cart.filter((item) => item.product.id !== productId),
             productTotalAmount: newTotal,
             fullPrice: calcFullPrice(newTotal).finalAmount,
             loading: false,
           });
+
+          await cartService.removeFromCart(productId);
+
+          await cartService.updateCartFullPrice(get().fullPrice);
+        } catch (error) {
+          console.error("Ошибка при удалении товара:", error);
+          set({ loading: false });
         }
-
-        cartService.decreaseQuantity(productId).catch(() => get().loadCart());
-      },
-
-      removeFromCart: async (productId) => {
-        set({ loading: true });
-        const { cart } = get();
-        const existingItem = cart.find((item) => item.product.id === productId);
-        if (!existingItem) return set({ loading: false });
-
-        let newTotal =
-          get().productTotalAmount -
-          existingItem.product.price * existingItem.quantity;
-
-        set({
-          cart: cart.filter((item) => item.product.id !== productId),
-          productTotalAmount: newTotal,
-          fullPrice: calcFullPrice(newTotal).finalAmount,
-          loading: false,
-        });
-
-        cartService.removeFromCart(productId).catch(() => get().loadCart());
       },
 
       clearCart: async () => {
         set({ loading: true });
-        await cartService.clearCart();
-        set({ cart: [], productTotalAmount: 0, fullPrice: 0, loading: false });
+        try {
+          await cartService.clearCart();
+          set({ cart: [], productTotalAmount: 0, fullPrice: 0, loading: false });
+
+          await cartService.updateCartFullPrice(0);
+        } catch (error) {
+          console.error("Ошибка при очистке корзины:", error);
+          set({ loading: false });
+        }
       },
     }),
     { name: "cart-storage" }
