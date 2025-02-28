@@ -6,20 +6,23 @@ import { notFound } from "next/navigation";
 export default async function ProductPage({
   params,
 }: {
-  params: { category: string; id: string };
+  params: { categorySlug: string; productSlug: string };
 }) {
-  const { id } = await params;
-
-  // TODO: переписать для получения через группы запахов
+  const { productSlug } = await params;
+  const { categorySlug } = await params;
 
   const { data: product, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("id", id)
-    .single();
+  .from("products")
+  .select("*, categories!inner(id, slug)")
+  .eq("slug", productSlug)
+  .eq("categories.slug", categorySlug)
+  .maybeSingle();
 
-  if (error || !product) {
-    notFound();
+
+  if (error) {
+    console.error("Ошибка при загрузке продукта:", error);
+  } else {
+    console.log("Загруженный продукт:", product);
   }
 
   return (
@@ -36,7 +39,10 @@ export default async function ProductPage({
           <h1 className="text-2xl font-semibold">{product.title}</h1>
           <p className="text-gray-500">{product.compound}</p>
           <span className="text-lg font-bold">{product.size}</span>
-          <AddToCartButton product={product} className={'w-20'}></AddToCartButton>
+          <AddToCartButton
+            product={product}
+            className={"w-20"}
+          ></AddToCartButton>
         </div>
       </div>
     </div>

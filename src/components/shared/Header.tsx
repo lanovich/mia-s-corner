@@ -11,7 +11,7 @@ interface Props {
   hideCartButton?: boolean;
 }
 
-export const Header: React.FC<Props> = ({ className, hideCartButton }) => {
+export const Header: React.FC<Props> = async ({ className, hideCartButton }) => {
   return (
     <header className={cn("mx-4 xl:mx-0", className)}>
       <Container className="flex justify-between items-center py-4 bg-gray70 h-20">

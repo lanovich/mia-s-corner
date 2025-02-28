@@ -3,21 +3,21 @@ import { Category } from "@/types/Category";
 
 interface CategoriesListProps {
   categories: Category[];
-  currentCategoryId: number;
+  currentCategorySlug: string;
 }
 
 export const CategoriesList: React.FC<CategoriesListProps> = ({
   categories,
-  currentCategoryId,
+  currentCategorySlug,
 }) => {
   return (
     <div className="flex space-x-4">
-      {categories.map(({ id, name }) => (
+      {categories.map(({ id, name, slug }) => (
         <CategoryButton
           key={id}
-          categoryId={id}
+          categorySlug={slug}
           categoryName={name}
-          currentCategoryId={currentCategoryId}
+          currentCategorySlug={currentCategorySlug}
         />
       ))}
     </div>

@@ -6,3 +6,4 @@ export { getProductsByCategory } from "./getProductsByCategory";
 export { getCategoriesWithProducts } from "./getCategoriesWithProducts";
 export { sendEmail } from "./sendEmail";
 export { createPayment } from "./createPayment";
+export { updateSlugs } from "./updateSlugs";

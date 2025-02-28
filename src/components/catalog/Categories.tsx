@@ -4,12 +4,12 @@ import { Category } from "@/types/Category";
 
 interface CategoriesProps {
   categories: Category[];
-  currentCategoryId: number;
+  currentCategorySlug: string;
 }
 
 export const Categories: React.FC<CategoriesProps> = ({
   categories,
-  currentCategoryId,
+  currentCategorySlug,
 }) => {
   return (
     <>
@@ -18,7 +18,7 @@ export const Categories: React.FC<CategoriesProps> = ({
       </div>
       <StickyCategoriesHeader
         categories={categories}
-        currentCategoryId={currentCategoryId}
+        currentCategorySlug={currentCategorySlug}
       />
     </>
   );

@@ -5,26 +5,29 @@ import {
   Filters,
 } from "@/components/catalog";
 import { Container } from "@/components/shared";
-import { filterSmells } from "@/constants";
 
 interface Props {
-  params: { categoryId: string };
+  params: { categorySlug: string };
 }
 
 export default async function CatalogPage({ params }: Props) {
   const categories = await getCategories();
-  const { categoryId } = await params;
-  const formattedCategoryId = Number(categoryId) || categories[0].id;
+
+  const { categorySlug } = await params;
+
+
+  const currentCategory =
+    categories.find((cat) => cat.slug === categorySlug) || categories[0];
 
   return (
     <>
       <Categories
         categories={categories}
-        currentCategoryId={formattedCategoryId}
+        currentCategorySlug={currentCategory.slug}
       />
       <Container>
       {/* <Filters smells={filterSmells}></Filters> */}
-        <CatalogProductsLoader categoryId={formattedCategoryId} />
+        <CatalogProductsLoader categoryId={currentCategory.id} />
       </Container>
     </>
   );

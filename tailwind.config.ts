@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      filter: {
+        invert: "invert(1)",
+      },
       colors: {
         bg: "var(--background)",
         fg: "var(--foreground)",

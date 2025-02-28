@@ -11,9 +11,9 @@ export const Navigation: React.FC<Props> = ({ className }) => {
     <>
       <div className={className}>
         <CustomLink href={`${LINKS.CATALOG}/1`}>Каталог</CustomLink>
-        <CustomLink href={"About"}>О нас</CustomLink>
+        <CustomLink href={"about"}>О нас</CustomLink>
         <CustomLink href={`${LINKS.CATALOG}/1/22`}>Случайно</CustomLink>
-        <CustomLink href={"Catalog"}>Дополнительно</CustomLink>
+        <CustomLink href={"contacts"}>Контакты</CustomLink>
       </div>
     </>
   );

@@ -3,21 +3,21 @@
 import { useRouter } from "next/navigation";
 
 interface CategoryButtonProps {
-  categoryId: number;
+  categorySlug: string;
   categoryName: string;
-  currentCategoryId: number;
+  currentCategorySlug: string;
 }
 
 export const CategoryButton: React.FC<CategoryButtonProps> = ({
-  categoryId,
+  categorySlug,
   categoryName,
-  currentCategoryId,
+  currentCategorySlug,
 }) => {
   const router = useRouter();
-  const isActive = currentCategoryId === categoryId;
+  const isActive = currentCategorySlug === categorySlug;
 
   const handleClick = () => {
-    router.replace(`/catalog/${categoryId}`, { scroll: false });
+    router.replace(`/catalog/${categorySlug}`, { scroll: false });
   };
 
   return (

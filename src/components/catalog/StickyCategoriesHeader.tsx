@@ -10,13 +10,13 @@ import { cn } from "@/lib";
 interface StickyHeaderProps {
   className?: string;
   categories: Category[];
-  currentCategoryId: number;
+  currentCategorySlug: string;
 }
 
 export const StickyCategoriesHeader: React.FC<StickyHeaderProps> = ({
   className,
   categories,
-  currentCategoryId,
+  currentCategorySlug,
 }) => {
   const [isSticky, setIsSticky] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -55,7 +55,7 @@ export const StickyCategoriesHeader: React.FC<StickyHeaderProps> = ({
         <div className="flex justify-between items-center">
           <CategoriesList
             categories={categories}
-            currentCategoryId={currentCategoryId}
+            currentCategorySlug={currentCategorySlug}
           />
 
           {!isMobile && isSticky && (

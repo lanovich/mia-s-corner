@@ -4,7 +4,7 @@ import { Category } from "@/types";
 
 export const getCategories = cache(async (): Promise<Category[]> => {
   console.log("🔄 Запрос категорий в Supabase...");
-  const { data, error } = await supabase.from("categories").select("id, name");
+  const { data, error } = await supabase.from("categories").select("id, name, slug");
 
   if (error) {
     console.error("❌ Ошибка загрузки категорий:", error);

@@ -34,10 +34,10 @@ export function ShopCarousel({ categories }: Props) {
       <ProductCategories categories={categories} current={current} handleCategoryClick={handleCategoryClick} />
       <Carousel setApi={setApi}>
         <CarouselContent>
-          {categories.map(({id, name, products}: CategoryWithProducts) => (
+          {categories.map(({id, name, slug, products}: CategoryWithProducts) => (
             <CarouselItem key={id}>
               <ProductGroupList products={products}/>
-              <GoToCatalogButton categoryId={id} categoryName={name} />
+              <GoToCatalogButton categorySlug={slug} categoryName={name} />
             </CarouselItem>
           ))}
         </CarouselContent>

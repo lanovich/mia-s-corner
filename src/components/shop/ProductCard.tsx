@@ -11,7 +11,7 @@ interface Props {
 export const ProductCard: React.FC<Props> = ({ product }) => {
   return (
     <Link
-      href={`${LINKS.CATALOG}/${product.category_id}/${product.id}`}
+      href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
       className="group"
     >
       <div className="relative aspect-[3/4] overflow-hidden rounded-xl transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
