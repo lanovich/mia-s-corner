@@ -6,9 +6,16 @@ export const getProductWithHistory = async (
   productSlug: string
 ): Promise<ProductWithHistory | null> => {
   console.log(`🔄 Запрос товара с историей:`);
+
   const { data, error } = await supabase
     .from("products")
-    .select("*, history:histories!inner(id, title, description)")
+    .select(
+      `
+      *,
+      sizes(*),
+      history:histories(id, title, description)
+    `
+    )
     .eq("slug", productSlug)
     .eq("category_slug", categorySlug)
     .maybeSingle();

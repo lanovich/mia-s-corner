@@ -1,15 +1,16 @@
 type Product = {
   id: number;
   title: string;
-  size: string;
-  price: number;
-  quantity_in_stock: number;
   history_id: number;
   category_id: number;
-  image_url: string;
   compound: string;
   slug: string;
+  images: Image[];
   category_slug: string;
+  sizes: Size[];
   scent_pyramid: ScentPyramid;
   description: string;
+  wick: string;
+  wax: string;
+  measure: string;
 };

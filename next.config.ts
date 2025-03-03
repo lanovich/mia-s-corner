@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
         hostname: "img.freepik.com",
       },
       { hostname: "i.pinimg.com" },
+      { hostname: "cozyhome.ru" }
     ],
   },
 };

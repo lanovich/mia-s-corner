@@ -1,4 +1,3 @@
-import { Product } from "@/types";
 import Image from "next/image";
 import { AddToCartButton } from "./ui";
 import Link from "next/link";
@@ -9,6 +8,7 @@ interface Props {
 }
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
+  const defaultSize = product.sizes.find((size) => size.is_default === true || null);
   return (
     <Link
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
@@ -16,7 +16,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
     >
       <div className="relative aspect-[3/4] overflow-hidden rounded-xl transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
         <Image
-          src={product.image_url}
+          src={product.images[0].url}
           width={300}
           height={400}
           className="h-full w-full object-cover"
@@ -28,15 +28,13 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         >
           <div className="flex flex-col gap-1">
             <span className="ProductHeading">{product.title}</span>
-            <span className="text-xs text-black/50">{product.size}</span>
+            <span className="text-xs text-black/50">{defaultSize?.size || ""}</span>
           </div>
           <div className="flex items-center justify-between">
             <p className="text-[0.675rem] text-black/50 line-clamp-2">
               {product.compound}
             </p>
-            <AddToCartButton
-              product={product}
-            />
+            <AddToCartButton product={product} selectedSize={defaultSize || null}/>
           </div>
         </div>
       </div>

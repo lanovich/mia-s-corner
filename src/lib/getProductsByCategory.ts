@@ -5,7 +5,7 @@ export const getProductsByCategory = async (categoryId: number): Promise<Product
   
   const { data, error } = await supabase
     .from("products")
-    .select("*")
+    .select("*, sizes:sizes!product_id(*)")
     .eq("category_id", categoryId);
 
   if (error) {

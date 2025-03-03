@@ -1,6 +1,5 @@
 import { StickyCategoriesHeader } from "./StickyCategoriesHeader";
 import { ChapterHeading } from "@/components/shared";
-import { Category } from "@/types/Category";
 
 interface CategoriesProps {
   categories: Category[];

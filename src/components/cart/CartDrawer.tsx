@@ -53,7 +53,7 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
         {/* Список товаров */}
         <div className="flex-1 overflow-y-auto space-y-4">
           {cart.map((cartItem: CartItem) => (
-            <CartDrawerItem key={cartItem.product.id} cartItem={cartItem} />
+            <CartDrawerItem key={cartItem.sizeId} cartItem={cartItem} />
           ))}
         </div>
 

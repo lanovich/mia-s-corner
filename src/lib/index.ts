@@ -7,3 +7,5 @@ export { sendEmail } from "./sendEmail";
 export { createPayment } from "./createPayment";
 export { updateSlugs } from "./updateSlugs";
 export { getProductWithHistory } from "./getProductWithHistory";
+export { findSelectedSize } from "./findSelectedSize";
+export { getCategoryBySlug } from "./getCategoryBySlug";

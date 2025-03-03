@@ -8,7 +8,7 @@ export const getCategoriesWithProducts = async (): Promise<
 
   const { data, error } = await supabase
     .from("categories")
-    .select("*, products:products!category_id(*)")
+    .select("*, products:products!category_id(*, sizes:sizes!product_id(*))")
     .order("id");
 
   if (error) {

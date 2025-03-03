@@ -1,8 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Category } from "@/types";
-
 interface Props {
   categories: Category[];
   current: number;
