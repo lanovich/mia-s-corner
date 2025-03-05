@@ -7,23 +7,22 @@ import { MouseEvent } from "react";
 import { Minus, Plus } from "lucide-react";
 
 interface Props {
-  product: Product;
   selectedSize: Size | null;
   className?: string;
   children?: React.ReactNode;
 }
 
 export const AddToCartButton: React.FC<Props> = ({
-  product,
   selectedSize,
   className,
   children,
 }) => {
-  const { addToCart, decreaseQuantity, removeFromCart, cart } = useCartStore();
+  const { addToCart, decreaseQuantity, cart } = useCartStore();
 
   const existingCartItem = cart.find(
     (cartItem) =>
-      cartItem.product.id === product.id && cartItem.sizeId === selectedSize?.id
+      cartItem.product.id === selectedSize?.product_id &&
+      cartItem.sizeId === selectedSize?.id
   );
 
   const handleAddToCart = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -32,16 +31,17 @@ export const AddToCartButton: React.FC<Props> = ({
       return toast.error("Выберите размер перед добавлением в корзину!");
     }
     try {
-      await addToCart(product.id, selectedSize.id);
+      await addToCart(selectedSize?.product_id, selectedSize.id);
       toast.success("Товар добавлен в корзину", { position: "bottom-right" });
     } catch (error) {
       toast.error("Ошибка добавления товара!");
     }
   };
 
-  const handleDecrease = async () => {
+  const handleDecrease = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (selectedSize && existingCartItem) {
-      await decreaseQuantity(product.id, selectedSize.id);
+      await decreaseQuantity(selectedSize?.product_id, selectedSize.id);
       toast.success("Товар удален из корзины", { position: "bottom-right" });
     }
   };
@@ -59,7 +59,7 @@ export const AddToCartButton: React.FC<Props> = ({
       >
         <Minus />
       </button>
-      <span className="whitespace-nowrap border-x border-black px-10">
+      <span className="whitespace-nowrap border-x border-black flex-1 px-4 text-center">
         {existingCartItem.quantity} шт
       </span>
       <button
@@ -77,7 +77,7 @@ export const AddToCartButton: React.FC<Props> = ({
         className
       )}
     >
-      Добавить в корзину
+      {children}
     </button>
   );
 };

@@ -20,7 +20,7 @@ export const ProductGallery: React.FC<Props> = ({ images }) => {
   return (
     <div className="flex gap-4 items-center h-[500px]">
       {/* Обертка для вертикального слайдера, чтобы он центрировался */}
-      <div className="flex h-[480px]">
+      <div className="h-[480px] hidden md:flex">
         <Swiper
           direction="vertical"
           spaceBetween={5}

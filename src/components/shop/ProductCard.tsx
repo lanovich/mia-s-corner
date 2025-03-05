@@ -34,7 +34,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             <p className="text-[0.675rem] text-black/50 line-clamp-2">
               {product.compound}
             </p>
-            <AddToCartButton product={product} selectedSize={defaultSize || null}/>
+            <AddToCartButton selectedSize={defaultSize || null}>Добавить в корзину</AddToCartButton>
           </div>
         </div>
       </div>

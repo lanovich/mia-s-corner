@@ -1,5 +1,5 @@
 type Size = {
-  oldPrice: ReactNode;
+  oldPrice: number;
   id: number;
   size: number;
   product_id: number;

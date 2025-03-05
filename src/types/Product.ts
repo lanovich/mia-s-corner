@@ -12,5 +12,6 @@ type Product = {
   description: string;
   wick: string;
   wax: string;
+  episode: string | null;
   measure: string;
 };

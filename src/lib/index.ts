@@ -9,3 +9,6 @@ export { updateSlugs } from "./updateSlugs";
 export { getProductWithHistory } from "./getProductWithHistory";
 export { findSelectedSize } from "./findSelectedSize";
 export { getCategoryBySlug } from "./getCategoryBySlug";
+export { getRandomSlugs } from "./getRandomSlugs";
+export { chooseRandomItem } from "./chooseRandomItem";
+export { getSimilarProducts } from "./getSimilarProducts";
