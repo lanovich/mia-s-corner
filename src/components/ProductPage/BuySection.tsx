@@ -44,8 +44,8 @@ export const BuySection: React.FC<Props> = ({
           <div className="relative">
             <p
               className={cn(
-                "border-b-2 pb-1 border-neutral-200 cursor-pointer overflow-hidden transition-all duration-50 ease-in-out",
-                expanded ? "max-h-96 opacity-100" : "max-h-10 opacity-80"
+                "border-b-2 pb-3 border-neutral-200 cursor-pointer overflow-hidden transition-all duration-50 ease-in-out",
+                expanded ? "max-h-[30rem] opacity-100" : "max-h-10 opacity-80"
               )}
               onClick={() => setExpanded(!expanded)}
             >
