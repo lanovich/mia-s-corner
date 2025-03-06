@@ -26,6 +26,7 @@ export async function createOrder(data: CheckoutFormValues) {
         cartItem:cartItem (
           id,
           product_id,
+          size_id,
           quantity,
           product:products (*)
         )
