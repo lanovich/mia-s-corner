@@ -8,13 +8,15 @@ interface Props {
 }
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  const defaultSize = product.sizes.find((size) => size.is_default === true || null);
+  const defaultSize = product.sizes.find((size) => size.is_default) || null;
+
   return (
     <Link
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
-      className="group"
+      className="group block"
     >
-      <div className="relative aspect-[3/4] overflow-hidden rounded-xl transition-transform duration-300 ease-in-out hover:scale-105 cursor-pointer">
+      <div className="relative aspect-[9/16] overflow-hidden rounded-xl transition-transform duration-300 hover:scale-105">
+        {/* Product Image */}
         <Image
           src={product.images[0].url}
           width={300}
@@ -22,20 +24,24 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           className="h-full w-full object-cover"
           alt={product.title}
         />
-        <div
-          className="absolute bottom-0 z-10 w-full min-h-[30%] h-[40%] group-hover:h-full bg-white bg-opacity-30 backdrop-blur-md px-4 py-3 flex flex-col justify-between 
-      overflow-hidden transition-[height] duration-300 ease-in-out"
-        >
-          <div className="flex flex-col gap-1">
-            <span className="ProductHeading">{product.title}</span>
-            <span className="text-xs text-black/50">{defaultSize?.size || ""}</span>
+
+        {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
+        <div className="absolute bottom-0 z-10 w-full bg-white/30 backdrop-blur-md px-3 py-3">
+          <div>
+          <span className="text-lg line-clamp-1">{product.compound}</span>
+          <p className="text-sm text-black/50 line-clamp-1">
+            {product.title}
+          </p>
           </div>
-          <div className="flex items-center justify-between">
-            <p className="text-[0.675rem] text-black/50 line-clamp-2">
-              {product.compound}
-            </p>
-            <AddToCartButton selectedSize={defaultSize || null}>Добавить в корзину</AddToCartButton>
+          <div className="flex items-end gap-2 mb-2">
+            <span className="text-xl">{defaultSize?.price} ₽</span>
+            <span className="text-sm text-black/50">
+              {defaultSize?.size} {product.measure}
+            </span>
           </div>
+          <AddToCartButton selectedSize={defaultSize} className="w-full">
+            Добавить в корзину
+          </AddToCartButton>
         </div>
       </div>
     </Link>

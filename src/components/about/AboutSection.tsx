@@ -1,47 +1,48 @@
-import { cn } from "@/lib";
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { MotionImage } from "./MotionImage";
 import Image from "next/image";
-import React from "react";
 
-interface Props {
-  className?: string;
-  description?: string;
-  heading?: string;
-  link?: string;
-}
+export default function AboutSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    amount: 0.3,
+    once: true,
+  });
 
-export const AboutSection: React.FC<Props> = ({
-  className,
-  description,
-  heading,
-  link,
-}) => {
   return (
-    <section
-      className={cn(
-        "mx-auto max-w-[1400px] px-6 py-16 md:flex md:items-center",
-        className
-      )}
-    >
-      {/* Левая часть с текстом */}
-      <div className="md:w-1/2">
-        <h2 className="text-4xl font-bold">{heading}</h2>
-        <p className="mt-4 text-lg text-gray-700">{description}</p>
-        <div className="mt-6 flex items-center gap-2 text-sm font-medium text-black hover:text-red-500 transition">
-          <span className="text-red-500">→</span>
-          <a href="#" className="border-b border-black hover:border-red-500">
-            {link}
-          </a>
+    <section ref={ref} className="w-full">
+      <div className="relative flex flex-col md:flex-row mt-5 justify-between overflow-hidden px-4 text-center md:text-start">
+        {/* Текстовый блок */}
+        <div className="flex flex-col space-y-6 w-full md:w-1/2 mt-5 md:mt-28">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-2xl md:text-3xl font-bold"
+          >
+            Каждый наш аромат — часть истории.
+          </motion.h2>
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-gray-600"
+          >
+            Названия связаны между собой, создавая единую линию повествования.
+          </motion.h3>
+        </div>
+
+        {/* Картинка */}
+        <div className="w-full md:w-1/2 flex justify-center md:justify-end md:mt-0">
+          <MotionImage />
         </div>
       </div>
-
-      {/* Правая часть с картинками */}
-      <div className="relative mt-10 flex md:mt-0 md:w-1/2">
-        {/* Верхнее изображение */}
-        <div className="absolute top-0 right-20 w-[250px] h-[150px] md:w-[300px] md:h-[180px] overflow-hidden shadow-lg"></div>
-
-        {/* Нижнее изображение (основное) */}
-        <div className="ml-auto w-[400px] h-[250px] md:w-[500px] md:h-[300px] overflow-hidden shadow-xl"></div>
-      </div>
+      <div className="text-2xl md:text-3xl font-bold text-center mt-10">
+        Каждое изделие — это эпизод уникальной ароматной истории.
+      </div> 
     </section>
   );
-};
+}

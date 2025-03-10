@@ -1,5 +1,6 @@
+import { Breadcrumbs } from "../ProductPage";
 import { StickyCategoriesHeader } from "./StickyCategoriesHeader";
-import { ChapterHeading } from "@/components/shared";
+import { ChapterHeading, Container } from "@/components/shared";
 
 interface CategoriesProps {
   categories: Category[];
@@ -12,6 +13,7 @@ export const Categories: React.FC<CategoriesProps> = ({
 }) => {
   return (
     <>
+        <Breadcrumbs categorySlug={currentCategorySlug} />
       <div className="mx-auto">
         <ChapterHeading className="mt-0">Каталог</ChapterHeading>
       </div>

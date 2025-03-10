@@ -8,10 +8,10 @@ interface Props {
 export const Navigation = ({ className }: Props) => {
   return (
     <div className={className}>
-      <CustomLink href="/api/random-product">Случайно</CustomLink>
       <CustomLink href={`${LINKS.CATALOG}`}>Каталог</CustomLink>
       <CustomLink href="about">О нас</CustomLink>
       <CustomLink href="contacts">Контакты</CustomLink>
+      <CustomLink href="/api/random-product">Случайный товар</CustomLink>
     </div>
   );
 };

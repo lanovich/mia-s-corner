@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib";
 import { useCartStore } from "@/store/useCartStore";
 import { MouseEvent } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, ShoppingCart } from "lucide-react"; // Добавлен иконка корзины
 
 interface Props {
   selectedSize: Size | null;
@@ -49,35 +49,37 @@ export const AddToCartButton: React.FC<Props> = ({
   return existingCartItem ? (
     <div
       className={cn(
-        "flex items-center rounded-lg border border-black text-lg font-semibold px-3 py-2 h-[50px]",
+        "flex items-center rounded-lg border border-black text-lg font-semibold px-2 py-1 sm:px-3 sm:py-2 min-h-[40px] sm:min-h-[50px] w-full",
         className
       )}
     >
       <button
         onClick={handleDecrease}
-        className="flex flex-1 items-center justify-center w-12 h-8 mr-2 hover:bg-black transition hover:text-white rounded-l-lg"
+        className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-8 hover:bg-black transition hover:text-white rounded-l-lg"
       >
-        <Minus />
+        <Minus className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
-      <span className="whitespace-nowrap border-x border-black flex-1 px-4 text-center">
+      <span className="whitespace-nowrap border-x border-black flex-1 px-2 sm:px-4 text-center text-ellipsis overflow-hidden">
         {existingCartItem.quantity} шт
       </span>
       <button
         onClick={handleAddToCart}
-        className="flex flex-1 items-center justify-center w-12 h-8 ml-2 hover:bg-black transition hover:text-white rounded-r-lg"
+        className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-8 hover:bg-black transition hover:text-white rounded-r-lg"
       >
-        <Plus />
+        <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
     </div>
   ) : (
     <button
       onClick={handleAddToCart}
       className={cn(
-        "flex items-center justify-center rounded-lg border border-black px-3 py-2 text-black transition hover:bg-black hover:text-white h-[50px]",
+        "flex items-center justify-center rounded-lg border border-black px-2 py-1 sm:px-3 sm:py-2 text-black transition hover:bg-black hover:text-white min-h-[40px] sm:min-h-[50px] w-full",
         className
       )}
     >
-      {children}
+      {/* Текст на больших экранах, иконка на маленьких */}
+      <span className="hidden sm:inline">{children}</span>
+      <ShoppingCart className="sm:hidden w-5 h-5" /> {/* Иконка корзины */}
     </button>
   );
 };

@@ -1,6 +1,6 @@
 import { getSimilarProducts } from "@/lib/cache";
 import React from "react";
-import { ProductCard } from "../shop";
+import { HorizontalProductCard } from "./HorizontalProductCard";
 
 interface Props {
   className?: string;
@@ -19,11 +19,13 @@ export const SimilarProducts: React.FC<Props> = async ({
 
   return (
     <div className={className}>
-      <h2 className="text-3xl font-semibold mb-4">Товары из той же истории</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5">
+      <h2 className="text-3xl font-semibold mb-4 pb-2 border-b-2">
+        Товары из той же истории
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
         {similarProducts.map((product) => (
-          <div key={product.id} className="border p-4 rounded-lg">
-            <ProductCard product={product} />
+          <div key={product.id} className="w-full mb-5">
+            <HorizontalProductCard product={product} />
           </div>
         ))}
       </div>

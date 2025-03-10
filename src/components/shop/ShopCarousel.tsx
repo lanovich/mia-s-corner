@@ -37,7 +37,7 @@ export function ShopCarousel({ categories }: Props) {
           {categories.map(({id, name, slug, products}: CategoryWithProducts) => (
             <CarouselItem key={id}>
               <ProductGroupList products={products}/>
-              <GoToCatalogButton categorySlug={slug} categoryName={name} />
+              <GoToCatalogButton categorySlug={slug} categoryName={name}/>
             </CarouselItem>
           ))}
         </CarouselContent>

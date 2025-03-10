@@ -7,7 +7,8 @@ export const Footer = () => {
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
         <Link href={"/"} className="select-none w-24 h-full">
           <Image
-            className="pointer-events-none select-none object-contain w-24 h-full filter invert"
+            className="pointer-events-none select-none object-contain w-24 h-[100%] filter invert"
+            style={{ width: "auto", height: "auto" }}
             src="/logo.svg"
             alt="logo"
             width={96}
@@ -51,7 +52,7 @@ export const Footer = () => {
             Telegram
           </a>
           <a href="#" className="hover:text-gray-400 transition">
-          Vkontakte 
+            Vkontakte
           </a>
         </div>
       </div>

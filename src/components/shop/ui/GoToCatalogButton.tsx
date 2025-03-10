@@ -13,7 +13,7 @@ export const GoToCatalogButton: React.FC<Props> = ({
     <div className="flex">
       <Link
         href={`/catalog/${categorySlug}`}
-        className="m-auto rounded-full border border-black px-6 py-2 text-black bg-transparent hover:bg-black hover:text-white transition z-50 font-bold"
+        className="m-auto rounded-full bg-black px-8 py-3 text-lg font-medium text-white transition-all duration-300 hover:bg-gray-600 shadow-lg"
       >
         открыть {categoryName} в каталоге
       </Link>
