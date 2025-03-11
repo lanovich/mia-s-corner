@@ -2,7 +2,7 @@ import { cn } from "@/lib";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Navigation, Container } from ".";
+import { Navigation, Container, BurgerMenu } from ".";
 import { Menu } from "lucide-react";
 import { CartButtonWithPrice } from ".";
 
@@ -13,7 +13,6 @@ interface Props {
 
 export const Header: React.FC<Props> = async ({
   className,
-  hideCartButton,
 }) => {
   return (
     <header className={cn("mx-4 xl:mx-0", className)}>
@@ -33,10 +32,8 @@ export const Header: React.FC<Props> = async ({
         {/* Корзина и навигация */}
         <div className="flex justify-between items-center gap-5">
           <Navigation className="hidden md:flex gap-5" />
-          {!hideCartButton && <CartButtonWithPrice />}
-          <button className="md:hidden">
-            <Menu />
-          </button>
+          <CartButtonWithPrice />
+          <BurgerMenu />
         </div>
       </Container>
     </header>

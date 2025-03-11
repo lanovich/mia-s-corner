@@ -5,7 +5,8 @@ import { Button } from "../shadcn-ui/button";
 import { ShoppingBag } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { useCartStore } from "@/store/useCartStore";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
+import { cn } from "@/lib";
 
 interface Props {
   className?: string;
@@ -16,8 +17,6 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
   const [scrambledPrice, setScrambledPrice] = useState(fullPrice.toString());
 
   const priceMotion = useMotionValue(fullPrice);
-  const smoothPrice = useSpring(priceMotion, { stiffness: 100, damping: 20 });
-  const animatedPrice = useTransform(smoothPrice, (value) => Math.round(value));
 
   useEffect(() => {
     priceMotion.set(fullPrice);
@@ -40,8 +39,8 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
 
   return (
     <CartDrawer>
-      <div className="flex items-center gap-2 h-full">
-        <Button className="relative flex items-center gap-2 px-4 py-2 w-24">
+      <div className={"flex items-center gap-2 h-full"}>
+        <Button className={cn("relative flex items-center gap-2 px-4 py-2 w-24", className)}>
           <motion.p className="flex items-center justify-center">
             {scrambledPrice} ₽
           </motion.p>

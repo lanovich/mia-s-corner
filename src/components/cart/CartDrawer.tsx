@@ -34,8 +34,6 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
     });
   };
 
-  // TODO: разделить этот компонент на более мелкие
-
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>

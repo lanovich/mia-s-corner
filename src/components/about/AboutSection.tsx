@@ -21,7 +21,7 @@ export default function AboutSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-2xl md:text-3xl font-bold"
+            className="text-2xl md:text-3xl font-bold z-10"
           >
             Каждый наш аромат — часть истории.
           </motion.h2>
@@ -29,10 +29,18 @@ export default function AboutSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-600"
+            className="text-xl md:text-2xl text-gray-600 z-10"
           >
             Названия связаны между собой, создавая единую линию повествования.
           </motion.h3>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 0.5, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="absolute z-0 opacity-50 bottom-5 self-center select-none"
+          >
+            <Image src={"/book.webp"} alt={"книга"} width={256} height={256} />
+          </motion.div>
         </div>
 
         {/* Картинка */}
@@ -40,9 +48,6 @@ export default function AboutSection() {
           <MotionImage />
         </div>
       </div>
-      <div className="text-2xl md:text-3xl font-bold text-center mt-10">
-        Каждое изделие — это эпизод уникальной ароматной истории.
-      </div> 
     </section>
   );
 }

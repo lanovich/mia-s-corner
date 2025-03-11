@@ -110,11 +110,13 @@ body {
   transform: scaleY(0);
 }
 
-.custom-border:hover::after {
+.custom-border:hover::after,
+.custom-border[aria-disabled="true"]::after {
   transform: scaleX(1);
 }
 
-.custom-border:hover::before {
+.custom-border:hover::before,
+.custom-border[aria-disabled="true"]::before {
   transform: scaleY(1);
 }
 

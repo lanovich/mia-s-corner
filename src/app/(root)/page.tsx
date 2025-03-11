@@ -14,11 +14,11 @@ const AboutSection = lazy(() => import("@/components/about/AboutSection"));
 export default function Home() {
   return (
     <>
-      {/* <ImageCarousel>
+      <ImageCarousel>
         <NewCollection />
         <HeroSection />
         <HeroSectionTelegram />
-      </ImageCarousel> */}
+      </ImageCarousel>
 
       <СhapterContainer>
         <ChapterHeading>О нас</ChapterHeading>
@@ -31,7 +31,6 @@ export default function Home() {
         <ChapterHeading>Наши продукты</ChapterHeading>
         <Shop />
       </СhapterContainer>
-
     </>
   );
 }
