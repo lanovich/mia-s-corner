@@ -1,8 +1,5 @@
 import { getCategories } from "@/lib/cache";
-import {
-  CatalogProductsLoader,
-  Categories,
-} from "@/components/catalog";
+import { CatalogProductsLoader, Categories } from "@/components/catalog";
 import { Container } from "@/components/shared";
 
 interface Props {
