@@ -55,7 +55,7 @@ export default function CheckoutPage() {
       router.push(paymentUrl);
     } catch (error) {
       console.error("Ошибка при создании заказа", error);
-      toast.error("Не удалось создать заказ!");
+      toast.error("Не удалось создать заказ!", { position: "top-center" });
     } finally {
       setSubmitting(false);
     }

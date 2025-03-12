@@ -36,8 +36,17 @@ export default async function ProductPage({
           <div>
             <ProductGallery images={product.images} className="md:w-1/3" />
 
+            <BuySection
+              productCompound={product.compound}
+              productHistoryId={product.history_id}
+              productEpisode={product.episode}
+              productTitle={product.title}
+              sizes={product.sizes}
+              className="mt-5 md:hidden sticky top-4 mb-5 flex"
+            />
+
             <AboutProduct
-              className="mt-5"
+              className="md:flex md:flex-col hidden mt-5"
               product={product}
               type={categorySlug}
             />
@@ -49,7 +58,12 @@ export default async function ProductPage({
               productEpisode={product.episode}
               productTitle={product.title}
               sizes={product.sizes}
-              className="sticky top-4 mb-5 flex"
+              className="hidden md:flex sticky top-4 mb-5"
+            />
+            <AboutProduct
+              className="flex flex-col md:hidden"
+              product={product}
+              type={categorySlug}
             />
           </div>
         </div>

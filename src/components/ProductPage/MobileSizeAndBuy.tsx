@@ -28,7 +28,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
   );
 
   const handleAddToFavorite = () => {
-    toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅");
+    toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅", { position: "top-center" });
   };
 
   return (

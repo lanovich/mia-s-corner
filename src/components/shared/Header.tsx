@@ -5,15 +5,14 @@ import Image from "next/image";
 import { Navigation, Container, BurgerMenu } from ".";
 import { Menu } from "lucide-react";
 import { CartButtonWithPrice } from ".";
+import { LogInButton } from "./LogInButton";
 
 interface Props {
   className?: string;
   hideCartButton?: boolean;
 }
 
-export const Header: React.FC<Props> = async ({
-  className,
-}) => {
+export const Header: React.FC<Props> = async ({ className }) => {
   return (
     <header className={cn("mx-4 xl:mx-0", className)}>
       <Container className="flex justify-between items-center py-4 bg-gray70 h-20">
@@ -32,6 +31,7 @@ export const Header: React.FC<Props> = async ({
         {/* Корзина и навигация */}
         <div className="flex justify-between items-center gap-5">
           <Navigation className="hidden md:flex gap-5" />
+          <LogInButton />
           <CartButtonWithPrice />
           <BurgerMenu />
         </div>

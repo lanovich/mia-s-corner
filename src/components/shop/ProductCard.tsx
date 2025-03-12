@@ -15,7 +15,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
       className="group block"
     >
-      <div className="relative aspect-[9/16] overflow-hidden rounded-xl transition-transform duration-300 hover:scale-105">
+      <div className="relative aspect-[9/16] overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105">
         {/* Product Image */}
         <Image
           src={product.images[0].url}
@@ -26,15 +26,15 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         />
 
         {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
-        <div className="absolute bottom-0 z-10 w-full bg-white/30 backdrop-blur-md px-3 py-3">
+        <div className="absolute bottom-0 z-10 w-full bg-white/30 backdrop-blur-md px-2 py-2">
           <div>
-          <span className="text-lg line-clamp-1">{product.compound}</span>
-          <p className="text-sm text-black/50 line-clamp-1">
-            {product.title}
-          </p>
+            <span className="text-sm line-clamp-2">{product.compound}</span>
+            <p className="text-xs text-black/50 line-clamp-1">
+              {product.title}
+            </p>
           </div>
           <div className="flex items-end gap-2 mb-2">
-            <span className="text-xl">{defaultSize?.price} ₽</span>
+            <span className="text-md">{defaultSize?.price} ₽</span>
             <span className="text-sm text-black/50">
               {defaultSize?.size} {product.measure}
             </span>

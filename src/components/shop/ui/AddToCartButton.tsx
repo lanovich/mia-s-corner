@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib";
 import { useCartStore } from "@/store/useCartStore";
 import { MouseEvent } from "react";
-import { Minus, Plus, ShoppingCart } from "lucide-react"; // Добавлен иконка корзины
+import { Minus, Plus, ShoppingCart } from "lucide-react";
 
 interface Props {
   selectedSize: Size | null;
@@ -32,7 +32,7 @@ export const AddToCartButton: React.FC<Props> = ({
     }
     try {
       await addToCart(selectedSize?.product_id, selectedSize.id);
-      toast.success("Товар добавлен в корзину", { position: "bottom-right" });
+      toast.success("Товар добавлен в корзину", { position: "top-center" });
     } catch (error) {
       toast.error("Ошибка добавления товара!");
     }
@@ -42,7 +42,7 @@ export const AddToCartButton: React.FC<Props> = ({
     event.preventDefault();
     if (selectedSize && existingCartItem) {
       await decreaseQuantity(selectedSize?.product_id, selectedSize.id);
-      toast.success("Товар удален из корзины", { position: "bottom-right" });
+      toast.success("Товар удален из корзины", { position: "top-center" });
     }
   };
 
@@ -59,8 +59,8 @@ export const AddToCartButton: React.FC<Props> = ({
       >
         <Minus className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
-      <span className="whitespace-nowrap border-x border-black flex-1 px-2 sm:px-4 text-center text-ellipsis overflow-hidden">
-        {existingCartItem.quantity} шт
+      <span className="whitespace-nowrap border-x border-black flex-1 px-2 sm:px-4 text-center overflow-hidden">
+        {existingCartItem.quantity}
       </span>
       <button
         onClick={handleAddToCart}
@@ -77,9 +77,8 @@ export const AddToCartButton: React.FC<Props> = ({
         className
       )}
     >
-      {/* Текст на больших экранах, иконка на маленьких */}
       <span className="hidden sm:inline">{children}</span>
-      <ShoppingCart className="sm:hidden w-5 h-5" /> {/* Иконка корзины */}
+      <ShoppingCart className="sm:hidden w-5 h-5" />
     </button>
   );
 };

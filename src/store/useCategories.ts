@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { CategoryWithProducts } from "@/types"
-import { getCategoriesWithProducts } from "@/components/shop/lib";
+import { getCategoriesWithProducts } from "@/lib";
 
 interface CategoriesWithProductsStore {
-  categoriesWithProducts: CategoryWithProducts | null;
+  categoriesWithProducts: CategoryWithProducts[] | null;
   fetchCategories: () => Promise<void>;
 }
 
