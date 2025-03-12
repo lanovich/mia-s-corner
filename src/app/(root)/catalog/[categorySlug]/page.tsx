@@ -2,7 +2,6 @@ import { getCategories } from "@/lib/cache";
 import {
   CatalogProductsLoader,
   Categories,
-  Filters,
 } from "@/components/catalog";
 import { Container } from "@/components/shared";
 
@@ -13,8 +12,7 @@ interface Props {
 export default async function CatalogPage({ params }: Props) {
   const categories = await getCategories();
 
-  const { categorySlug } =  params;
-
+  const { categorySlug } = params;
 
   const currentCategory =
     categories.find((cat) => cat.slug === categorySlug) || categories[0];
