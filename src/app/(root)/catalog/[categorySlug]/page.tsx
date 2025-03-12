@@ -13,7 +13,7 @@ interface Props {
 export default async function CatalogPage({ params }: Props) {
   const categories = await getCategories();
 
-  const { categorySlug } = await params;
+  const { categorySlug } =  params;
 
 
   const currentCategory =
@@ -26,7 +26,6 @@ export default async function CatalogPage({ params }: Props) {
         currentCategorySlug={currentCategory.slug}
       />
       <Container>
-      {/* <Filters smells={filterSmells}></Filters> */}
         <CatalogProductsLoader categoryId={currentCategory.id} />
       </Container>
     </>
