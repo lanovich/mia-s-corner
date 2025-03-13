@@ -1,7 +1,6 @@
 import { SuccessEmail } from "@/components/checkout/SuccessEmail";
 import { sendEmail } from "@/lib";
 import { supabase } from "@/lib/supabase";
-import { Order } from "@/types/Order";
 import { OrderStatus } from "@/types/OrderStatus";
 import { YookassaOrderStatus } from "@/types/YookassaOrderStatus";
 import { NextRequest, NextResponse } from "next/server";

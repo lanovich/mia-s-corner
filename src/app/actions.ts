@@ -5,7 +5,6 @@ import { CheckoutFormValues } from "@/constants/checkoutFormSchema";
 import { createPayment, sendEmail } from "@/lib";
 import { supabase } from "@/lib/supabase";
 import { cookies } from "next/headers";
-import React from "react";
 
 export async function createOrder(data: CheckoutFormValues) {
   try {

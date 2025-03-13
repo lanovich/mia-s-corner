@@ -7,7 +7,6 @@ import { ProductDetail } from "./ProductDetail";
 interface Props {
   className?: string;
   product: Product;
-  type: CategorySlug;
 }
 
 export const AboutProduct: React.FC<Props> = ({ className, product }) => {

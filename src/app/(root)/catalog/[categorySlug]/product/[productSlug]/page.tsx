@@ -9,12 +9,13 @@ import { Breadcrumbs } from "@/components/ProductPage";
 import { Container } from "@/components/shared";
 import { MobileSizeAndBuy } from "@/components/ProductPage/MobileSizeAndBuy";
 
-export default async function ProductPage({
-  params,
-}: {
-  params: { categorySlug: CategorySlug; productSlug: string };
-}) {
-  const { productSlug, categorySlug } = await params;
+type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
+
+export default async function ProductPage(props: { params: ProductParams }) {
+  const params = await props.params;
+  const categorySlug = params.categorySlug;
+  const productSlug = params.productSlug;
+  
   const product = await getProductWithHistory(categorySlug, productSlug);
 
   if (!product) {
@@ -48,7 +49,6 @@ export default async function ProductPage({
             <AboutProduct
               className="md:flex md:flex-col hidden mt-5"
               product={product}
-              type={categorySlug}
             />
           </div>
           <div className="md:w-full lg:w-2/3">
@@ -63,7 +63,6 @@ export default async function ProductPage({
             <AboutProduct
               className="flex flex-col md:hidden"
               product={product}
-              type={categorySlug}
             />
           </div>
         </div>

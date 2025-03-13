@@ -59,7 +59,7 @@ export const cartService = {
     const { data, error } = await supabase
       .from("cartItem")
       .select(
-        "id, quantity, size_id, product:products(id, title, history_id, category_id, compound, slug, category_slug, scent_pyramid, description, images, wick, wax, measure, sizes:sizes(*))"
+        "id, quantity, size_id, product:products(id, title, history_id, category_id, compound, slug, category_slug, scent_pyramid, description, images, wick, wax, measure, episode, sizes:sizes(*))"
       )
       .eq("cart_id", cartId);
 
@@ -92,6 +92,7 @@ export const cartService = {
                 wick: product.wick,
                 wax: product.wax,
                 sizes: product.sizes ?? [],
+                episode: product.episode,
                 measure: product.measure,
               }
             : {
@@ -108,6 +109,7 @@ export const cartService = {
                 wick: "",
                 wax: "",
                 sizes: [],
+                episode: "",
                 measure: "мл",
               },
         };

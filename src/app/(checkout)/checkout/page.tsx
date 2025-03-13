@@ -13,7 +13,6 @@ import {
   TotalAmount,
   PaymentMethods,
   OrderWishes,
-  TotalAmountLoader,
 } from "@/components/checkout";
 import { FormProvider, useForm } from "react-hook-form";
 import {
