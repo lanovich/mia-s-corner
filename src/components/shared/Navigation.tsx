@@ -15,7 +15,7 @@ export const Navigation = ({ className, onLinkClick }: Props) => {
       <CustomLink href={`/${LINKS.ABOUT}`} onClick={onLinkClick}>
         О нас
       </CustomLink>
-      <CustomLink href={`${LINKS.CONTACTS}`} onClick={onLinkClick}>
+      <CustomLink href={`/${LINKS.CONTACTS}`} onClick={onLinkClick}>
         Контакты
       </CustomLink>
       <CustomLink href="/api/random-product" onClick={onLinkClick}>

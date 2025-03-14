@@ -35,7 +35,7 @@ export const Footer = () => {
               </li>
               <li>
                 <Link
-                  href={`${LINKS.CONTACTS}`}
+                  href={LINKS.CONTACTS}
                   className="hover:text-white transition"
                 >
                   Контакты
