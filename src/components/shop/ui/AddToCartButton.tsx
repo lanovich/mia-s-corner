@@ -28,13 +28,13 @@ export const AddToCartButton: React.FC<Props> = ({
   const handleAddToCart = async (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     if (!selectedSize) {
-      return toast.error("Выберите размер перед добавлением в корзину!");
+      return toast.error("Выберите размер перед добавлением в корзину!", { position: "top-center" });
     }
     try {
       await addToCart(selectedSize?.product_id, selectedSize.id);
       toast.success("Товар добавлен в корзину", { position: "top-center" });
     } catch (error) {
-      toast.error("Ошибка добавления товара!");
+      toast.error("Ошибка добавления товара!", { position: "top-center" });
     }
   };
 

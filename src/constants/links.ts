@@ -5,5 +5,7 @@ export const LINKS = {
   AROMA_DIFFUSERS: "/catalog/aroma-diffusers",
   AROMA_SACHET: "/catalog/aroma-sachet",
   PERFUME: "/catalog/perfume",
-  PRODUCT: "product"
+  PRODUCT: "product",
+  ABOUT: "about",
+  CONTACTS: "contacts",
 };

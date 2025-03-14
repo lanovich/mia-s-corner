@@ -1,73 +1,81 @@
 "use client";
 
-import * as React from "react";
-import Autoplay from "embla-carousel-autoplay";
-import {
-  type CarouselApi,
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/shadcn-ui/Carousel";
+import React, { useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
+import "swiper/css";
 import { cn } from "@/lib";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ImageCarouselProps {
   children: React.ReactNode;
 }
 
 export function ImageCarousel({ children }: ImageCarouselProps) {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
-
-  const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
-  );
-
-  React.useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const swiperRef = useRef<any>(null);
 
   const handleDotClick = (index: number) => {
-    if (api) {
-      api.scrollTo(index);
+    if (swiperRef.current) {
+      swiperRef.current.slideTo(index);
     }
   };
 
   return (
-    <div className="max-w-[1380px] m-auto w-full">
-      <Carousel
-        setApi={setApi}
-        plugins={[plugin.current]}
-        className=""
-        onMouseEnter={() => plugin.current?.stop()}
-        onMouseLeave={() => plugin.current?.play()}
+    <div className="max-w-[1380px] mx-auto w-full">
+      <Swiper
+        modules={[Autoplay, Navigation]}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: true,
+        }}
+        navigation={{
+          nextEl: ".main-swiper-button-next",
+          prevEl: ".main-swiper-button-prev",
+        }}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
+        onSlideChange={(swiper) => {
+          setCurrentSlide(swiper.activeIndex);
+        }}
+        className="relative"
       >
-        <CarouselContent>
-          {React.Children.map(children, (child, index) => (
-            <CarouselItem key={index}>{child}</CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="hidden md:flex left-0 h-full rounded-none w-12 border-0 bg-inherit hover:bg-slate-200" />
-        <CarouselNext className="hidden md:flex right-0 h-full rounded-none w-12 border-0 bg-inherit hover:bg-slate-200" />
-      </Carousel>
-      <div className="flex gap-1 py-2 w-full justify-center items-center">
-        {Array.from({ length: count }).map((_, index: number) => (
+        {React.Children.map(children, (child, index) => (
+          <SwiperSlide key={index}>{child}</SwiperSlide>
+        ))}
+
+        {/* Кастомные кнопки навигации */}
+        <div
+          className="absolute main-swiper-button-prev hidden md:flex left-0 h-full rounded-none w-12 border-0 bg-inherit hover:bg-slate-200"
+          style={{
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 10,
+          }}
+        >
+          <ChevronLeft color="white" className="mr-1" />
+        </div>
+        <div
+          className="absolute main-swiper-button-next hidden md:flex right-0 h-full rounded-none w-12 border-0 bg-inherit hover:bg-slate-200"
+          style={{
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 10,
+          }}
+        >
+          <ChevronRight color="white" className="ml-1" />
+        </div>
+      </Swiper>
+
+      {/* Точки навигации */}
+      <div className="flex gap-1 py-4 justify-center">
+        {React.Children.map(children, (_, index) => (
           <button
             key={index}
             className={cn(
               "w-2 h-2 bg-slate-400 rounded-full",
-              current === index + 1 ? "bg-slate-600" : "bg-slate-400"
+              currentSlide === index && "bg-slate-600"
             )}
             onClick={() => handleDotClick(index)}
           />

@@ -12,10 +12,10 @@ export const Navigation = ({ className, onLinkClick }: Props) => {
       <CustomLink href={`${LINKS.CATALOG}`} onClick={onLinkClick}>
         Каталог
       </CustomLink>
-      <CustomLink href="about" onClick={onLinkClick}>
+      <CustomLink href={`/${LINKS.ABOUT}`} onClick={onLinkClick}>
         О нас
       </CustomLink>
-      <CustomLink href="contacts" onClick={onLinkClick}>
+      <CustomLink href={`${LINKS.CONTACTS}`} onClick={onLinkClick}>
         Контакты
       </CustomLink>
       <CustomLink href="/api/random-product" onClick={onLinkClick}>

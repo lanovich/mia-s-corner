@@ -3,19 +3,41 @@ import {
   ImageCarousel,
   СhapterContainer,
   HeroSection,
-  HeroSectionTelegram,
 } from "@/components/shared";
 import Shop from "@/components/shop/Shop";
-import { NewCollection } from "@/components/shared/slides";
 import { AboutSection } from "@/components/about";
 
 export default function Home() {
   return (
     <>
       <ImageCarousel>
-        <NewCollection />
-        <HeroSection />
-        <HeroSectionTelegram />
+        <HeroSection
+          title="Откройте для себя новую историю"
+          textXPosition={"center"}
+          textYPosition={"center"}
+          description="окунитесь в момент тихой встречи на старом чердаке"
+          buttonText="Товар из новой истории"
+          buttonPosition="center"
+          buttonUrl="https://t.me/mias_corner"
+        />
+        <HeroSection
+          title={"Мы теперь в Pinterest"}
+          textXPosition={"center"}
+          textYPosition={"center"}
+          smallImage="/aromasachet.jpg"
+          buttonText="Подписаться на Pinterest"
+          buttonPosition="center"
+          buttonUrl="https://ru.pinterest.com/mias_corner/"
+        />
+        <HeroSection
+          title={"Мы теперь в Telegram"}
+          textXPosition={"center"}
+          textYPosition={"center"}
+          description="подписывайтесь на наш Telegram, чтобы не пропустить всё самое важное"
+          buttonPosition="center"
+          buttonText="Подписаться на Telegram"
+          buttonUrl="https://t.me/mias_corner"
+        />
       </ImageCarousel>
 
       <СhapterContainer>

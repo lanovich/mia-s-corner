@@ -2,10 +2,7 @@ import { cn } from "@/lib";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Navigation, Container, BurgerMenu } from ".";
-import { Menu } from "lucide-react";
-import { CartButtonWithPrice } from ".";
-import { LogInButton } from "./LogInButton";
+import { Navigation, Container, BurgerMenu, CartButtonWithPrice } from ".";
 
 interface Props {
   className?: string;
@@ -31,8 +28,7 @@ export const Header: React.FC<Props> = async ({ className }) => {
         {/* Корзина и навигация */}
         <div className="flex justify-between items-center gap-5">
           <Navigation className="hidden md:flex gap-5" />
-          <LogInButton />
-          <CartButtonWithPrice />
+          <CartButtonWithPrice className="hidden md:flex"/>
           <BurgerMenu />
         </div>
       </Container>

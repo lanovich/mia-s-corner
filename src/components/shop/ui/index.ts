@@ -1,3 +1,3 @@
 export { AddToCartButton } from "./AddToCartButton";
-export { GoToCatalogButton } from "./GoToCatalogButton";
+export { GoToButton } from "./GoToButton";
 export { ProductsLoader } from "./ProductsLoader";

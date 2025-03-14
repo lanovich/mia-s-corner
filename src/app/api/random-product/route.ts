@@ -4,7 +4,7 @@ import { chooseRandomItem } from "@/lib";
 import { LINKS } from "@/constants";
 
 export async function GET() {
-  const baseUrl = window.location.origin;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   if (!baseUrl) {
     throw new Error(

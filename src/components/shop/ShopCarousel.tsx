@@ -1,11 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/shadcn-ui/Carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/shadcn-ui/Carousel";
 import { ProductCategories } from "./ProductCategories";
-import { GoToCatalogButton } from "./ui";
+import { GoToButton } from "./ui";
 import { CategoryWithProducts } from "@/types";
 import { ProductGroupList } from "./ProductGroupList";
+import { LINKS } from "@/constants";
 
 interface Props {
   categories: CategoryWithProducts[];
@@ -31,15 +36,25 @@ export function ShopCarousel({ categories }: Props) {
 
   return (
     <div className="max-w-[1380px] m-auto w-full">
-      <ProductCategories categories={categories} current={current} handleCategoryClick={handleCategoryClick} />
+      <ProductCategories
+        categories={categories}
+        current={current}
+        handleCategoryClick={handleCategoryClick}
+      />
       <Carousel setApi={setApi}>
         <CarouselContent>
-          {categories.map(({id, name, slug, products}: CategoryWithProducts) => (
-            <CarouselItem key={id}>
-              <ProductGroupList products={products}/>
-              <GoToCatalogButton categorySlug={slug} categoryName={name}/>
-            </CarouselItem>
-          ))}
+          {categories.map(
+            ({ id, name, slug, products }: CategoryWithProducts) => (
+              <CarouselItem key={id}>
+                <ProductGroupList products={products} />
+                <GoToButton
+                  href={`${LINKS.CATALOG}/${slug}`}
+                  label={`Открыть ${name.toLowerCase()} в каталоге`}
+                  className="mx-auto"
+                />
+              </CarouselItem>
+            )
+          )}
         </CarouselContent>
       </Carousel>
     </div>

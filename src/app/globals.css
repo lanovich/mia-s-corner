@@ -130,7 +130,6 @@ body {
   max-height: 6rem;
 }
 
-
 .glassy-bg {
   --bg-opacity: 1;
   --blur-amount: 0px;
@@ -144,7 +143,32 @@ body {
   --blur-amount: 10px;
 }
 
+.main-swiper-button-next,
+.main-swiper-button-prev {
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
+.main-swiper-button-next:hover,
+.main-swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .main-swiper-button-next,
+  .main-swiper-button-prev {
+    display: none;
+  }
+}
 
 @layer base {
   * {
