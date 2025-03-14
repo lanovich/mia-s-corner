@@ -1,14 +1,19 @@
 "use server";
 
-import { OrderReceiptEmail } from "@/components/checkout";
+import {
+  ContactEmailTemplate,
+  OrderReceiptEmail,
+} from "@/components/shared/emails";
+import { LINKS } from "@/constants";
 import { CheckoutFormValues } from "@/constants/checkoutFormSchema";
+import { ContactFormValues } from "@/constants/contactFormSchema";
 import { createPayment, sendEmail } from "@/lib";
 import { supabase } from "@/lib/supabase";
 import { cookies } from "next/headers";
 
 export async function createOrder(data: CheckoutFormValues) {
   try {
-    const cookieStore = await cookies();
+    const cookieStore = cookies();
     const cartToken = (await cookieStore).get("user_token")?.value;
 
     if (!cartToken) {
@@ -114,6 +119,26 @@ export async function createOrder(data: CheckoutFormValues) {
     return {
       success: false,
       error: e instanceof Error ? e.message : "Неизвестная ошибка",
+    };
+  }
+}
+
+export async function sendContactMessage(data: ContactFormValues) {
+  try {
+    await sendEmail(
+      LINKS.GMAIL,
+      `Новое сообщение с сайта Mia's Corner от пользователя ${data.email}`,
+      ContactEmailTemplate,
+      data
+    );
+
+    return { success: true };
+  } catch (error) {
+    console.error("Ошибка при отправке сообщения", error);
+
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Неизвестная ошибка",
     };
   }
 }
