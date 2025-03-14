@@ -42,7 +42,7 @@ export default function ContactPage() {
   };
 
   return (
-    <Container className={"py-6 md:py-12 lg:py-16 mx-4"}>
+    <Container className={"py-6 md:py-12 lg:py-16 mx-2 md:mx-4"}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function ContactPage() {
         </form>
 
         {/* Ссылки на социальные сети и почту */}
-        <div className="mt-12 space-y-4">
+        <div className="flex flex-col mt-12 space-y-4 items-center text-center">
           <h2 className="text-2xl font-bold text-gray-900">Мы в соцсетях</h2>
           <div className="flex space-x-4">
             <Link

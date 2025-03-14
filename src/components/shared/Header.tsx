@@ -9,7 +9,7 @@ interface Props {
   hideCartButton?: boolean;
 }
 
-export const Header: React.FC<Props> = async ({ className }) => {
+export const Header: React.FC<Props> = async ({hideCartButton, className }) => {
   return (
     <header className={cn("mx-4 xl:mx-0", className)}>
       <Container className="flex justify-between items-center py-4 bg-gray70 h-20">
@@ -28,7 +28,7 @@ export const Header: React.FC<Props> = async ({ className }) => {
         {/* Корзина и навигация */}
         <div className="flex justify-between items-center gap-5">
           <Navigation className="hidden md:flex gap-5" />
-          <CartButtonWithPrice className="hidden md:flex"/>
+          {hideCartButton ?? <CartButtonWithPrice className="hidden md:flex"/>}
           <BurgerMenu />
         </div>
       </Container>

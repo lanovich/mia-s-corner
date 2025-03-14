@@ -22,13 +22,13 @@ export const PaymentMethods: React.FC<Props> = ({
         <span>Перевод на карту</span>
       </label>
       <label className="flex items-center space-x-2">
-        <input
+        {/* <input
           type="radio"
           value="cash"
           checked={paymentMethod === "cash"}
           onChange={() => setPaymentMethod("cash")}
         />
-        <span>Оплата при получении</span>
+        <span>Оплата при получении</span> */}
       </label>
     </div>
   </div>

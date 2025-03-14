@@ -30,6 +30,7 @@ export default function CheckoutPage() {
   );
   const [submitting, setSubmitting] = useState(false);
   const loading = useCartStore((state) => state.loading);
+  const fullPrice = useCartStore((state) => state.fullPrice);
   const clearCart = useCartStore((state) => state.clearCart);
 
   const form = useForm<CheckoutFormValues>({
@@ -46,6 +47,13 @@ export default function CheckoutPage() {
 
   const onSubmit = async (data: CheckoutFormValues) => {
     try {
+      if (fullPrice === 0) {
+        toast.error("Корзина пустая, не удалось создать заказ", {
+          position: "top-center",
+        });
+        throw new Error("Корзина пустая, не удалось создать заказ");
+      }
+
       setSubmitting(true);
       const paymentUrl = await createOrder(data);
 

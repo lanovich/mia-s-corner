@@ -13,7 +13,7 @@ export const OrderWishes = () => {
 
       <div className="mt-3 space-y-2">
         <FormTextarea
-          placeholder="Ваши пожелания к заказу"
+          placeholder="Введите пожелания к заказу"
           className="resize-none"
           rows={7}
           name="wishes"
