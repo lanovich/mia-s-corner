@@ -13,7 +13,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   return (
     <Link
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
-      className="group block"
+      className="group block select-none"
     >
       <div className="relative aspect-[9/16] overflow-hidden rounded-lg transition-transform duration-300 hover:scale-105 bg-gray-200">
         {/* Product Image */}

@@ -1,5 +1,8 @@
+"use server";
+
 import { Resend } from "resend";
 import React from "react";
+import { toast } from "sonner";
 
 export const sendEmail = async (
   to: string,
@@ -9,18 +12,23 @@ export const sendEmail = async (
 ) => {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const template = React.createElement(TemplateComponent, templateProps);
+  try {
+    const template = React.createElement(TemplateComponent, templateProps);
 
-  const { data, error } = await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to,
-    subject,
-    react: template,
-  });
+    const { data, error } = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to,
+      subject,
+      react: template,
+    });
 
-  if (error) {
-    console.error("Ошибка отправки письма:", error);
+    if (error) {
+      console.error("Ошибка отправки письма:", error);
+      throw new Error("Ошибка отправки письма");
+    }
+    return data;
+  } catch (error) {
+    console.error("Ошибка в sendEmail:", error);
+    throw error;
   }
-
-  return data;
 };

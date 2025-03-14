@@ -8,4 +8,8 @@ export const LINKS = {
   PRODUCT: "product",
   ABOUT: "about",
   CONTACTS: "contacts",
+  VK: "https://vk.com/miascorner",
+  TELEGRAM: "https://t.me/mias_corner",
+  PINTEREST: "https://ru.pinterest.com/mias_corner/",
+  GMAIL: "kolaemelanov60@gmail.com",
 };

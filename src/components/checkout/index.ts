@@ -9,4 +9,3 @@ export { AboutWishesTooltip } from "./AboutWishesTooltip";
 export { ErrorText } from "./ErrorText";
 export { ClearButton } from "./ClearButton";
 export { TotalAmountLoader } from "./TotalAmountLoader";
-export { OrderReceiptEmail } from "./OrderReceiptEmail/OrderReceiptEmail";

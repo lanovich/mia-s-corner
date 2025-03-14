@@ -1,4 +1,4 @@
-import { SuccessEmail } from "@/components/checkout/SuccessEmail";
+import { SuccessEmail } from "@/components/shared/emails";
 import { sendEmail } from "@/lib";
 import { supabase } from "@/lib/supabase";
 import { OrderStatus } from "@/types/OrderStatus";

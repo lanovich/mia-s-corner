@@ -15,7 +15,7 @@ export default function Home() {
           title="Откройте для себя новую историю"
           textXPosition={"center"}
           textYPosition={"center"}
-          description="окунитесь в момент тихой встречи на старом чердаке"
+          description="окунитесь в момент встречи двух влюблённых на старом тихом чердаке"
           buttonText="Товар из новой истории"
           buttonPosition="center"
           buttonUrl="https://t.me/mias_corner"

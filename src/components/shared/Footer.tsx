@@ -1,4 +1,6 @@
+import { LINKS } from "@/constants";
 import { Container } from "./Container";
+import Link from "next/link";
 
 export const Footer = () => {
   return (
@@ -16,34 +18,49 @@ export const Footer = () => {
           <nav className="mt-6 md:mt-0">
             <ul className="flex flex-wrap justify-center gap-6 text-gray-300">
               <li>
-                <a href="/catalog" className="hover:text-white transition">
+                <Link
+                  href={LINKS.CATALOG}
+                  className="hover:text-white transition"
+                >
                   Каталог
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/about" className="hover:text-white transition">
+                <Link
+                  href={LINKS.ABOUT}
+                  className="hover:text-white transition"
+                >
                   О нас
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/contacts" className="hover:text-white transition">
+                <Link
+                  href={`${LINKS.CONTACTS}`}
+                  className="hover:text-white transition"
+                >
                   Контакты
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
 
           {/* Соцсети */}
           <div className="mt-6 md:mt-0 flex gap-4">
-            <a href="#" className="hover:text-gray-400 transition">
+            <Link
+              href={LINKS.PINTEREST}
+              className="hover:text-gray-400 transition"
+            >
               Pinterest
-            </a>
-            <a href="#" className="hover:text-gray-400 transition">
+            </Link>
+            <Link
+              href={LINKS.TELEGRAM}
+              className="hover:text-gray-400 transition"
+            >
               Telegram
-            </a>
-            <a href="#" className="hover:text-gray-400 transition">
+            </Link>
+            <Link href={LINKS.VK} className="hover:text-gray-400 transition">
               VK
-            </a>
+            </Link>
           </div>
         </div>
       </Container>

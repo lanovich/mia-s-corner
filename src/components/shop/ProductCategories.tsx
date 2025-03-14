@@ -15,7 +15,7 @@ export const ProductCategories: React.FC<Props> = ({ categories, current, handle
           key={id}
           className={cn(
             "box-border items-center font-bold my-5 px-[2px] gap-10 rounded-none relative snap-center",
-            current === index + 1 && "border-l-2 border-b-2 border-black"
+            current === index && "border-l-2 border-b-2 border-black"
           )}
           onClick={() => handleCategoryClick(index)}
         >

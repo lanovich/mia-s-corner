@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/shadcn-ui/Carousel";
+import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, A11y } from "swiper/modules"; // Убраны Pagination и Scrollbar
+import "swiper/swiper-bundle.css";
 import { ProductCategories } from "./ProductCategories";
 import { GoToButton } from "./ui";
 import { CategoryWithProducts } from "@/types";
@@ -17,21 +15,11 @@ interface Props {
 }
 
 export function ShopCarousel({ categories }: Props) {
-  const [api, setApi] = useState<any>();
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    if (!api) return;
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
 
   const handleCategoryClick = (index: number) => {
-    if (api) api.scrollTo(index);
+    if (swiperInstance) swiperInstance.slideTo(index);
   };
 
   return (
@@ -41,22 +29,26 @@ export function ShopCarousel({ categories }: Props) {
         current={current}
         handleCategoryClick={handleCategoryClick}
       />
-      <Carousel setApi={setApi}>
-        <CarouselContent>
-          {categories.map(
-            ({ id, name, slug, products }: CategoryWithProducts) => (
-              <CarouselItem key={id}>
-                <ProductGroupList products={products} />
-                <GoToButton
-                  href={`${LINKS.CATALOG}/${slug}`}
-                  label={`Открыть ${name.toLowerCase()} в каталоге`}
-                  className="mx-auto"
-                />
-              </CarouselItem>
-            )
-          )}
-        </CarouselContent>
-      </Carousel>
+      <Swiper
+        modules={[Navigation, A11y]}
+        spaceBetween={50}
+        slidesPerView={1}
+        onSwiper={(swiper) => setSwiperInstance(swiper)}
+        onSlideChange={(swiper) => setCurrent(swiper.activeIndex)}
+      >
+        {categories.map(
+          ({ id, name, slug, products }: CategoryWithProducts) => (
+            <SwiperSlide key={id}>
+              <ProductGroupList products={products} />
+              <GoToButton
+                href={`${LINKS.CATALOG}/${slug}`}
+                label={`Открыть ${name.toLowerCase()} в каталоге`}
+                className="mx-auto select-none"
+              />
+            </SwiperSlide>
+          )
+        )}
+      </Swiper>
     </div>
   );
 }

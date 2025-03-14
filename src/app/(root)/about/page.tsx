@@ -29,7 +29,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <Container className="py-8 md:py-12 lg:py-16">
+    <Container className="py-6 md:py-12 lg:py-16 px-4">
       <AboutHeader />
       <AboutContent fragrances={fragrances} />
       <AboutQuestions />
