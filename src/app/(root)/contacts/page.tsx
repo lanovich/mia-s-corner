@@ -42,7 +42,7 @@ export default function ContactPage() {
   };
 
   return (
-    <Container className={"py-6 md:py-12 lg:py-16"}>
+    <Container className={"py-6 md:py-12 lg:py-16 mx-4"}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -140,7 +140,7 @@ export default function ContactPage() {
               Pinterest
             </Link>
           </div>
-          <p className="text-gray-700 my-2">
+          <h6 className="text-gray-700 my-2">
             Или напишите нам на почту:{" "}
             <Link
               href={`mailto:${LINKS.GMAIL}`}
@@ -151,7 +151,7 @@ export default function ContactPage() {
             <p className="text-xs my-2">
               {"(сообщение в форме выше тоже отправляется нам на почту)"}
             </p>
-          </p>
+          </h6>
         </div>
       </motion.div>
     </Container>
