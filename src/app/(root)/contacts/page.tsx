@@ -15,7 +15,7 @@ import Link from "next/link";
 import { Container } from "@/components/shared";
 import { cn } from "@/lib";
 
-export default function ContactPage({ className }: { className: string }) {
+export default function ContactPage() {
   const {
     register,
     handleSubmit,
@@ -42,7 +42,7 @@ export default function ContactPage({ className }: { className: string }) {
   };
 
   return (
-    <Container className={cn("py-6 md:py-12 lg:py-16", className)}>
+    <Container className={"py-6 md:py-12 lg:py-16"}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
