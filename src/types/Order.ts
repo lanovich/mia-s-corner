@@ -1,5 +1,3 @@
-import { CartItem } from "@/store/useCartStore";
-
 export interface Order {
   id: number;
   created_at: string;
