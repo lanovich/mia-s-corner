@@ -26,7 +26,6 @@ export const getCategoriesWithProducts = async (): Promise<
     `
     )
     .order("order");
-    console.log(data);
     
     
   if (error) {

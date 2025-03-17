@@ -18,8 +18,6 @@ export const getProductsByCategory = async (
     )
     .eq("category_id", categoryId);
 
-  console.log(data);
-
   if (error) {
     console.error(`❌ Ошибка загрузки товаров категории ${categoryId}:`, error);
     return [];
