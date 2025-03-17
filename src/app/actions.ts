@@ -24,23 +24,57 @@ export async function createOrder(data: CheckoutFormValues) {
       .from("cart")
       .select(
         `
-        id,
-        token,
-        fullPrice,
-        cartItem:cartItem (
-          id,
-          product_id,
-          size_id,
-          quantity,
-          product:products (*)
-        )
-      `
+    id,
+    token,
+    fullPrice,
+    cartItem:cartItem (
+      id,
+      product_id,
+      size_id,
+      quantity,
+      product:products (*)
+    )
+  `
       )
       .eq("token", cartToken)
       .single();
 
     if (cartError) {
-      throw new Error("Ошибка при получении корзины: " + cartError.message);
+      console.error("Ошибка при получении корзины:", cartError);
+      return;
+    }
+
+    for (const item of userCart.cartItem) {
+      const { data: productSize, error: productSizeError } = await supabase
+        .from("product_sizes")
+        .select("price")
+        .eq("product_id", item.product_id)
+        .eq("size_id", item.size_id)
+        .single();
+
+      if (productSizeError) {
+        console.error("Ошибка при получении product_sizes:", productSizeError);
+        continue;
+      }
+
+      (item as any).price = productSize.price;
+
+      const { data: size, error: sizeError } = await supabase
+        .from("sizes")
+        .select("size")
+        .eq("id", item.size_id)
+        .single();
+
+      if (sizeError) {
+        console.error("Ошибка при получении sizes:", sizeError);
+        continue;
+      }
+
+      (item as any).size = size.size;
+    }
+
+    if (cartError) {
+      throw new Error("Ошибка при получении корзины: " + cartError);
     }
 
     if (!userCart) {

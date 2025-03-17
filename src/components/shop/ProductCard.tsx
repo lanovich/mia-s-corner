@@ -8,9 +8,7 @@ interface Props {
 }
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  console.log(product.product_sizes)
   const defaultSize = product.product_sizes.find((size) => size.is_default)
-  console.log(defaultSize)
 
   return (
     <Link
