@@ -7,12 +7,13 @@ export const getSimilarProducts = async (historyId: number) => {
     .from("products")
     .select(
       `
-        *,
-        sizes(*),
-        history:histories(id, title, description)
-      `
+      *,
+      product_sizes:product_sizes!product_id(
+        *, size:size_id(id, size, time_of_exploitation, dimensions)),
+      history:histories(id, title, description)
+    `
     )
-    .eq("history_id", historyId)
+    .eq("history_id", historyId);
 
   if (error) {
     console.error(`❌ Ошибка загрузки товаров из той же истории:`, error);

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
-import { CartItem, useCartStore } from "@/store/useCartStore";
+import { useCartStore } from "@/store/useCartStore";
 import { ChangeQuantityButton } from "./ui";
 
 interface Props {
@@ -10,10 +10,12 @@ interface Props {
 }
 
 export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
-  const { decreaseQuantity, removeFromCart, addToCart } = useCartStore();
-  const { product, quantity, sizeId } = cartItem;
+  const { modifyItemQuantity, removeFromCart } = useCartStore();
+  const { product, quantity, size_id } = cartItem;
 
-  const selectedSize = product.sizes.find((size) => size.id === sizeId);
+  const selectedSize = product.product_sizes.find(
+    (size) => size.size_id === size_id
+  );
 
   return (
     <div className="flex flex-col border-b pb-4">
@@ -35,7 +37,7 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
           <h4 className="text-sm font-medium">{product.title}</h4>
           {selectedSize && (
             <p className="text-xs text-gray-700">
-              Размер: {`${selectedSize.size} ${product.measure}`}
+              Размер: {`${selectedSize.size.size} ${product.measure}`}
             </p>
           )}
           <p className="text-xs text-gray-500">
@@ -46,7 +48,7 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
         {/* Удаление товара */}
         <button
           onClick={() =>
-            selectedSize && removeFromCart(product.id, selectedSize.id)
+            selectedSize && removeFromCart(product.id, selectedSize.size_id)
           }
           className="text-gray-400 hover:text-gray-600"
           disabled={!selectedSize}
@@ -66,12 +68,16 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
             <ChangeQuantityButton
               type="decrease"
               quantity={quantity}
-              onDecrease={() => decreaseQuantity(product.id, selectedSize.id)}
+              onDecrease={() =>
+                modifyItemQuantity(product.id, selectedSize.size_id, -1)
+              }
             />
             <ChangeQuantityButton
               type="increase"
               quantity={quantity}
-              onIncrease={() => addToCart(product.id, selectedSize.id)}
+              onIncrease={() =>
+                modifyItemQuantity(product.id, selectedSize.size_id, 1)
+              }
             />
           </div>
         </div>

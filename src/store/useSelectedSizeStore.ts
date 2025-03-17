@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 interface SelectedSizeStore {
-  selectedSize: Size | null;
-  setSelectedSize: (size: Size) => void;
+  selectedSize: ProductSize | null;
+  setSelectedSize: (size: ProductSize) => void;
 }
 
 export const useSelectedSizeStore = create<SelectedSizeStore>((set) => ({

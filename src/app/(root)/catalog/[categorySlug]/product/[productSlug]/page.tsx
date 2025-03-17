@@ -21,7 +21,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
   if (!product) {
     return <div className="container mx-auto px-4 py-6">Продукт не найден</div>;
   }
-  if (product.sizes.length === 0) {
+  if (product.product_sizes.length === 0) {
     return (
       <div className="container mx-auto px-4 py-6">
         У этого товара нет размеров
@@ -42,7 +42,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
               productHistoryId={product.history_id}
               productEpisode={product.episode}
               productTitle={product.title}
-              sizes={product.sizes}
+              sizes={product.product_sizes}
               className="mt-5 md:hidden sticky top-4 mb-5 flex"
             />
 
@@ -57,7 +57,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
               productHistoryId={product.history_id}
               productEpisode={product.episode}
               productTitle={product.title}
-              sizes={product.sizes}
+              sizes={product.product_sizes}
               className="hidden md:flex sticky top-4 mb-5"
             />
             <AboutProduct
@@ -72,7 +72,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
         </div>
 
         <div className="flex md:hidden">
-          <MobileSizeAndBuy sizes={product.sizes} />
+          <MobileSizeAndBuy sizes={product.product_sizes} />
         </div>
       </Container>
     </>

@@ -20,13 +20,13 @@ export const OrderSummary = () => {
         </div>
       ) : (
         <div className="mt-4 space-y-4">
-          {products.map(({ product, quantity, sizeId }) => {
-            const selectedSize = findSelectedSize(product, sizeId);
+          {products.map(({ product, quantity, size_id }) => {
+            const selectedSize = findSelectedSize(product, size_id);
             const price = selectedSize ? selectedSize.price : 0;
             const measure = product.measure;
 
             return (
-              <Card key={`${product.id}-${sizeId}`} className="border-gray-300">
+              <Card key={`${product.id}-${size_id}`} className="border-gray-300">
                 <CardContent className="flex items-center justify-between gap-4 py-3">
                   <Image
                     src={product.images[0].url}
@@ -39,7 +39,7 @@ export const OrderSummary = () => {
                     <p className="font-medium">{product.title}</p>
                     <p className="text-xs text-gray-400">
                       {selectedSize
-                        ? `Размер: ${selectedSize.size} ${measure}`
+                        ? `Размер: ${selectedSize.size.size} ${measure}`
                         : "Размер не выбран"}
                     </p>
                     <p className="text-xs text-gray-400">

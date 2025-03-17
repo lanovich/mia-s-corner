@@ -8,8 +8,8 @@ interface Props {
 }
 
 export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
-  const defaultSize = product.sizes.find((size) => size.is_default) || null;
-
+  const defaultSize = product.product_sizes.find((size) => size.is_default === true)
+  
   return (
     <Link
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
@@ -37,12 +37,12 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
           <div className="flex items-end gap-2">
             <span className="text-xl">{defaultSize?.price} ₽</span>
             <span className="text-sm text-black/50">
-              {defaultSize?.size} {product.measure}
+              {defaultSize?.size.size} {product.measure}
             </span>
           </div>
-          <AddToCartButton selectedSize={defaultSize} className="w-full">
+          {/* <AddToCartButton selectedSize={defaultSize} className="w-full">
             Добавить в корзину
-          </AddToCartButton>
+          </AddToCartButton> */}
         </div>
       </div>
     </Link>

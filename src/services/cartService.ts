@@ -1,6 +1,5 @@
 import { getUserToken } from "@/lib";
 import { supabase } from "@/lib/supabase";
-import { CartItem } from "@/store/useCartStore";
 
 export const cartService = {
   async getCart() {
@@ -34,24 +33,6 @@ export const cartService = {
     return newCart?.id;
   },
 
-  async getProductById(productId: number) {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*, sizes:sizes(*)")
-      .eq("id", productId)
-      .single();
-
-    if (error) {
-      console.error("Ошибка при получении товара:", error.message);
-      return null;
-    }
-
-    return {
-      ...data,
-      sizes: data.sizes ?? [],
-    };
-  },
-
   async loadCartItems(): Promise<CartItem[]> {
     const cartId = await this.getCart();
     if (!cartId) return [];
@@ -59,7 +40,17 @@ export const cartService = {
     const { data, error } = await supabase
       .from("cartItem")
       .select(
-        "id, quantity, size_id, product:products(id, title, history_id, category_id, compound, slug, category_slug, scent_pyramid, description, images, wick, wax, measure, episode, sizes:sizes(*))"
+        `
+          id, quantity, size_id,
+          product:products(
+            id, title, history_id, category_id, compound, slug, category_slug,
+            scent_pyramid, description, images, wick, wax, measure, episode,
+            product_sizes:product_sizes!product_id(
+              *,
+              size:size_id(*)
+            )
+          )
+        `
       )
       .eq("cart_id", cartId);
 
@@ -75,8 +66,8 @@ export const cartService = {
           : item.product;
 
         return {
+          size_id: item.size_id,
           quantity: item.quantity,
-          sizeId: item.size_id,
           product: product
             ? {
                 id: product.id,
@@ -91,7 +82,13 @@ export const cartService = {
                 images: product.images,
                 wick: product.wick,
                 wax: product.wax,
-                sizes: product.sizes ?? [],
+                product_sizes: product.product_sizes.map((productSize) => ({
+                  ...productSize.size,
+                  price: productSize.price,
+                  oldPrice: productSize.oldPrice,
+                  quantity_in_stock: productSize.quantity_in_stock,
+                  is_default: productSize.is_default,
+                })),
                 episode: product.episode,
                 measure: product.measure,
               }
@@ -108,7 +105,7 @@ export const cartService = {
                 images: [],
                 wick: "",
                 wax: "",
-                sizes: [],
+                product_sizes: [],
                 episode: "",
                 measure: "мл",
               },
@@ -117,10 +114,57 @@ export const cartService = {
     );
   },
 
+  async getProductById(productId: number): Promise<Product | null> {
+    const { data, error } = await supabase
+      .from("products")
+      .select(
+        `
+          *,
+          product_sizes:product_sizes!product_id(
+            *,
+            size:size_id(*)
+          )
+        `
+      )
+      .eq("id", productId)
+      .single();
+
+    if (error) {
+      console.error("Ошибка при получении товара:", error.message);
+      return null;
+    }
+
+    return {
+      ...data,
+      sizes: data.product_sizes.map((productSize: ProductSize) => ({
+        ...productSize.size,
+        price: productSize.price,
+        oldPrice: productSize.oldPrice,
+        quantity_in_stock: productSize.quantity_in_stock,
+        is_default: productSize.is_default,
+      })),
+    };
+  },
+
   async addToCart(productId: number, sizeId: number) {
     const cartId = await this.getCart();
     if (!cartId) return;
-  
+
+    const { data: productSize, error: productSizeError } = await supabase
+      .from("product_sizes")
+      .select("id")
+      .eq("product_id", productId)
+      .eq("size_id", sizeId)
+      .maybeSingle();
+
+    if (productSizeError || !productSize) {
+      console.error(
+        "Ошибка при проверке размера товара:",
+        productSizeError?.message || "Размер не найден"
+      );
+      return;
+    }
+
     const { data: existingItem, error } = await supabase
       .from("cartItem")
       .select("id, quantity")
@@ -128,18 +172,18 @@ export const cartService = {
       .eq("product_id", productId)
       .eq("size_id", sizeId)
       .maybeSingle();
-  
+
     if (error) {
       console.error("Ошибка при проверке товара в корзине:", error.message);
       return;
     }
-  
+
     if (existingItem) {
       const { error: updateError } = await supabase
         .from("cartItem")
         .update({ quantity: existingItem.quantity + 1 })
         .eq("id", existingItem.id);
-  
+
       if (updateError) {
         console.error("Ошибка при обновлении количества:", updateError.message);
       }
@@ -152,7 +196,7 @@ export const cartService = {
           size_id: sizeId,
         },
       ]);
-  
+
       if (insertError) {
         console.error("Ошибка при добавлении товара:", insertError.message);
       }

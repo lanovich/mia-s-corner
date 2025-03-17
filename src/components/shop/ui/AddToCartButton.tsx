@@ -7,7 +7,7 @@ import { MouseEvent } from "react";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 
 interface Props {
-  selectedSize: Size | null;
+  selectedSize: ProductSize | null;
   className?: string;
   children?: React.ReactNode;
 }
@@ -17,32 +17,35 @@ export const AddToCartButton: React.FC<Props> = ({
   className,
   children,
 }) => {
-  const { addToCart, decreaseQuantity, cart } = useCartStore();
+  const { modifyItemQuantity, cart } = useCartStore();
 
   const existingCartItem = cart.find(
     (cartItem) =>
       cartItem.product.id === selectedSize?.product_id &&
-      cartItem.sizeId === selectedSize?.id
+      cartItem.size_id === selectedSize?.size_id
   );
 
-  const handleAddToCart = async (event: MouseEvent<HTMLButtonElement>) => {
+  const handleModifyQuantity = async (
+    event: MouseEvent<HTMLButtonElement>,
+    delta: number
+  ) => {
     event.preventDefault();
     if (!selectedSize) {
-      return toast.error("Выберите размер перед добавлением в корзину!", { position: "top-center" });
+      return toast.error("Выберите размер перед добавлением в корзину!", {
+        position: "top-center",
+      });
     }
     try {
-      await addToCart(selectedSize?.product_id, selectedSize.id);
-      toast.success("Товар добавлен в корзину", { position: "top-center" });
+      await modifyItemQuantity(selectedSize.product_id, selectedSize.size_id, delta);
+      if (delta > 0) {
+        toast.success("Товар добавлен в корзину", { position: "top-center" });
+      } else {
+        toast.success("Товар удален из корзины", { position: "top-center" });
+      }
     } catch (error) {
-      toast.error("Ошибка добавления товара!", { position: "top-center" });
-    }
-  };
-
-  const handleDecrease = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    if (selectedSize && existingCartItem) {
-      await decreaseQuantity(selectedSize?.product_id, selectedSize.id);
-      toast.success("Товар удален из корзины", { position: "top-center" });
+      toast.error("Ошибка изменения количества товара!", {
+        position: "top-center",
+      });
     }
   };
 
@@ -54,7 +57,7 @@ export const AddToCartButton: React.FC<Props> = ({
       )}
     >
       <button
-        onClick={handleDecrease}
+        onClick={(event) => handleModifyQuantity(event, -1)}
         className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-8 hover:bg-black transition hover:text-white rounded-l-lg"
       >
         <Minus className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -63,7 +66,7 @@ export const AddToCartButton: React.FC<Props> = ({
         {existingCartItem.quantity}
       </span>
       <button
-        onClick={handleAddToCart}
+        onClick={(event) => handleModifyQuantity(event, 1)}
         className="flex items-center justify-center w-8 h-8 sm:w-12 sm:h-8 hover:bg-black transition hover:text-white rounded-r-lg"
       >
         <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -71,7 +74,7 @@ export const AddToCartButton: React.FC<Props> = ({
     </div>
   ) : (
     <button
-      onClick={handleAddToCart}
+      onClick={(event) => handleModifyQuantity(event, 1)}
       className={cn(
         "flex items-center justify-center rounded-lg border border-black px-2 py-1 sm:px-3 sm:py-2 text-black transition hover:bg-black hover:text-white min-h-[40px] sm:min-h-[50px] w-full",
         className

@@ -38,9 +38,9 @@ export const AboutProduct: React.FC<Props> = ({ className, product }) => {
             ? [
                 {
                   label: "Габариты",
-                  value: `${selectedSize.dimensions.x} x ${selectedSize.dimensions.y} x ${selectedSize.dimensions.z} см`,
+                  value: `${selectedSize.size.dimensions.x} x ${selectedSize.size.dimensions.y} x ${selectedSize.size.dimensions.z} см`,
                 },
-                { label: "Размер", value: `${selectedSize.size} мл` },
+                { label: "Размер", value: `${selectedSize.size.size} мл` },
               ]
             : [{ label: "Размер", value: "Не выбран" }]
         }

@@ -2,7 +2,6 @@
 
 import { Resend } from "resend";
 import React from "react";
-import { toast } from "sonner";
 
 export const sendEmail = async (
   to: string,

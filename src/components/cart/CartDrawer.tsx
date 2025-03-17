@@ -15,7 +15,6 @@ import { Button } from "../shadcn-ui/button";
 import { ArrowRight } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { CartDrawerItem } from ".";
-import { CartItem } from "@/store/useCartStore";
 import { InfoAboutCartPrice } from "./ui";
 import { calcFullPrice } from "../../lib/calcFullPrice";
 
@@ -50,8 +49,11 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
 
         {/* Список товаров */}
         <div className="flex-1 overflow-y-auto space-y-4">
-          {cart.map((cartItem: CartItem) => (
-            <CartDrawerItem key={cartItem.sizeId} cartItem={cartItem} />
+          {cart.map((cartItem: CartItem, index) => (
+            <CartDrawerItem
+              key={index}
+              cartItem={cartItem}
+            />
           ))}
         </div>
 

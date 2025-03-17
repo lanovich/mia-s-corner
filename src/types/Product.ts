@@ -1,17 +1,17 @@
 type Product = {
-  id: number;
-  title: string;
-  history_id: number;
   category_id: number;
-  compound: string;
-  slug: string;
-  images: Image[];
   category_slug: string;
-  sizes: Size[];
-  scent_pyramid: ScentPyramid;
+  compound: string;
   description: string;
+  episode: string | null;
+  history_id: number;
+  id: number;
+  images: Image[];
+  measure: string;
+  title: string;
+  slug: string;
+  product_sizes: ProductSize[];
+  scent_pyramid: ScentPyramid;
   wick: string;
   wax: string;
-  episode: string | null;
-  measure: string;
 };

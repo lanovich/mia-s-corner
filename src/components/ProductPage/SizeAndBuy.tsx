@@ -9,7 +9,7 @@ import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
 
 interface Props {
   className?: string;
-  sizes: Size[];
+  sizes: ProductSize[];
 }
 
 export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
@@ -21,7 +21,9 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
   }
 
   const handleAddToFavorite = () => {
-    toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅", { position: "top-center" });
+    toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅", {
+      position: "top-center",
+    });
   };
 
   return (
@@ -30,18 +32,18 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
       {hasSizes && (
         <div className="flex gap-2 flex-wrap">
           {sizes
-            .sort((a, b) => a.size - b.size)
+            .sort((a, b) => a.size.size - b.size.size)
             .map((size) => (
               <Button
-                key={size.id}
+                key={size.size_id}
                 onClick={() => setSelectedSize(size)}
                 className={`border px-3 py-1 text-sm hover:text-white ${
-                  selectedSize?.id === size.id
+                  selectedSize?.size_id === size.size_id
                     ? "bg-black text-white"
                     : "bg-inherit text-black border-black"
                 }`}
               >
-                {`${size.size} мл`}
+                {`${size.size.size} мл`}
               </Button>
             ))}
         </div>
@@ -66,12 +68,12 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
 
       {/* Кнопка добавления в корзину и избранное */}
       <div className="flex items-center gap-4 mr-10">
-        <AddToCartButton
+        {/* <AddToCartButton
           selectedSize={selectedSize}
           className="flex flex-1 border-2"
         >
           <p className="text-lg font-semibold">Добавить в корзину</p>
-        </AddToCartButton>
+        </AddToCartButton> */}
 
         <button onClick={handleAddToFavorite}>
           <Heart className="w-5 h-5" />

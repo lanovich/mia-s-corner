@@ -8,7 +8,9 @@ interface Props {
 }
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  const defaultSize = product.sizes.find((size) => size.is_default) || null;
+  console.log(product.product_sizes)
+  const defaultSize = product.product_sizes.find((size) => size.is_default)
+  console.log(defaultSize)
 
   return (
     <Link
@@ -36,10 +38,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           <div className="flex items-end gap-2 mb-2">
             <span className="text-md">{defaultSize?.price} ₽</span>
             <span className="text-sm text-black/50">
-              {defaultSize?.size} {product.measure}
+              {defaultSize?.size?.size} {product.measure}
             </span>
           </div>
-          <AddToCartButton selectedSize={defaultSize} className="w-full">
+          <AddToCartButton selectedSize={defaultSize || null} className="w-full">
             Добавить в корзину
           </AddToCartButton>
         </div>

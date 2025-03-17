@@ -11,10 +11,10 @@ import { ProductGroupList } from "./ProductGroupList";
 import { LINKS } from "@/constants";
 
 interface Props {
-  categories: CategoryWithProducts[];
+  categoriesWithProducts: CategoryWithProducts[];
 }
 
-export function ShopCarousel({ categories }: Props) {
+export function ShopCarousel({ categoriesWithProducts }: Props) {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const [current, setCurrent] = useState(0);
 
@@ -25,7 +25,7 @@ export function ShopCarousel({ categories }: Props) {
   return (
     <div className="max-w-[1380px] m-auto w-full">
       <ProductCategories
-        categories={categories}
+        categories={categoriesWithProducts}
         current={current}
         handleCategoryClick={handleCategoryClick}
       />
@@ -36,7 +36,7 @@ export function ShopCarousel({ categories }: Props) {
         onSwiper={(swiper) => setSwiperInstance(swiper)}
         onSlideChange={(swiper) => setCurrent(swiper.activeIndex)}
       >
-        {categories.map(
+        {categoriesWithProducts.map(
           ({ id, name, slug, products }: CategoryWithProducts) => (
             <SwiperSlide key={id}>
               <ProductGroupList products={products} />

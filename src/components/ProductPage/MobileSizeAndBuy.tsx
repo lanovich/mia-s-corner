@@ -18,12 +18,12 @@ import { toast } from "sonner";
 
 interface Props {
   className?: string;
-  sizes: Size[];
+  sizes: ProductSize[];
 }
 
 export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
   const hasSizes = sizes.length > 0;
-  const [selectedSize, setSelectedSize] = useState<Size | null>(
+  const [selectedSize, setSelectedSize] = useState<ProductSize | null>(
     hasSizes ? sizes[0] : null
   );
 
@@ -39,23 +39,23 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
       )}
     >
       {/* Кнопка добавления в корзину */}
-      <AddToCartButton
+      {/* <AddToCartButton
         selectedSize={selectedSize}
         className="flex flex-1 border-2"
       >
         <ShoppingBag className="w-5 h-5 mr-2" />
         <span>В корзину</span>
         <Dot></Dot>
-        {selectedSize?.price && (
-          <span className="font-semibold">{selectedSize.price} ₽</span>
+        {selectedSize?.size_id && (
+          <span className="font-semibold">{selectedSize.size.size} ₽</span>
         )}
-      </AddToCartButton>
+      </AddToCartButton> */}
 
       {/* Кнопка выбора размера */}
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline" className="border-2 border-black">
-            {selectedSize ? `${selectedSize.size} мл` : "Выбрать размер"}
+            {selectedSize ? `${selectedSize.size.size} мл` : "Выбрать размер"}
           </Button>
         </DialogTrigger>
         <DialogContent className="p-4">
@@ -71,10 +71,10 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
           <div className="flex flex-wrap gap-2">
             {sizes.map((size) => (
               <Button
-                key={size.id}
+                key={size.size_id}
                 onClick={() => setSelectedSize(size)}
                 className={`border px-3 py-1 text-sm ${
-                  selectedSize?.id === size.id
+                  selectedSize?.size_id === size.size_id
                     ? "bg-black text-white"
                     : "bg-inherit text-black border-black"
                 }`}

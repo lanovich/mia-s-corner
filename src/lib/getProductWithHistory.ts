@@ -12,17 +12,20 @@ export const getProductWithHistory = async (
     .select(
       `
       *,
-      sizes(*),
+      product_sizes:product_sizes!product_id(
+        *, size:size_id(id, size, time_of_exploitation, dimensions)),
       history:histories(id, title, description)
     `
     )
     .eq("slug", productSlug)
     .eq("category_slug", categorySlug)
-    .maybeSingle()
+    .maybeSingle();
+
+  console.log(data);
 
   if (error) {
     console.error(`❌ Ошибка загрузки товара с историей:`, error);
-    return null
+    return null;
   }
 
   return data;

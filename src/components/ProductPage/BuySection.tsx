@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { SizeAndBuy } from "./SizeAndBuy";
 import { cn } from "@/lib";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { MobileSizeAndBuy } from "./MobileSizeAndBuy";
 
 interface Props {
   className?: string;
@@ -12,7 +11,7 @@ interface Props {
   productHistoryId?: number;
   productEpisode?: string | null;
   productTitle: string;
-  sizes: Size[];
+  sizes: ProductSize[];
 }
 
 export const BuySection: React.FC<Props> = ({
