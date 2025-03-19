@@ -93,6 +93,8 @@ export async function createOrder(data: CheckoutFormValues) {
           phone: data.phone,
           email: data.email,
           delivery_address: data.deliveryAddress,
+          entrance: data.entrance,
+          apartment: data.apartment,
           floor: data.floor,
           wishes: data.wishes,
           comment: data.comment,

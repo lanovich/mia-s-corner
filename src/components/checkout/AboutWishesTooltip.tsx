@@ -22,9 +22,9 @@ export const AboutWishesTooltip: React.FC<Props> = ({ className }) => {
             </div>
           </TooltipTrigger>
           <TooltipContent className="bg-black text-white">
-            <p>В этой секции вы можете написать любые пожелания, которые мастер сможет исполнить. <br />
+            <p>В этой секции вы можете написать любые пожелания, которые мы сможем исполнить. <br />
               Например: Сделайте подставку из ярко-красного красителя / <br />
-              Хочу, чтобы размывы были темнее и т.д.</p>
+              Хочу менее яркий аромат и т.д.</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

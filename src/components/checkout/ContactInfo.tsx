@@ -1,8 +1,12 @@
 "use client";
 import { FormInput } from "./FormInput";
 
-export const ContactInfo = () => (
-  <div>
+interface Props {
+  className?: string;
+}
+
+export const ContactInfo: React.FC<Props> = ({ className }) => (
+  <div className={className}>
     <h2 className="text-lg font-semibold border-b pb-3">
       Контактная информация
     </h2>

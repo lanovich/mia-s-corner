@@ -8,8 +8,10 @@ export const orderSchema = z.object({
     .regex(/^(\+?\d{1,3})?\d{10}$/, "Некорректный номер"),
   email: z.string().min(1, "Введите email").email("Некорректный email"),
   deliveryAddress: z.string().min(1, "Введите адрес доставки"),
-  wishes: z.string().optional(),
+  apartment: z.string().min(1, "Введите номер квартиры"),
+  entrance: z.string().min(1, "Введите подъезд"),
   floor: z.string().min(1, "Введите этаж"),
+  wishes: z.string().optional(),
   comment: z.string().optional(),
 });
 

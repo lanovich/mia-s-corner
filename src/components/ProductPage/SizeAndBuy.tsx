@@ -68,12 +68,12 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
 
       {/* Кнопка добавления в корзину и избранное */}
       <div className="flex items-center gap-4 mr-10">
-        {/* <AddToCartButton
+        <AddToCartButton
           selectedSize={selectedSize}
           className="flex flex-1 border-2"
         >
           <p className="text-lg font-semibold">Добавить в корзину</p>
-        </AddToCartButton> */}
+        </AddToCartButton>
 
         <button onClick={handleAddToFavorite}>
           <Heart className="w-5 h-5" />

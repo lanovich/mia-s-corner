@@ -1,8 +1,6 @@
 import { useCartStore } from "@/store/useCartStore";
 import { calcFullPrice } from "../../lib/calcFullPrice";
-import { Package, BadgePercent, Banknote } from "lucide-react";
 import { PriceCounter } from "./PriceCounter";
-import { TotalAmountLoader } from "./TotalAmountLoader";
 import { Skeleton } from "../shadcn-ui/skeleton";
 
 export const TotalAmount = () => {

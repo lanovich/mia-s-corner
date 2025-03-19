@@ -120,6 +120,16 @@ body {
   transform: scaleY(1);
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .ProductHeading {
   @apply text-xs font-semibold text-black overflow-hidden md:text-sm md:leading-5 sm:text-lg sm:leading-6;
   transition: max-height 0.3s ease-in-out;

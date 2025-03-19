@@ -16,7 +16,7 @@ export const AboutHeader = () => {
       initial="hidden"
       animate="visible"
     >
-      О нашем бренде
+      О нас
     </motion.h1>
   );
 };

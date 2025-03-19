@@ -5,13 +5,17 @@ import React from "react";
 import { Skeleton } from "../shadcn-ui/skeleton";
 import { findSelectedSize } from "@/lib";
 
-export const OrderSummary = () => {
+interface Props {
+  className?: string;
+}
+
+export const OrderSummary: React.FC<Props> = ({ className }) => {
   const products = useCartStore((state) => state.cart);
   const loading = useCartStore((state) => state.loading);
-
+  
   return (
-    <div>
-      <h1 className="text-xl font-semibold border-b pb-3">Ваш заказ</h1>
+    <div className={className}>
+      <h1 className="text-xl font-semibold border-b pb-3 mt-3">Ваш заказ</h1>
       {loading ? (
         <div className="mt-4 space-y-4">
           <Skeleton className="w-full h-24" />
@@ -26,7 +30,10 @@ export const OrderSummary = () => {
             const measure = product.measure;
 
             return (
-              <Card key={`${product.id}-${size_id}`} className="border-gray-300">
+              <Card
+                key={`${product.id}-${size_id}`}
+                className="border-gray-300"
+              >
                 <CardContent className="flex items-center justify-between gap-4 py-3">
                   <Image
                     src={product.images[0].url}

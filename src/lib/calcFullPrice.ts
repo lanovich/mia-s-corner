@@ -1,5 +1,5 @@
 const DISCOUNT_THRESHOLD = 1500;
-const DISCOUNT_PERCENTAGE = 10;
+const DISCOUNT_PERCENTAGE = 0;
 
 export const calcFullPrice = (productTotalAmount: number) => {
   let discount = 0;

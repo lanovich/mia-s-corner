@@ -19,16 +19,9 @@ export const PaymentMethods: React.FC<Props> = ({
           checked={paymentMethod === "transfer"}
           onChange={() => setPaymentMethod("transfer")}
         />
-        <span>Перевод на карту</span>
+        <span>Картой онлайн</span>
       </label>
       <label className="flex items-center space-x-2">
-        {/* <input
-          type="radio"
-          value="cash"
-          checked={paymentMethod === "cash"}
-          onChange={() => setPaymentMethod("cash")}
-        />
-        <span>Оплата при получении</span> */}
       </label>
     </div>
   </div>

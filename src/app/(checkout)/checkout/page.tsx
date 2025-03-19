@@ -22,6 +22,9 @@ import {
 import { createOrder } from "@/app/actions";
 import { toast } from "sonner";
 import { useCartStore } from "@/store/useCartStore";
+import { SelfPickup } from "@/components/checkout/SelfPickup";
+import { DeliveryMethods } from "@/components/checkout/DeliveryMethods";
+import { useDeliveryStore } from "@/store/useDeliveryStore";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -32,6 +35,7 @@ export default function CheckoutPage() {
   const loading = useCartStore((state) => state.loading);
   const fullPrice = useCartStore((state) => state.fullPrice);
   const clearCart = useCartStore((state) => state.clearCart);
+  const { selectedMethod } = useDeliveryStore();
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(orderSchema),
@@ -39,6 +43,9 @@ export default function CheckoutPage() {
       name: "",
       phone: "",
       email: "",
+      floor: "",
+      apartment: "",
+      entrance: "",
       deliveryAddress: "",
       wishes: "",
       comment: "",
@@ -69,19 +76,26 @@ export default function CheckoutPage() {
   };
 
   return (
-    <Container className="min-h-screen bg-white text-black py-8 px-4 md:px-8 overflow-visible">
-      <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-6">
+    <Container className="min-h-screen max-w-5xl bg-white text-black py-8 px-4 overflow-visible">
+      <div className="mx-auto flex flex-col md:flex-row gap-10">
         <div className="md:w-3/5 space-y-6">
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} id="orderForm">
-              <ContactInfo />
-              <DeliveryForm />
-              <OrderWishes />
-              <OrderSummary />
+              <div className="space-y-6">
+                <ContactInfo className="p-2 bg-white rounded-lg shadow-sm" />
+                <DeliveryMethods className="p-2 bg-white rounded-lg shadow-sm" />
+                {selectedMethod === "selfPickup" ? (
+                  <SelfPickup className="p-2 bg-white rounded-lg shadow-sm" />
+                ) : (
+                  <DeliveryForm className="p-2 bg-white rounded-lg shadow-sm" />
+                )}
+                <OrderWishes className="p-2 bg-white rounded-lg shadow-sm" />
+                <OrderSummary className="p-2 bg-white rounded-lg shadow-sm" />
+              </div>
             </form>
           </FormProvider>
         </div>
-        <div className="md:w-2/5 space-y-6 sticky top-4 self-start">
+        <div className="w-full md:w-2/5 space-y-6 sticky top-16 self-start">
           <h1 className="text-xl font-semibold border-b pb-3">
             Оплата и подтверждение
           </h1>

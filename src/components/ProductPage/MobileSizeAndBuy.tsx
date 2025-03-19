@@ -39,7 +39,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
       )}
     >
       {/* Кнопка добавления в корзину */}
-      {/* <AddToCartButton
+      <AddToCartButton
         selectedSize={selectedSize}
         className="flex flex-1 border-2"
       >
@@ -49,7 +49,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
         {selectedSize?.size_id && (
           <span className="font-semibold">{selectedSize.size.size} ₽</span>
         )}
-      </AddToCartButton> */}
+      </AddToCartButton>
 
       {/* Кнопка выбора размера */}
       <Dialog>

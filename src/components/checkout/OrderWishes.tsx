@@ -1,13 +1,16 @@
 import React from "react";
-import { Textarea } from "../shadcn-ui/textarea";
 import { AboutWishesTooltip } from "./AboutWishesTooltip";
 import { FormTextarea } from "./FormTextarea";
 
-export const OrderWishes = () => {
+interface Props {
+  className?: string;
+}
+
+export const OrderWishes: React.FC<Props> = ({ className }) => {
   return (
-    <div>
+    <div className={className}>
       <div className="flex border-b pb-3">
-        <h2 className="relative text-lg font-semibold ">Пожелания к заказу </h2>
+        <h2 className="text-lg font-semibold">Пожелания к заказу </h2>
         <AboutWishesTooltip />
       </div>
 

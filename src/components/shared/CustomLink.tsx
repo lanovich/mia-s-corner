@@ -17,19 +17,11 @@ export const CustomLink: React.FC<Props> = ({ href, children, onClick }) => {
   return (
     <Link
       href={href}
-      className={`custom-border px-1 ${isActive ? "pointer-events-none" : ""}`}
+      className={`custom-border px-1 ${isActive ? "pointer-events-none custom-border" : ""}`}
       onClick={onClick}
       aria-disabled={isActive}
     >
       {children}
-      {isActive && (
-        <style jsx>{`
-          .custom-border::after,
-          .custom-border::before {
-            transform: scaleX(1) scaleY(1);
-          }
-        `}</style>
-      )}
     </Link>
   );
 };
