@@ -2,7 +2,6 @@
 
 import { Resend } from "resend";
 import React from "react";
-import { LINKS } from "@/constants";
 
 export const sendEmail = async (
   to: string,
