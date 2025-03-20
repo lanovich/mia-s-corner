@@ -1,13 +1,13 @@
 import { create } from "zustand";
 
-type DeliveryMethod = "fastDelivery" | "postalDelivery" | "selfPickup";
+type DeliveryMethod = "fastDelivery" | "selfPickup";
 
 interface DeliveryStore {
-  selectedMethod: DeliveryMethod | null;
+  selectedMethod: DeliveryMethod;
   setSelectedMethod: (method: DeliveryMethod) => void;
 }
 
 export const useDeliveryStore = create<DeliveryStore>((set) => ({
-  selectedMethod: null,
+  selectedMethod: "selfPickup",
   setSelectedMethod: (method) => set({ selectedMethod: method }),
 }));

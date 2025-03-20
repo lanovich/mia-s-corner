@@ -40,7 +40,7 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
               {defaultSize?.size.size} {product.measure}
             </span>
           </div>
-          <AddToCartButton selectedSize={defaultSize || null} className="w-full">
+          <AddToCartButton selectedSize={defaultSize || null} className="w-full max-w-[220px]">
             Добавить в корзину
           </AddToCartButton>
         </div>

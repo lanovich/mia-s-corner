@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/shadcn-ui/button";
 import { motion } from "framer-motion";
@@ -15,10 +15,7 @@ import {
   OrderWishes,
 } from "@/components/checkout";
 import { FormProvider, useForm } from "react-hook-form";
-import {
-  CheckoutFormValues,
-  orderSchema,
-} from "@/constants/checkoutFormSchema";
+import { CheckoutFormValues, schema } from "@/constants/checkoutFormSchema";
 import { createOrder } from "@/app/actions";
 import { toast } from "sonner";
 import { useCartStore } from "@/store/useCartStore";
@@ -38,8 +35,9 @@ export default function CheckoutPage() {
   const { selectedMethod } = useDeliveryStore();
 
   const form = useForm<CheckoutFormValues>({
-    resolver: zodResolver(orderSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
+      deliveryMethod: "selfPickup",
       name: "",
       phone: "",
       email: "",
@@ -52,7 +50,14 @@ export default function CheckoutPage() {
     },
   });
 
+  const { setValue } = form;
+
+  useEffect(() => {
+    return setValue("deliveryMethod", selectedMethod);
+  }, [selectedMethod, setValue]);
+
   const onSubmit = async (data: CheckoutFormValues) => {
+    console.log(data);
     try {
       if (fullPrice === 0) {
         toast.error("Корзина пустая, не удалось создать заказ", {
