@@ -11,5 +11,5 @@ export const LINKS = {
   VK: "https://vk.com/miascorner",
   TELEGRAM: "https://t.me/mias_corner",
   PINTEREST: "https://ru.pinterest.com/mias_corner/",
-  GMAIL: "kolaemelanov60@gmail.com",
+  GMAIL: "miascorner.business@gmail.com",
 };

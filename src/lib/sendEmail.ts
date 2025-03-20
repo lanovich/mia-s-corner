@@ -2,6 +2,7 @@
 
 import { Resend } from "resend";
 import React from "react";
+import { LINKS } from "@/constants";
 
 export const sendEmail = async (
   to: string,
@@ -15,7 +16,7 @@ export const sendEmail = async (
     const template = React.createElement(TemplateComponent, templateProps);
 
     const { data, error } = await resend.emails.send({
-      from: "onboarding@resend.dev",
+      from: "mias-corner@mias-corner.ru",
       to,
       subject,
       react: template,
