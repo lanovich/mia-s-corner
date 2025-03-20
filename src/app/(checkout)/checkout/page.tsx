@@ -22,42 +22,44 @@ import { useCartStore } from "@/store/useCartStore";
 import { SelfPickup } from "@/components/checkout/SelfPickup";
 import { DeliveryMethods } from "@/components/checkout/DeliveryMethods";
 import { useDeliveryStore } from "@/store/useDeliveryStore";
+import { PostalDelivery } from "@/components/checkout/PostalDelivery";
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const [submitting, setSubmitting] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
     "transfer"
   );
-  const [submitting, setSubmitting] = useState(false);
-  const loading = useCartStore((state) => state.loading);
-  const fullPrice = useCartStore((state) => state.fullPrice);
-  const clearCart = useCartStore((state) => state.clearCart);
-  const { selectedMethod } = useDeliveryStore();
+  const { loading, fullPrice, clearCart } = useCartStore();
+  const { selectedDeliveryMethod } = useDeliveryStore();
+  const { deliveryPrice } = useDeliveryStore();
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      deliveryMethod: "selfPickup",
+      deliveryMethod: "fastDelivery",
       name: "",
       phone: "",
       email: "",
-      floor: "",
-      apartment: "",
-      entrance: "",
-      deliveryAddress: "",
-      wishes: "",
+
+      city: "Санкт-Петербург",
+      street: "",
+      building: "",
+      porch: "",
+      sfloor: "",
+      sflat: "",
       comment: "",
+
+      wishes: "",
     },
   });
-
   const { setValue } = form;
 
   useEffect(() => {
-    return setValue("deliveryMethod", selectedMethod);
-  }, [selectedMethod, setValue]);
+    return setValue("deliveryMethod", selectedDeliveryMethod);
+  }, [selectedDeliveryMethod, setValue]);
 
   const onSubmit = async (data: CheckoutFormValues) => {
-    console.log(data);
     try {
       if (fullPrice === 0) {
         toast.error("Корзина пустая, не удалось создать заказ", {
@@ -67,7 +69,7 @@ export default function CheckoutPage() {
       }
 
       setSubmitting(true);
-      const paymentUrl = await createOrder(data);
+      const paymentUrl = await createOrder(data, deliveryPrice);
 
       await clearCart();
 
@@ -89,10 +91,12 @@ export default function CheckoutPage() {
               <div className="space-y-6">
                 <ContactInfo className="p-2 bg-white rounded-lg shadow-sm" />
                 <DeliveryMethods className="p-2 bg-white rounded-lg shadow-sm" />
-                {selectedMethod === "selfPickup" ? (
+                {selectedDeliveryMethod === "selfPickup" ? (
                   <SelfPickup className="p-2 bg-white rounded-lg shadow-sm" />
-                ) : (
+                ) : selectedDeliveryMethod === "fastDelivery" ? (
                   <DeliveryForm className="p-2 bg-white rounded-lg shadow-sm" />
+                ) : (
+                  <PostalDelivery className="p-2 bg-white rounded-lg shadow-sm" />
                 )}
                 <OrderWishes className="p-2 bg-white rounded-lg shadow-sm" />
                 <OrderSummary className="p-2 bg-white rounded-lg shadow-sm" />
@@ -117,7 +121,7 @@ export default function CheckoutPage() {
               className="w-full bg-black text-white py-3 rounded-lg"
               type="submit"
               form="orderForm"
-              disabled={loading}
+              disabled={loading || selectedDeliveryMethod==="fastDelivery" && deliveryPrice === 0}
             >
               {submitting ? "Оформление..." : "Подтвердить заказ"}
             </Button>

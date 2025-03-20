@@ -234,13 +234,25 @@ export const cartService = {
     const token = await getUserToken();
     if (!token) return;
 
-    const { error } = await supabase
-      .from("cart")
-      .update({ fullPrice })
-      .eq("token", token);
+    try {
+      const response = await fetch("/api/update-cart-full-price", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, fullPrice }),
+      });
 
-    if (error) {
-      console.error("Ошибка при обновлении fullPrice:", error.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Ошибка при обновлении fullPrice:", errorData.error);
+        return;
+      }
+
+      const result = await response.json();
+      console.log("fullPrice успешно обновлён:", result);
+    } catch (error) {
+      console.error("Ошибка при вызове API:", error);
     }
   },
 

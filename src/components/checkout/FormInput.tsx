@@ -13,6 +13,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
   required?: boolean;
+  noChange?: boolean;
   customInput?: React.ComponentType<any>;
 }
 
@@ -21,7 +22,9 @@ export const FormInput: React.FC<Props> = ({
   name,
   label,
   required,
+  noChange,
   customInput: CustomInput,
+  disabled,
   ...props
 }) => {
   const {
@@ -59,6 +62,7 @@ export const FormInput: React.FC<Props> = ({
             {...props}
             value={value}
             onChange={handleCustomInputChange}
+            disabled={disabled}
           />
         ) : (
           <Input
@@ -70,9 +74,10 @@ export const FormInput: React.FC<Props> = ({
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300"
             )}
+            disabled={disabled}
           />
         )}
-        {value && !CustomInput && (
+        {value && !CustomInput && !noChange && !disabled && (
           <ClearButton
             onClick={onClearClick}
             className="absolute right-2 top-1/2 -translate-y-1/2"

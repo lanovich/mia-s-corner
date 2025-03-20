@@ -1,56 +1,51 @@
 import { cn } from "@/lib";
-import { useDeliveryStore } from "@/store/useDeliveryStore";
+import { DeliveryMethod, useDeliveryStore } from "@/store/useDeliveryStore";
 import React from "react";
+import { RadioButton } from "@/components/shared";
 
 interface Props {
   className?: string;
 }
 
 export const DeliveryMethods: React.FC<Props> = ({ className }) => {
-  const { selectedMethod, setSelectedMethod } = useDeliveryStore();
+  const {
+    selectedDeliveryMethod,
+    setselectedDeliveryMethod,
+    setDeliveryPrice,
+  } = useDeliveryStore();
+
+  const handleToggleDeliveryPrice = (method: DeliveryMethod, price: number) => {
+    setselectedDeliveryMethod(method);
+    setDeliveryPrice(price);
+  };
 
   return (
     <div className={cn("mt-3", className)}>
       <h2 className="text-lg font-semibold border-b pb-3">
         Как вы хотите получить заказ?
       </h2>
-      <div className="space-y-4 mt-4">
-        <label className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-          <input
-            type="radio"
-            value="selfPickup"
-            checked={selectedMethod === "selfPickup"}
-            onChange={() => setSelectedMethod("selfPickup")}
-            className="form-radio h-5 w-5 text-blue-600 focus:ring-blue-500"
-          />
-          <span className="text-gray-700">
-            Самовывоз из Кудрово — сразу после готовности
-          </span>
-        </label>
-        <label className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-          <input
-            type="radio"
-            value="fastDelivery"
-            checked={selectedMethod === "fastDelivery"}
-            onChange={() => setSelectedMethod("fastDelivery")}
-            className="form-radio h-5 w-5 text-blue-600 focus:ring-blue-500"
-          />
-          <span className="text-gray-700">
-            Курьерская доставка по Санкт-Петербургу и ЛО — в течение дня
-          </span>
-        </label>
-        {/* <label className="flex items-center space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
-          <input
-            type="radio"
-            value="postalDelivery"
-            checked={selectedMethod === "postalDelivery"}
-            onChange={() => setSelectedMethod("postalDelivery")}
-            className="form-radio h-5 w-5 text-blue-600 focus:ring-blue-500"
-          />
-          <span className="text-gray-700">
-            Доставка почтой по России — от 2 до 7 дней
-          </span>
-        </label> */}
+      <div className="space-y-2 mt-4">
+        <RadioButton
+          value="selfPickup"
+          checked={selectedDeliveryMethod === "selfPickup"}
+          onChange={() => handleToggleDeliveryPrice("selfPickup", 0)}
+          label="Самовывоз из Кудрово — сразу после готовности"
+          price="0 ₽"
+        />
+        <RadioButton
+          value="fastDelivery"
+          checked={selectedDeliveryMethod === "fastDelivery"}
+          onChange={() => handleToggleDeliveryPrice("fastDelivery", 0)}
+          label="Курьер — в течение дня"
+          price="от 199 ₽"
+        />
+        <RadioButton
+          value="postalDelivery"
+          checked={selectedDeliveryMethod === "postalDelivery"}
+          onChange={() => handleToggleDeliveryPrice("postalDelivery", 259)}
+          label="Пункт выдачи Яндекс Маркет — от 1 до 7 дней"
+          price="259 ₽"
+        />
       </div>
       <p className="text-xs text-gray-700 mt-3 ml-2">
         Сроки доставки указаны с момента готовности заказа. Если товар есть в

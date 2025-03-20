@@ -11,7 +11,10 @@ import { createPayment, sendEmail } from "@/lib";
 import { supabase } from "@/lib/supabase";
 import { cookies } from "next/headers";
 
-export async function createOrder(data: CheckoutFormValues) {
+export async function createOrder(
+  data: CheckoutFormValues,
+  deliveryPrice: number = 0
+) {
   try {
     const cookieStore = cookies();
     const cartToken = (await cookieStore).get("user_token")?.value;
@@ -89,17 +92,21 @@ export async function createOrder(data: CheckoutFormValues) {
       .from("orders")
       .insert([
         {
+          delivery_method: data.deliveryMethod,
           name: data.name,
           phone: data.phone,
           email: data.email,
-          delivery_address: data.deliveryAddress || null,
-          entrance: data.entrance || null,
-          apartment: data.apartment || null,
-          floor: data.floor || null,
-          wishes: data.wishes || null,
-          comment: data.comment || null,
-          delivery_method: data.deliveryMethod,
-          fullPrice: userCart.fullPrice,
+
+          city: data.deliveryMethod === "selfPickup" ? null : data.city,
+          street: data.deliveryMethod === "selfPickup" ? null : data.street,
+          building: data.deliveryMethod === "selfPickup" ? null : data.building,
+          porch: data.deliveryMethod === "fastDelivery" ? data.porch : null,
+          sfloor: data.deliveryMethod === "fastDelivery" ? data.sfloor : null,
+          sflat: data.deliveryMethod === "fastDelivery" ? data.sflat : null,
+          comment: data.deliveryMethod === "fastDelivery" ? data.comment : null,
+
+          fullPrice: userCart.fullPrice + deliveryPrice,
+          delivery_price: deliveryPrice,
           items: userCart.cartItem,
           token: cartToken,
           created_at: new Date().toISOString(),
