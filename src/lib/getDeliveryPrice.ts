@@ -16,7 +16,7 @@ export const getDeliveryPrice = async (
 ): Promise<YandexDeliveryResponseType | null> => {
   try {
     const { data }: { data: YandexDeliveryResponseType } = await axios.post(
-      "http://localhost:3000/api/checkout/get-delivery-price",
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout/get-delivery-price`,
       {
         route_points: [
           {
