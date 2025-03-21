@@ -1,6 +1,8 @@
-import { SuccessEmail } from "@/components/shared/emails";
+import { NewOrderAlertEmail, SuccessEmail } from "@/components/shared/emails";
+import { LINKS } from "@/constants";
 import { sendEmail } from "@/lib";
 import { supabase } from "@/lib/supabase";
+import { Order } from "@/types/Order";
 import { OrderStatus } from "@/types/OrderStatus";
 import { YookassaOrderStatus } from "@/types/YookassaOrderStatus";
 import { NextRequest, NextResponse } from "next/server";
@@ -15,7 +17,7 @@ export async function POST(req: NextRequest) {
       .from("orders")
       .select("*")
       .eq("id", body.object.metadata.order_id)
-      .single();
+      .single<Order>();
 
     if (error || !order) {
       console.error("Order not found:", error);
@@ -47,8 +49,34 @@ export async function POST(req: NextRequest) {
         SuccessEmail,
         {
           orderId: order.id,
+          deliveryPrice: order.delivery_price,
           fullPrice: order.fullPrice,
           items: JSON.stringify(order.items),
+        }
+      );
+
+      await sendEmail(
+        LINKS.GMAIL,
+        `Новый заказ на ${order.fullPrice}; ${order.delivery_method}`,
+        NewOrderAlertEmail,
+        {
+          orderId: order.id,
+          deliveryPrice: order.delivery_price,
+          fullPrice: order.fullPrice,
+          items: JSON.stringify(order.items),
+          deliveryMethod: order.delivery_method,
+          customerName: order.name,
+          customerPhone: order.phone,
+          customerEmail: order.email,
+          deliveryAddress: {
+            city: order.city,
+            street: order.street,
+            building: order.building,
+            porch: order.porch,
+            floor: order.sfloor,
+            flat: order.sflat,
+          },
+          status: order.status,
         }
       );
     }

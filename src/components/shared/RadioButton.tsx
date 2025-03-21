@@ -30,7 +30,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
       />
       <span className="text-sm flex-grow ">{label}</span>
       {price && (
-        <span className="text-xs font-semibold text-blue-600 ml-2">
+        <span className="text-xs font-semibold text-blue-600 ml-2 text-nowrap">
           {price}
         </span>
       )}

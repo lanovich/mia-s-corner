@@ -6,6 +6,7 @@ import { styles } from "./styles";
 export const SuccessEmail: React.FC<EmailTemplateProps> = ({
   orderId,
   fullPrice,
+  deliveryPrice,
   items,
 }) => {
   const parsedItems: OrderItem[] = JSON.parse(items);
@@ -25,6 +26,10 @@ export const SuccessEmail: React.FC<EmailTemplateProps> = ({
         ))}
       </div>
 
+      <h3 style={styles.description}>
+        Стоимость товаров: {fullPrice - deliveryPrice} ₽
+      </h3>
+      <h3 style={styles.description}>Стоимость доставки: {deliveryPrice} ₽</h3>
       <h2 style={styles.totalPrice}>Общая сумма: {fullPrice} ₽</h2>
 
       <p style={styles.footerText}>

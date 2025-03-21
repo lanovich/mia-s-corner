@@ -1,16 +1,23 @@
+import { OrderItem } from "./OrderItem";
 export interface Order {
-  id: number;
-  created_at: string;
+  id: string;
   name: string;
   phone: string;
   email: string;
-  delivery_address?: string | null;
-  wishes?: string | null;
-  floor: string;
-  comment?: string | null;
+  wishes: string | null;
+  comment: string;
   token: string;
-  fullPrice: number;
+  created_at: string;
+  items: OrderItem[];
+  fullPrice: string;
   paymentId: string;
-  status: "SUCCEEDED" | "CANCELLED" | "PENDING";
-  items: CartItem[];
+  status: string;
+  delivery_method: string;
+  delivery_price: string;
+  city: string;
+  street: string;
+  building: string;
+  porch: string;
+  sfloor: string;
+  sflat: string;
 }

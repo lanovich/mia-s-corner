@@ -1,9 +1,9 @@
 export interface OrderItem {
-  price: number;
-  size: number;
   id: number;
+  size: number;
+  price: number;
   product: Product;
-  quantity: number;
   size_id: number;
+  quantity: number;
   product_id: number;
 }

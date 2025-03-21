@@ -1,9 +1,9 @@
 import { supabase } from "@/lib/supabase";
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const { token, fullPrice } = await request.json();
+    const { token, fullPrice } = await req.json();
 
     if (typeof fullPrice !== "number" || isNaN(fullPrice)) {
       return NextResponse.json(

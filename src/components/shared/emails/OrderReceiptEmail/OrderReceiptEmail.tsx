@@ -5,6 +5,7 @@ import { OrderItem } from "@/types/OrderItem";
 
 export interface EmailTemplateProps {
   orderId: number;
+  deliveryPrice: number;
   fullPrice: number;
   paymentUrl: string;
   items: string;
@@ -13,6 +14,7 @@ export interface EmailTemplateProps {
 export const OrderReceiptEmail: React.FC<EmailTemplateProps> = ({
   orderId,
   fullPrice,
+  deliveryPrice,
   paymentUrl,
   items,
 }) => {
@@ -37,12 +39,15 @@ export const OrderReceiptEmail: React.FC<EmailTemplateProps> = ({
         ))}
       </div>
 
+      <h3 style={styles.description}>
+        Стоимость товаров: {fullPrice - deliveryPrice} ₽
+      </h3>
+      <h3 style={styles.description}>Стоимость доставки: {deliveryPrice} ₽</h3>
       <h2 style={styles.totalPrice}>Общая сумма: {fullPrice} ₽</h2>
 
       <p style={styles.footerText}>
-        Если у вас есть вопросы, мы всегда на связи. Спасибо за доверие! 💙
+        Если у вас есть вопросы, мы всегда на связи. Спасибо за доверие! 💜
       </p>
     </div>
   );
 };
-

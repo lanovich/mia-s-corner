@@ -17,7 +17,7 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
   const { selectedSize, setSelectedSize } = useSelectedSizeStore();
 
   if (!selectedSize && hasSizes) {
-    setSelectedSize(sizes[0]);
+    setSelectedSize(sizes.find((size) => size.is_default === true) || sizes[0]);
   }
 
   const handleAddToFavorite = () => {

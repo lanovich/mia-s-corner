@@ -28,7 +28,9 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
   );
 
   const handleAddToFavorite = () => {
-    toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅", { position: "top-center" });
+    toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅", {
+      position: "top-center",
+    });
   };
 
   return (
@@ -43,12 +45,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
         selectedSize={selectedSize}
         className="flex flex-1 border-2"
       >
-        <ShoppingBag className="w-5 h-5 mr-2" />
-        <span>В корзину</span>
-        <Dot></Dot>
-        {selectedSize?.size_id && (
-          <span className="font-semibold">{selectedSize.size.size} ₽</span>
-        )}
+        <span>Добавить в корзину</span>
       </AddToCartButton>
 
       {/* Кнопка выбора размера */}
@@ -68,23 +65,25 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
               описанием и фото
             </DialogDescription>
           </DialogHeader>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mx-auto md:mx-0">
             {sizes.map((size) => (
-              <Button
-                key={size.size_id}
-                onClick={() => setSelectedSize(size)}
-                className={`border px-3 py-1 text-sm ${
-                  selectedSize?.size_id === size.size_id
-                    ? "bg-black text-white"
-                    : "bg-inherit text-black border-black"
-                }`}
-              >
-                {`${size.size} мл`}
-              </Button>
+              <div key={size.size_id} className="flex-col flex">
+                <Button
+                  onClick={() => setSelectedSize(size)}
+                  className={`border px-3 py-1 text-sm ${
+                    selectedSize?.size_id === size.size_id
+                      ? "bg-black text-white"
+                      : "bg-inherit text-black border-black"
+                  }`}
+                >
+                  {`${size.size.size} мл`}
+                </Button>
+                <p className="text-center text-xs mt-1 text-gray-700">{size.price} ₽</p>
+              </div>
             ))}
           </div>
           <DialogClose asChild>
-            <Button className="w-full mt-4">Выбрать</Button>
+            <Button className="w-full mt-4 rounded-lg">Выбрать</Button>
           </DialogClose>
         </DialogContent>
       </Dialog>

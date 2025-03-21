@@ -1,5 +1,5 @@
 type ScentPyramid = {
-  top: string[];
-  heart: string[];
-  base: string[];
+  top: string;
+  heart: string;
+  base: string;
 };
