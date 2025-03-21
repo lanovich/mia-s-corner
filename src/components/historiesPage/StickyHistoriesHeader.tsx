@@ -3,19 +3,19 @@
 import { motion } from "framer-motion";
 import { CartButtonWithPrice, Container } from "@/components/shared";
 import { useEffect, useState, useRef } from "react";
-import { CategoriesList } from "./CategoriesList";
+import { HistoriesList } from "./HistoriesList";
 import { cn } from "@/lib";
 
-interface StickyHeaderProps {
+interface StickyHistoriesHeaderProps {
   className?: string;
-  categories: Category[];
-  currentCategorySlug: string;
+  histories: HistoryData[];
+  currentHistoryId: number;
 }
 
-export const StickyCategoriesHeader: React.FC<StickyHeaderProps> = ({
+export const StickyHistoriesHeader: React.FC<StickyHistoriesHeaderProps> = ({
   className,
-  categories,
-  currentCategorySlug,
+  histories,
+  currentHistoryId,
 }) => {
   const [isSticky, setIsSticky] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -47,14 +47,15 @@ export const StickyCategoriesHeader: React.FC<StickyHeaderProps> = ({
       ref={stickyRef}
       className={cn(
         "sticky top-0 z-50 border-b py-3 overflow-x-auto bg-white px-4 transition-all w-full",
-        isSticky ? "bg-white/60 backdrop-blur-md" : "bg-white", className
+        isSticky ? "bg-white/60 backdrop-blur-md" : "bg-white",
+        className
       )}
     >
       <Container>
         <div className="flex justify-between items-center">
-          <CategoriesList
-            categories={categories}
-            currentCategorySlug={currentCategorySlug}
+          <HistoriesList
+            histories={histories}
+            currentHistoryId={currentHistoryId}
           />
 
           {!isMobile && isSticky && (

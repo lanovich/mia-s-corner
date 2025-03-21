@@ -3,14 +3,21 @@
 import React from "react";
 import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
 import { ProductDetail } from "./ProductDetail";
-
+import { ProductWithHistory } from "@/types";
 interface Props {
   className?: string;
-  product: Product;
+  product: ProductWithHistory;
 }
 
 export const AboutProduct: React.FC<Props> = ({ className, product }) => {
   const selectedSize = useSelectedSizeStore((state) => state.selectedSize);
+
+  const additionalDetails = product.details
+    ? Object.entries(product.details).map(([key, value]) => ({
+        label: key,
+        value: value,
+      }))
+    : [];
 
   return (
     <div className={className}>
@@ -38,7 +45,7 @@ export const AboutProduct: React.FC<Props> = ({ className, product }) => {
             ? [
                 {
                   label: "Габариты",
-                  value: `${selectedSize.size.dimensions.x} x ${selectedSize.size.dimensions.y} x ${selectedSize.size.dimensions.z} см`,
+                  value: `${selectedSize.size.dimensions.x} x ${selectedSize.size.dimensions.y} x ${selectedSize.size.dimensions.z} мм`,
                 },
                 { label: "Размер", value: `${selectedSize.size.size} мл` },
               ]
@@ -46,14 +53,13 @@ export const AboutProduct: React.FC<Props> = ({ className, product }) => {
         }
       />
 
-      {/* Дополнительные характеристики */}
-      <ProductDetail
-        title="Дополнительные характеристики"
-        details={[
-          { label: "Материал", value: product.wax },
-          { label: "Фитиль", value: product.wick },
-        ]}
-      />
+      {/* Дополнительные характеристики (если details есть) */}
+      {additionalDetails.length > 0 && (
+        <ProductDetail
+          title="Дополнительные характеристики"
+          details={additionalDetails}
+        />
+      )}
     </div>
   );
 };

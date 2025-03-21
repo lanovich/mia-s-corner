@@ -1,7 +1,12 @@
 import { supabase } from "./supabase";
 
-export const getSimilarProducts = async (historyId: number) => {
-  console.log(`🔄 Запрос товаров из той же истории:`);
+export const getSimilarProducts = async (
+  historyId: number,
+  productId: number
+): Promise<Product[]> => {
+  console.log(
+    `🔄 Запрос товаров из той же истории, исключая productId: ${productId}`
+  );
 
   const { data, error } = await supabase
     .from("products")
@@ -13,7 +18,10 @@ export const getSimilarProducts = async (historyId: number) => {
       history:histories(id, title, description)
     `
     )
-    .eq("history_id", historyId);
+    .eq("history_id", historyId)
+    .neq("id", productId)
+    .order("category_id")
+    .order("episode_number")
 
   if (error) {
     console.error(`❌ Ошибка загрузки товаров из той же истории:`, error);

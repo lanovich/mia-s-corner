@@ -1,55 +1,48 @@
-import { getCategories } from "@/lib/cache";
+import { getCategories, getHistories } from "@/lib/cache";
 import { Container } from "@/components/shared";
 import { Breadcrumbs } from "@/components/ProductPage";
-import { LoadingLink } from "@/components/catalog";
+import { CatalogCard } from "@/components/shared";
+import { LINKS } from "@/constants";
 
 export default async function CatalogPage() {
   const categories = await getCategories();
+  const histories = await getHistories();
 
   return (
     <>
       <Breadcrumbs />
       <Container className="mb-5">
         {/* Заголовок страницы */}
-        <h1 className="text-3xl font-bold text-center my-6">Категории каталога </h1>
+        <h1 className="text-3xl font-bold text-center my-6">Категории</h1>
 
         {/* Сетка категорий */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
-          {categories.map(
-            (category: {
-              slug: string;
-              name: string;
-              image?: string;
-              description?: string;
-            }) => (
-              <LoadingLink
-                key={category.slug}
-                href={`/catalog/${category.slug}`}
-                className="block w-full h-[300px] relative overflow-hidden rounded-lg group"
-              >
-                {/* Фоновое изображение */}
-                {category.image && (
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
-                    style={{ backgroundImage: `url(${category.image})` }}
-                  />
-                )}
+          {categories.map((category) => (
+            <CatalogCard
+              key={category.slug}
+              slug={category.slug}
+              title={category.name}
+              image={category.image}
+              href={`/catalog/${category.slug}`}
+            />
+          ))}
+        </div>
 
-                {/* Затемнение фона */}
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300" />
+        {/* Заголовок для историй */}
+        <h2 className="text-3xl font-bold text-center my-6">Истории</h2>
 
-                {/* Контент карточки */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white text-center">
-                  <h2 className="text-2xl font-bold mb-2">{category.name}</h2>
-                  {category.description && (
-                    <p className="text-sm line-clamp-2">
-                      {category.description}
-                    </p>
-                  )}
-                </div>
-              </LoadingLink>
-            )
-          )}
+        {/* Сетка историй */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
+          {histories.map((history) => (
+            <CatalogCard
+              key={history.order}
+              title={history.title}
+              image={"/aromasachet.jpg"}
+              description={history.description}
+              href={`${LINKS.CATALOG}/${LINKS.HISTORIES}/${history.id}`}
+              slug={history.history_slug}
+            />
+          ))}
         </div>
       </Container>
     </>

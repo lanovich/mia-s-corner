@@ -12,6 +12,5 @@ type Product = {
   slug: string;
   product_sizes: ProductSize[];
   scent_pyramid: ScentPyramid;
-  wick: string;
-  wax: string;
+  episode_number: number;
 };

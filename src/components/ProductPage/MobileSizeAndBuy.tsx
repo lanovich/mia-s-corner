@@ -40,6 +40,22 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
         className
       )}
     >
+      {/* Блок с ценами */}
+      {selectedSize && (
+        <div className="flex flex-col items-start">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-semibold text-red-500">
+              {selectedSize.price} ₽
+            </span>
+            {selectedSize.oldPrice && (
+              <span className="text-sm line-through text-gray-500">
+                {selectedSize.oldPrice} ₽
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Кнопка добавления в корзину */}
       <AddToCartButton
         selectedSize={selectedSize}
@@ -78,7 +94,9 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
                 >
                   {`${size.size.size} мл`}
                 </Button>
-                <p className="text-center text-xs mt-1 text-gray-700">{size.price} ₽</p>
+                <p className="text-center text-xs mt-1 text-gray-700">
+                  {size.price} ₽
+                </p>
               </div>
             ))}
           </div>

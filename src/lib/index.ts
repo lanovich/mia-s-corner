@@ -12,3 +12,6 @@ export { getCategoryBySlug } from "./getCategoryBySlug";
 export { getRandomSlugs } from "./getRandomSlugs";
 export { chooseRandomItem } from "./chooseRandomItem";
 export { getSimilarProducts } from "./getSimilarProducts";
+export { getProductsByHistory } from "./getProductsByHistory";
+export { getHistories } from "./getHistories";
+export { getHistoryById } from "./getHistoryById";

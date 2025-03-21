@@ -8,25 +8,29 @@ interface Props {
 }
 
 export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
-  const defaultSize = product.product_sizes.find((size) => size.is_default === true)
-  
+  const defaultSize = product.product_sizes.find(
+    (size) => size.is_default === true
+  );
+
   return (
     <Link
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
-      className="group block "
+      className="group block"
     >
-      <div className="relative shadow-lg border-2 flex h-40 w-full overflow-hidden rounded-xl transition-transform duration-300 hover:scale-105">
+      {/* Родительский контейнер */}
+      <div className="relative shadow-lg border flex h-40 w-full rounded-xl transition-transform duration-300 hover:scale-105">
         {/* Product Image */}
-        <div className="relative h-full w-40 flex-shrink-0">
+        <div className="relative h-full w-40 flex-shrink-0 overflow-hidden">
           <Image
             src={product.images[0].url}
             width={160}
             height={160}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover rounded-l-xl"
             alt={product.title}
           />
         </div>
 
+        {/* Основной контент */}
         <div className="flex flex-1 flex-col justify-between bg-white/30 backdrop-blur-md p-3">
           <div>
             <h3 className="text-lg line-clamp-1">{product.title}</h3>
@@ -40,9 +44,17 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
               {defaultSize?.size.size} {product.measure}
             </span>
           </div>
-          <AddToCartButton selectedSize={defaultSize || null} className="w-full max-w-[220px]">
+          <AddToCartButton
+            selectedSize={defaultSize || null}
+            className="w-full max-w-[220px]"
+          >
             Добавить в корзину
           </AddToCartButton>
+        </div>
+
+        {/* Номер эпизода в правом нижнем углу */}
+        <div className="absolute -bottom-3 -left-1 bg-black/70 text-white text-sm px-2 py-1 rounded-full shadow-md overflow-visible">
+          Эпизод {product.episode_number}
         </div>
       </div>
     </Link>

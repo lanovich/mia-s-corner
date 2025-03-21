@@ -39,7 +39,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
 
             <BuySection
               productCompound={product.compound}
-              productHistoryId={product.history_id}
+              productEpsiodeId={product.episode_number}
               productEpisode={product.episode}
               productTitle={product.title}
               sizes={product.product_sizes}
@@ -54,7 +54,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
           <div className="md:w-full lg:w-2/3">
             <BuySection
               productCompound={product.compound}
-              productHistoryId={product.history_id}
+              productEpsiodeId={product.episode_number}
               productEpisode={product.episode}
               productTitle={product.title}
               sizes={product.product_sizes}
@@ -68,7 +68,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
         </div>
 
         <div className="w-full">
-          <SimilarProducts historyId={product.history_id} className="mt-7" />
+          <SimilarProducts historyId={product.history_id} className="mt-7" productId={product.id} />
         </div>
 
         <div className="flex md:hidden">

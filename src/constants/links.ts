@@ -6,6 +6,7 @@ export const LINKS = {
   AROMA_SACHET: "/catalog/aroma-sachet",
   PERFUME: "/catalog/perfume",
   PRODUCT: "product",
+  HISTORIES: "histories",
   ABOUT: "about",
   CONTACTS: "contacts",
   VK: "https://vk.com/miascorner",

@@ -152,6 +152,7 @@ export async function createOrder(
       {
         orderId: order.id,
         fullPrice: order.fullPrice,
+        deliveryPrice: order.delivery_price,
         items: JSON.stringify(order.items),
         paymentUrl: paymentUrl,
       }

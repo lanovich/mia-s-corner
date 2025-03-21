@@ -53,8 +53,7 @@ export const cartService = {
                 scent_pyramid: product.scent_pyramid,
                 description: product.description,
                 images: product.images,
-                wick: product.wick,
-                wax: product.wax,
+                episode_number: product.episode_number,
                 product_sizes: product.product_sizes.map(
                   (productSize: ProductSize) => ({
                     ...productSize.size,
@@ -78,8 +77,7 @@ export const cartService = {
                 scent_pyramid: "",
                 description: "",
                 images: [],
-                wick: "",
-                wax: "",
+                episode_number: null,
                 product_sizes: [],
                 episode: "",
                 measure: "мл",

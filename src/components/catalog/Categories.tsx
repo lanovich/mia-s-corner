@@ -15,7 +15,7 @@ export const Categories: React.FC<CategoriesProps> = ({
     <>
         <Breadcrumbs categorySlug={currentCategorySlug} />
       <div className="mx-auto">
-        <ChapterHeading className="mt-0">Каталог</ChapterHeading>
+        <ChapterHeading className="my-3">Каталог</ChapterHeading>
       </div>
       <StickyCategoriesHeader
         categories={categories}

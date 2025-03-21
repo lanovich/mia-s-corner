@@ -8,7 +8,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 interface Props {
   className?: string;
   productCompound?: string;
-  productHistoryId?: number;
+  productEpsiodeId?: number;
   productEpisode?: string | null;
   productTitle: string;
   sizes: ProductSize[];
@@ -17,7 +17,7 @@ interface Props {
 export const BuySection: React.FC<Props> = ({
   className,
   productCompound,
-  productHistoryId,
+  productEpsiodeId,
   productEpisode,
   productTitle,
   sizes,
@@ -39,7 +39,7 @@ export const BuySection: React.FC<Props> = ({
       )}
       {productEpisode && (
         <>
-          <h2 className="text-xl font-semibold">Эпизод #{productHistoryId}</h2>
+          <h2 className="text-xl font-semibold">Эпизод #{productEpsiodeId}</h2>
           <div className="relative">
             <p
               className={cn(

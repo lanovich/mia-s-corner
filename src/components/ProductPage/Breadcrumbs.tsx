@@ -1,25 +1,34 @@
 import { cn } from "@/lib";
-import { getCategoryBySlug } from "@/lib/cache";
+import { getCategoryBySlug, getHistoryById } from "@/lib/cache";
 import Link from "next/link";
 import { Container } from "../shared";
 
 interface Props {
   categorySlug?: string;
+  historyId?: number;
   productTitle?: string;
   className?: string;
 }
 
 export const Breadcrumbs: React.FC<Props> = async ({
   categorySlug,
+  historyId,
   productTitle,
   className,
 }) => {
   const category = categorySlug ? await getCategoryBySlug(categorySlug) : null;
 
+  const history = historyId ? await getHistoryById(historyId) : null;
+
   const breadcrumbs = [
     { name: "Главная", href: "/" },
     { name: "Каталог", href: "/catalog" },
-    ...(category ? [{ name: category, href: `/catalog/${categorySlug}` }] : []),
+    ...(category
+      ? [{ name: category, href: `/catalog/${categorySlug}` }]
+      : []),
+    ...(history
+      ? [{ name: history.title, href: `/histories/${historyId}` }]
+      : []),
     ...(productTitle ? [{ name: productTitle, href: "#" }] : []),
   ];
 

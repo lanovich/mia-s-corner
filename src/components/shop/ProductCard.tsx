@@ -21,7 +21,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           src={product.images[0].url ||"/placeholder.jpg"}
           width={300}
           height={400}
-          className="h-full w-full object-cover hover:sepia duration-300 rounded-lg"
+          className="h-full w-full object-cover hover:sepia md:hover:sepia-0 duration-300 rounded-lg"
           alt={product.title}
         />
 
