@@ -34,8 +34,8 @@ export default async function ProductPage(props: { params: ProductParams }) {
       <Breadcrumbs categorySlug={categorySlug} productTitle={product.title} />
       <Container className="max-w-[1380px] px-5">
         <div className="flex flex-col lg:flex-row  gap-6">
-          <div>
-            <ProductGallery images={product.images} className="md:w-1/3" />
+          <div className="md:w-2/3">
+            <ProductGallery images={product.images} className="" />
 
             <BuySection
               productCompound={product.compound}
@@ -51,7 +51,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
               product={product}
             />
           </div>
-          <div className="md:w-full lg:w-2/3">
+          <div className="md:w-full">
             <BuySection
               productCompound={product.compound}
               productEpsiodeId={product.episode_number}

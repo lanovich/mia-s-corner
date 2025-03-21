@@ -9,6 +9,7 @@ interface Props {
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
   const defaultSize = product.product_sizes.find((size) => size.is_default)
+  const imageUrl = product.images?.[0]?.url ?? "/placeholder.jpg"
 
   return (
     <Link
@@ -18,7 +19,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       <div className="relative aspect-[9/16] overflow-hidden rounded-lg transition-transform duration-300 md:hover:scale-105 bg-gray-200">
         {/* Product Image */}
         <Image
-          src={product.images[0].url ||"/placeholder.jpg"}
+          src={imageUrl}
           width={300}
           height={400}
           className="h-full w-full object-cover hover:sepia md:hover:sepia-0 duration-300 rounded-lg"

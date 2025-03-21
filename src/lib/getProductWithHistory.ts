@@ -25,8 +25,6 @@ export const getProductWithHistory = async (
     .eq("category_slug", categorySlug)
     .maybeSingle();
 
-  console.log(data);
-
   if (error) {
     console.error(`❌ Ошибка загрузки товара с историей и деталями:`, error);
     return null;

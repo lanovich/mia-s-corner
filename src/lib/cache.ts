@@ -11,7 +11,7 @@ import { getHistories as fetchHistories } from "@/lib";
 import { getProductsByHistory as fetchProductsByHistory } from "@/lib";
 import { getHistoryById as fetchHistoriesById } from "@/lib";
 
-const REVALIDATE_TIME = 3600;
+const REVALIDATE_TIME = 600;
 
 export const getCategories = unstable_cache(fetchCategories, ["categories"], {
   revalidate: REVALIDATE_TIME,
