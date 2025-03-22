@@ -1,0 +1,1 @@
+const PLACEHOLDER_IMAGE = "/Placeholder.jpg"

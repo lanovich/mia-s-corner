@@ -31,7 +31,7 @@ export const AboutContent: React.FC<Props> = ({ fragrances }) => {
       <motion.p
         className="text-lg md:text-xl text-gray-700 mb-6"
         variants={itemVariants}
-      >
+        >
         Каждый наш аромат — часть истории. Названия связаны между собой,
         создавая единую линию повествования, который каждый понимает по своему.
       </motion.p>
@@ -39,7 +39,7 @@ export const AboutContent: React.FC<Props> = ({ fragrances }) => {
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
         variants={containerVariants}
-      >
+        >
         {fragrances.map(({ title, story, image }, index) => (
           <motion.div
             key={index}

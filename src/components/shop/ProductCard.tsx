@@ -8,26 +8,33 @@ interface Props {
 }
 
 export const ProductCard: React.FC<Props> = ({ product }) => {
-  const defaultSize = product.product_sizes.find((size) => size.is_default)
-  const imageUrl = product.images?.[0]?.url ?? "/placeholder.jpg"
+  const defaultSize = product.product_sizes.find((size) => size.is_default);
+  const imageUrl = product.images?.[0]?.url ?? "/placeholder.jpg";
 
   return (
     <Link
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
       className="group block select-none"
     >
-      <div className="relative aspect-[9/16] overflow-hidden rounded-lg transition-transform duration-300 md:hover:scale-105 bg-gray-200">
+      {/* Основной контейнер без overflow-hidden */}
+      <div className="relative rounded-lg transition-transform duration-300 md:hover:scale-105 bg-gray-200">
+        {/* Эпизод */}
+        <div className="z-50 absolute -top-2 -left-1 bg-black/70 text-white text-sm px-2 py-1 rounded-full shadow-md overflow-visible">
+          Эпизод {product.episode_number}
+        </div>
+
         {/* Product Image */}
-        <Image
-          src={imageUrl}
-          width={300}
-          height={400}
-          className="h-full w-full object-cover hover:sepia md:hover:sepia-0 duration-300 rounded-lg"
-          alt={product.title}
-        />
+        <div className="relative aspect-[3/4]">
+          <Image
+            src={imageUrl}
+            fill
+            className="object-cover hover:sepia md:hover:sepia-0 duration-300 rounded-t-lg"
+            alt={product.title}
+          />
+        </div>
 
         {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
-        <div className="absolute bottom-0 z-10 w-full bg-white/30 backdrop-blur-md px-2 py-2">
+        <div className="p-2 bg-slate-50 shadow-md rounded-b-lg">
           <div>
             <span className="text-sm line-clamp-1">{product.compound}</span>
             <p className="text-xs text-black/50 line-clamp-1">
@@ -40,7 +47,10 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               {defaultSize?.size?.size} {product.measure}
             </span>
           </div>
-          <AddToCartButton selectedSize={defaultSize || null} className="w-full">
+          <AddToCartButton
+            selectedSize={defaultSize || null}
+            className="w-full"
+          >
             Добавить в корзину
           </AddToCartButton>
         </div>

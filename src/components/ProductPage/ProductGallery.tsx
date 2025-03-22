@@ -19,6 +19,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const { left, top, width, height } =
@@ -64,6 +65,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
         className="w-[400px] h-[500px] flex-1"
+        onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
       >
         {images.map(({ type, url }, index) => (
           <SwiperSlide
@@ -78,7 +80,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
               if (window.innerWidth >= 768) handleMouseMove(e);
             }}
           >
-            <div className="rounded-lg overflow-hidden w-[400px] h-[500px]">
+            <div className="rounded-lg overflow-hidden w-[400px] h-[500px] relative">
               <Image
                 src={url}
                 fill
@@ -86,7 +88,9 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
                 className="object-cover rounded-lg transition-transform duration-300"
                 style={{
                   transform:
-                    isHovered && window.innerWidth >= 768
+                    isHovered &&
+                    window.innerWidth >= 768 &&
+                    activeIndex === index
                       ? "scale(1.5)"
                       : "scale(1)",
                   transformOrigin: `${cursorPosition.x}% ${cursorPosition.y}%`,
