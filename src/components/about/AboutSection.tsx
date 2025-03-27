@@ -15,7 +15,7 @@ export const AboutSection = () => {
 
   return (
     <section ref={ref} className="w-full mb-16">
-      <div className="relative flex flex-col md:flex-row mt-5 justify-between overflow-hidden px-4 text-center md:text-start">
+      <div className="relative flex flex-col md:flex-row justify-between overflow-hidden px-4 text-center md:text-start">
         {/* Текстовый блок */}
         <div className="flex flex-col space-y-6 w-full md:w-1/2 mt-5 md:mt-28">
           <motion.h2

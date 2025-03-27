@@ -69,7 +69,7 @@ export function ImageCarousel({ children }: ImageCarouselProps) {
       </Swiper>
 
       {/* Точки навигации */}
-      <div className="flex gap-1 py-4 justify-center">
+      <div className="flex gap-2 py-4 justify-center">
         {React.Children.map(children, (_, index) => (
           <button
             key={index}

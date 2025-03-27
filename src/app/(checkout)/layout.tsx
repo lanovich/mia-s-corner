@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "../globals.css";
 import { Footer, Header } from "@/components/shared";
 import { Toaster } from "sonner";
+import { metadata as rootMetadata } from "@/app/(root)/layout";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -11,9 +12,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Mia's Corner",
-  description:
-    "Магазин ароматических свечей, аромадиффузоров, аромасаше, скрабов",
+  ...rootMetadata,
+  title: "Оформление заказа | Mia's Corner",
 };
 
 export default function RootLayout({
@@ -24,8 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.variable} antialiased`}>
-        <main>
-          <Header hideCartButton={true} />
+        <main className="min-h-screen">
+          <Header />
           {children}
         </main>
         <Footer />

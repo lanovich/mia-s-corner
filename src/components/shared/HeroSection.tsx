@@ -1,6 +1,6 @@
 import { cn } from "@/lib";
 import Image from "next/image";
-import Link from "next/link";
+import { GoToButton } from "../shop/ui";
 
 interface HeroSectionProps {
   title: string;
@@ -13,6 +13,7 @@ interface HeroSectionProps {
   buttonText?: string;
   buttonPosition?: "left" | "right" | "center";
   className?: string;
+  target?: string;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -26,6 +27,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   buttonText,
   buttonPosition,
   className,
+  target,
 }) => {
   const textXPositionClasses = {
     left: "items-start",
@@ -62,7 +64,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       }}
     >
       {/* Текст */}
-      <div className="relative z-10 max-w-2xl text-center">
+      <div className="relative z-10 max-w-2xl text-center ">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-800">
           {title}
         </h2>
@@ -95,11 +97,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               : textXPositionClasses[textXPosition]
           )}
         >
-          <Link href={buttonUrl} target="_blank">
-            <button className="rounded-full bg-black px-6 py-2 sm:px-8 sm:py-3 text-base sm:text-lg font-medium text-white transition-all duration-300 hover:bg-gray-800 shadow-lg">
-              {buttonText}
-            </button>
-          </Link>
+          <GoToButton href={buttonUrl} label={buttonText} target={target} />
         </div>
       )}
     </div>
