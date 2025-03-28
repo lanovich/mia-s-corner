@@ -31,10 +31,11 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
 
   return (
     <div className={cn("flex gap-4 items-center h-[500px]", className)}>
+      {/* Миниатюры (вертикальные) */}
       <div className="h-[480px] hidden md:flex">
         <Swiper
           direction="vertical"
-          spaceBetween={5}
+          spaceBetween={8}
           slidesPerView={4}
           freeMode={true}
           watchSlidesProgress
@@ -42,26 +43,30 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
           className="w-[70px] h-[500px]"
         >
           {images.map(({ type, url }, index) => (
-            <SwiperSlide key={index} className="cursor-pointer">
-              <Image
-                src={url ?? "/placeholder.jpg"}
-                width={70}
-                height={70}
-                alt={`Thumbnail ${type}`}
-                className="rounded-md object-cover"
-              />
+            <SwiperSlide
+              key={index}
+              className="cursor-pointer !h-[calc(25%-6px)]"
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={url ?? "/placeholder.jpg"}
+                  fill
+                  alt={`Thumbnail ${type}`}
+                  className="rounded-md object-cover"
+                />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      {/* Основное изображение */}
+      {/* Основной слайдер */}
       <Swiper
         navigation={{
           nextEl: ".custom-next",
           prevEl: ".custom-prev",
         }}
-        spaceBetween={10}
+        spaceBetween={8}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
         className="w-[400px] h-[500px] flex-1"
@@ -70,6 +75,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
         {images.map(({ type, url }, index) => (
           <SwiperSlide
             key={index}
+            className="!flex items-center justify-center"
             onMouseEnter={() => {
               if (window.innerWidth >= 768) setIsHovered(true);
             }}
@@ -80,7 +86,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
               if (window.innerWidth >= 768) handleMouseMove(e);
             }}
           >
-            <div className="rounded-lg overflow-hidden w-[400px] h-[500px] relative">
+            <div className="rounded-lg overflow-hidden w-full h-full relative">
               <Image
                 src={url}
                 fill

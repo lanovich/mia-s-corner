@@ -15,7 +15,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
   const params = await props.params;
   const categorySlug = params.categorySlug;
   const productSlug = params.productSlug;
-  
+
   const product = await getProductWithHistory(categorySlug, productSlug);
 
   if (!product) {
@@ -33,8 +33,8 @@ export default async function ProductPage(props: { params: ProductParams }) {
     <>
       <Breadcrumbs categorySlug={categorySlug} productTitle={product.title} />
       <Container className="max-w-[1380px] px-5">
-        <div className="flex flex-col lg:flex-row  gap-6">
-          <div className="md:w-2/3">
+        <div className="flex flex-col md:flex-row  gap-6">
+          <div className="md:w-1/2">
             <ProductGallery images={product.images} className="" />
 
             <BuySection
@@ -68,7 +68,11 @@ export default async function ProductPage(props: { params: ProductParams }) {
         </div>
 
         <div className="w-full">
-          <SimilarProducts historyId={product.history_id} className="mt-7" productId={product.id} />
+          <SimilarProducts
+            historyId={product.history_id}
+            className="mt-7"
+            productId={product.id}
+          />
         </div>
 
         <div className="flex md:hidden">
