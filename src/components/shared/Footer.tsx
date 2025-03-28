@@ -8,7 +8,7 @@ export const Footer = () => {
       <Container>
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
           <div className="text-center md:text-left">
-            <h2 className="text-xl font-bold">Mia's Corner</h2>
+            <h2 className="text-xl font-bold">Mia's Corner | Санкт-Петербург</h2>
             <p className="text-gray-400 text-sm mt-1">
               Каждый наш аромат - часть истории
             </p>

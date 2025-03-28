@@ -2,14 +2,24 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
+    remotePatterns: [{ hostname: "bnwhijouenwykeezlhxx.supabase.co" }],
+  },
+  async headers() {
+    return [
       {
-        hostname: "img.freepik.com",
+        source: "/:path*",
+        headers: [
+          {
+            key: "X-Vercel-Country",
+            value: "RU",
+          },
+          {
+            key: "Content-Language",
+            value: "ru",
+          },
+        ],
       },
-      { hostname: "i.pinimg.com" },
-      { hostname: "cozyhome.ru" },
-      { hostname: "bnwhijouenwykeezlhxx.supabase.co" }
-    ],
+    ];
   },
 };
 
