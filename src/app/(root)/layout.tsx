@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "../globals.css";
 import { Footer, Header, MobileCartButton } from "@/components/shared";
 import { Toaster } from "sonner";
+import { CookieBanner } from "@/components/shared/CookieBanner";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
@@ -104,6 +105,7 @@ export default function RootLayout({
           <Header />
           {children}
           <MobileCartButton />
+          <CookieBanner />
         </main>
         <Footer />
         <Toaster />
