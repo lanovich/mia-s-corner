@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     "geo.placename": "Saint Petersburg, Russia",
     "geo.region": "RU-SPB",
 
-    "yandex-verification": "e0404b3d6902a9ca",
+    "yandex-verification": "ce248331bf85f524",
     yandex: "enable",
   },
 
