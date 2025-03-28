@@ -19,7 +19,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
       {/* Основной контейнер без overflow-hidden */}
       <div className="relative rounded-lg transition-transform duration-300 md:hover:scale-105 bg-gray-200">
         {/* Эпизод */}
-        <div className="z-50 absolute -top-2 -left-1 bg-black/70 text-white text-sm px-2 py-1 rounded-full shadow-md overflow-visible">
+        <div className="z-40 absolute -top-2 -left-1 bg-black/70 text-white text-sm px-2 py-1 rounded-full shadow-md overflow-visible">
           Эпизод {product.episode_number}
         </div>
 
