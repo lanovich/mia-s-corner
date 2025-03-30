@@ -12,7 +12,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mias-corner.ru"),
+  metadataBase: new URL("https://www.mias-corner.ru"),
   title: "Mia's Corner | Ароматические свечи, диффузоры, духи",
   description:
     "Ароматические свечи и диффузоры ручной работы в Санкт-Петербурге. Каждый аромат - часть уникальной истории. Доставка по СПБ и ЛО. Натуральные компоненты. Свечи на заказ. ",
@@ -22,11 +22,11 @@ export const metadata: Metadata = {
     title: "Mia's Corner - Магазин ароматической продукции",
     description:
       "Ароматические продукты ручной работы из натуральных компонентов",
-    url: "https://mias-corner.ru",
+    url: "https://www.mias-corner.ru",
     siteName: "Mia's Corner",
     images: [
       {
-        url: "https://mias-corner.ru/og.jpg",
+        url: "https://www.mias-corner.ru/og.jpg",
         width: 1200,
         height: 630,
         alt: "Ароматическая продукция Mia's Corner",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     type: "website",
   },
 
-  authors: [{ name: "Mia's Corner", url: "https://mias-corner.ru" }],
+  authors: [{ name: "Mia's Corner", url: "https://www.mias-corner.ru" }],
   creator: "Mia's Corner",
   publisher: "Mia's Corner",
   formatDetection: {
@@ -96,7 +96,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://mias-corner.ru",
+    canonical: "https://www.mias-corner.ru",
   },
 
   manifest: "/site.webmanifest",
