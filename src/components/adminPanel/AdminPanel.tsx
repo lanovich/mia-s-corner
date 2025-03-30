@@ -27,3 +27,4 @@ export const AdminPanel = async () => {
     </Container>
   );
 };
+

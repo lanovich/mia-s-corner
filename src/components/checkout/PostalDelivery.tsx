@@ -1,6 +1,6 @@
 "use client";
 import { useDeliveryStore } from "@/store/useDeliveryStore";
-import { FormInput } from "./FormInput";
+import { FormInput } from "../shared/FormInput";
 import { FormTextarea } from "./FormTextarea";
 import { cn } from "@/lib";
 

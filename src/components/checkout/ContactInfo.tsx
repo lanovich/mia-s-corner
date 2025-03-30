@@ -1,5 +1,5 @@
 "use client";
-import { FormInput } from "./FormInput";
+import { FormInput } from "../shared/FormInput";
 
 interface Props {
   className?: string;

@@ -1,7 +1,7 @@
 "use client";
 import { getDeliveryPrice } from "@/lib/getDeliveryPrice";
 import { Button } from "../shadcn-ui/button";
-import { FormInput } from "./FormInput";
+import { FormInput } from "../shared/FormInput";
 import { FormTextarea } from "./FormTextarea";
 import { cn } from "@/lib";
 import { useMemo } from "react";
@@ -119,18 +119,18 @@ export const DeliveryForm: React.FC<Props> = ({ className }) => {
         {/* Кнопка */}
         {deliveryPrice ? (
           <Button
-          className="rounded-lg"
-          type="button"
-          onClick={handleResetAddress}
+            className="rounded-lg"
+            type="button"
+            onClick={handleResetAddress}
           >
             Изменить адрес
           </Button>
         ) : (
           <Button
-          className="rounded-lg"
-          type="button"
-          onClick={handleGetDeliveryPrice}
-          disabled={!isAllFieldsFilled}
+            className="rounded-lg"
+            type="button"
+            onClick={handleGetDeliveryPrice}
+            disabled={!isAllFieldsFilled}
           >
             Рассчитать стоимость доставки
           </Button>

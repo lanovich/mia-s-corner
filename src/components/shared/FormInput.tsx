@@ -1,8 +1,8 @@
 import React from "react";
 import { Input } from "../shadcn-ui/input";
 import * as RHF from "react-hook-form";
-import { ErrorText } from "./ErrorText";
-import { ClearButton } from "./ClearButton";
+import { ErrorText } from "../checkout/ErrorText";
+import { ClearButton } from "../checkout/ClearButton";
 import { cn } from "@/lib";
 import debounce from "lodash.debounce";
 
