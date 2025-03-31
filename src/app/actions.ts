@@ -132,6 +132,8 @@ export async function createOrder(
       amount: order.fullPrice,
       orderId: order.id,
       description: `Оплата заказа #${order.id}`,
+      customerEmail: order.email,
+      items: order.items,
     });
 
     if (!paymentData?.id) {
