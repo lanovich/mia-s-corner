@@ -70,6 +70,7 @@ export default function CheckoutPage() {
 
       setSubmitting(true);
       const paymentUrl = await createOrder(data, deliveryPrice);
+      console.log(paymentUrl);
 
       await clearCart();
 
@@ -121,7 +122,11 @@ export default function CheckoutPage() {
               className="w-full bg-black text-white py-3 rounded-lg"
               type="submit"
               form="orderForm"
-              disabled={loading || selectedDeliveryMethod==="fastDelivery" && deliveryPrice === 0}
+              disabled={
+                loading ||
+                (selectedDeliveryMethod === "fastDelivery" &&
+                  deliveryPrice === 0)
+              }
             >
               {submitting ? "Оформление..." : "Подтвердить заказ"}
             </Button>
