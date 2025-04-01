@@ -15,3 +15,4 @@ export { getSimilarProducts } from "./getSimilarProducts";
 export { getProductsByHistory } from "./getProductsByHistory";
 export { getHistories } from "./getHistories";
 export { getHistoryById } from "./getHistoryById";
+export { getAllProductsWithCategories } from "./getAllProductsWithCategories";
