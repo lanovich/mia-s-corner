@@ -8,23 +8,22 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/shadcn-ui/select";
-import { Input } from "@/components/shadcn-ui/input";
-import { ProductOption } from "@/types/ProductOption";
 import { useAdminStore } from "@/store/useAdminStore";
+import { CategoryOption } from "@/types";
 
-interface SelectProductFieldProps {
+interface SelectCategoryFieldProps {
   className?: string;
-  value?: ProductOption;
-  options?: ProductOption[];
+  value?: CategoryOption;
+  options?: CategoryOption[];
 }
 
-export const SelectProductField: React.FC<SelectProductFieldProps> = ({
+export const SelectCategoryField: React.FC<SelectCategoryFieldProps> = ({
   className,
   value,
   options = [],
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { setSelectedProduct } = useAdminStore();
+  const { setSelectedCategory } = useAdminStore();
 
   const filteredOptions = options.filter(
     (option) =>
@@ -35,46 +34,35 @@ export const SelectProductField: React.FC<SelectProductFieldProps> = ({
   const handleSelectChange = async (id: string) => {
     const selected = options.find((opt) => opt.id.toString() === id);
     if (selected) {
-      setSelectedProduct(selected);
+      setSelectedCategory(selected);
     }
   };
 
   return (
     <div className={className}>
-      <p className="text-gray-500 text-sm mb-2">Название, аромат, количество</p>
+      <p className="text-gray-500 text-sm mb-2">Категория, количество</p>
       <Select value={value?.id.toString()} onValueChange={handleSelectChange}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Выбери продукт"></SelectValue>
+          <SelectValue placeholder="Выбери категорию"></SelectValue>
         </SelectTrigger>
 
         <SelectContent>
-          <div className="p-2 border-b">
-            <Input
-              placeholder="Поиск товаров..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border-0 focus-visible:ring-0"
-            />
-          </div>
-
           <div className="max-h-[300px] overflow-y-auto">
             {filteredOptions.length > 0 ? (
-              filteredOptions.map((product) => (
+              filteredOptions.map((category) => (
                 <SelectItem
-                  key={product.id}
-                  value={product.id.toString()}
+                  key={category.id}
+                  value={category.id.toString()}
                   className="cursor-pointer"
                 >
                   <div className="flex gap-10">
                     <div className="text-sm font-medium">
-                      кол-во: {(Number(product.quantity) < 10 ? `0${product.quantity}` : product.quantity) ?? 0}
+                      кол-во:{" "}
+                      {(Number(category.quantity) < 10
+                        ? `0${category.quantity}`
+                        : category.quantity) ?? 0}
                     </div>
-                    <div className="font-medium">{product.title}</div>
-                    {product.compound && (
-                      <div className="text-sm text-gray-500">
-                        {product.compound}
-                      </div>
-                    )}
+                    <div className="font-medium">{category.title}</div>
                   </div>
                 </SelectItem>
               ))
