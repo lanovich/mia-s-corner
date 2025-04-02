@@ -1,8 +1,8 @@
 import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import {
-  CategoryProduct,
   ProductsByCategory,
 } from "./getProductsGroupedByCategory";
+import { CategoryProduct } from "@/types/CategoryProduct";
 
 interface CurrentProductResult {
   categorySlug: string;

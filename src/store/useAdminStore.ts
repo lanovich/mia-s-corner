@@ -1,5 +1,5 @@
-import { SizeDetails } from "@/lib/getProductsGroupedByCategory";
 import { ProductOption, CategoryOption } from "@/types";
+import { SizeDetails } from "@/types/SizeDetails";
 import { create } from "zustand";
 
 interface AdminStore {
