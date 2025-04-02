@@ -11,6 +11,7 @@ export const LINKS = {
   CONTACTS: "contacts",
   VK: "https://vk.com/miascorner",
   TELEGRAM: "https://t.me/mias_corner",
+  TELEGRAM_SUPPORT: "https://t.me/mias_corner_support",
   PINTEREST: "https://ru.pinterest.com/mias_corner/",
   GMAIL: "miascorner.business@gmail.com",
 };

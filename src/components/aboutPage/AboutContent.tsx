@@ -47,15 +47,6 @@ export const AboutContent: React.FC<Props> = ({ fragrances }) => {
             variants={itemVariants}
             whileHover={{ scale: 1.02 }}
           >
-            <div className="w-full h-48 relative rounded-lg overflow-hidden mb-4">
-              <Image
-                src={image}
-                alt={title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            </div>
             <h3 className="text-xl font-bold text-gray-900 text-center mb-4">
               {title}
             </h3>

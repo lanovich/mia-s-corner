@@ -4,15 +4,26 @@ import Link from "next/link";
 export const ContactDetails = () => (
   <div className="space-y-8 text-center">
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-2 min-w-[512px]">Контакты</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-2">Контакты</h2>
       <p className="text-gray-700">
         Email:{" "}
-        <Link
+        <a
+          target="_blank"
           href={`mailto:${LINKS.GMAIL}`}
           className="text-black hover:underline"
         >
           {LINKS.GMAIL}
-        </Link>
+        </a>
+      </p>
+      <p className="text-gray-700">
+        Telegram:{" "}
+        <a
+          target="_blank"
+          href={`${LINKS.TELEGRAM_SUPPORT}`}
+          className="text-black hover:underline"
+        >
+          {"@mias_corner_support"}
+        </a>
       </p>
     </div>
 
@@ -47,17 +58,17 @@ export const ContactDetails = () => (
     </div>
     <div>
       <h2 className="text-2xl font-bold text-gray-900 mb-4">Реквизиты</h2>
-      <ul className="space-y-2 text-gray-700">
-        <li className="flex justify-between mx-auto">
+      <ul className="flex flex-col  justify-between space-y-2 text-gray-700">
+        <li className="flex justify-between">
           <span className="font-medium">ИП:</span>
           <span>Добромыслова Мария Алексеевна</span>
         </li>
-        <li className="flex justify-between mx-auto">
-          <span className="font-medium">ИНН:</span>
+        <li className="flex justify-between">
+          <span className="font-medium">ИНН: </span>
           <span>352841176253</span>
         </li>
-        <li className="flex justify-between mx-auto">
-          <span className="font-medium">ОГРНИП:</span>
+        <li className="flex justify-between">
+          <span className="font-medium">ОГРНИП: </span>
           <span>324350000060030</span>
         </li>
       </ul>

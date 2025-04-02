@@ -18,9 +18,6 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
           placeholder="Город"
           name="city"
           defaultValue="Санкт-Петербург"
-          readOnly
-          disabled
-          noChange={true}
         />
 
         {/* Улица */}

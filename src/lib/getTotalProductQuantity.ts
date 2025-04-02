@@ -1,7 +1,5 @@
 import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import { supabase } from "./supabase";
-
-// Типы вынесены для лучшей читаемости
 interface ProductSizeRow {
   id: number;
   quantity_in_stock: number;

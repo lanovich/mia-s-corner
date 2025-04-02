@@ -14,8 +14,8 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
       <h4 className="text-base font-semibold mb-2">{title}</h4>
       <div className="border-b-2 mb-4 pb-2">
         {details.map((detail, index) => (
-          <div key={index} className="flex mb-1">
-            <span className="text-gray-500 min-w-[120px]">{detail.label}:</span>
+          <div key={index} className="flex gap-10 space-y-1">
+            <span className="text-gray-500 min-w-[120px] max-w-[120px] leading-4 mt-2">{detail.label}:</span>
             <span className="flex-1">{detail.value || "Не указан"}</span>
           </div>
         ))}

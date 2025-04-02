@@ -18,6 +18,7 @@ export const FormTextarea: React.FC<Props> = ({
   name,
   label,
   required,
+  disabled,
   ...props
 }) => {
   const {
@@ -45,7 +46,7 @@ export const FormTextarea: React.FC<Props> = ({
             errorText ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           )}
         />
-        {value && (
+        {value && !disabled && (
           <ClearButton
             onClick={onClearClick}
             className="absolute right-2 top-1/2 -translate-y-1/2"

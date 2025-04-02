@@ -17,6 +17,8 @@ export const EpisodeBlock: React.FC<EpisodeBlockProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(true);
 
+  const formattedText = episodeText?.replace(/\n/g, '\n');
+
   return (
     <div className="bg-gray-100 p-4 rounded-lg">
       <h2 className="text-xl font-bold">Эпизод {episodeNumber}</h2>
@@ -25,12 +27,12 @@ export const EpisodeBlock: React.FC<EpisodeBlockProps> = ({
       <div className="relative">
         <p
           className={cn(
-            "border-b-2 pb-3 border-neutral-200 cursor-pointer overflow-hidden transition-all duration-300 ease-in-out",
-            expanded ? "max-h-[30rem] opacity-100" : "max-h-12 opacity-80"
+            "border-b-2 pb-3 border-neutral-200 cursor-pointer overflow-hidden transition-all duration-300 ease-in-out whitespace-pre-wrap",
+            expanded ? "max-h-[500rem]" : "max-h-12"
           )}
           onClick={() => setExpanded(!expanded)}
         >
-          {episodeText}
+          {formattedText}
         </p>
 
         {/* Кнопка для разворачивания/сворачивания */}
@@ -46,9 +48,7 @@ export const EpisodeBlock: React.FC<EpisodeBlockProps> = ({
 
       {/* Аромат (с эффектом blur) */}
       {compound && (
-        <p className="mt-1 text-lg font-bold w-fit text-gray-700">
-          {compound}
-        </p>
+        <p className="mt-1 text-lg font-bold w-fit text-gray-700">{compound}</p>
       )}
     </div>
   );

@@ -36,7 +36,7 @@ export const DeliveryMethods: React.FC<Props> = ({ className }) => {
           value="fastDelivery"
           checked={selectedDeliveryMethod === "fastDelivery"}
           onChange={() => handleToggleDeliveryPrice("fastDelivery", 0)}
-          label="Курьер — в течение дня"
+          label="Курьер по СПб и ЛО — в течение дня"
           price="от 199 ₽"
         />
         <RadioButton

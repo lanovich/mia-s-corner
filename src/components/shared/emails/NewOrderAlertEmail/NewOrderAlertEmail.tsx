@@ -11,6 +11,8 @@ interface NewOrderAlertEmailProps {
   customerName: string;
   customerPhone: string;
   customerEmail: string;
+  deliveryComment?: string;
+  wishes?: string;
   deliveryAddress?: {
     city: string;
     street: string;
@@ -19,7 +21,6 @@ interface NewOrderAlertEmailProps {
     floor?: string;
     flat?: string;
   };
-  status: string;
 }
 
 export const NewOrderAlertEmail: React.FC<NewOrderAlertEmailProps> = ({
@@ -27,12 +28,13 @@ export const NewOrderAlertEmail: React.FC<NewOrderAlertEmailProps> = ({
   fullPrice,
   deliveryPrice,
   items,
+  wishes,
+  deliveryComment,
   deliveryMethod,
   customerName,
   customerPhone,
   customerEmail,
   deliveryAddress,
-  status,
 }) => {
   const parsedItems: OrderItem[] = JSON.parse(items);
 
@@ -85,6 +87,15 @@ export const NewOrderAlertEmail: React.FC<NewOrderAlertEmailProps> = ({
               <strong>Квартира:</strong> {deliveryAddress.flat}
             </p>
           )}
+
+          <h2 style={styles.sectionTitle}>Комментарии:</h2>
+          <p style={styles.description}>
+            <strong>Пожелания к заказу: </strong> {wishes}
+          </p>
+
+          <p style={styles.description}>
+            <strong>Комментарий курьеру: </strong> {deliveryComment}
+          </p>
         </>
       )}
 

@@ -38,28 +38,37 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
   }, [fullPrice]);
 
   return (
-    <CartDrawer>
-      <div className={"flex items-center gap-2 h-full"}>
-        <Button className={cn("relative flex items-center gap-2 px-4 py-2 w-24", className)}>
-          <motion.p className="flex items-center justify-center">
-            {scrambledPrice} ₽
-          </motion.p>
-
-          <ShoppingBag />
-
-          {cart.length > 0 && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20 }}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-green-500 text-white text-xs flex items-center justify-center rounded-full"
+    <>
+      {
+        <CartDrawer>
+          <div className={"flex items-center gap-2 h-full"}>
+            <Button
+              className={cn(
+                "relative flex items-center gap-2 px-4 py-2 w-24",
+                className
+              )}
             >
-              {cart.length}
-            </motion.div>
-          )}
-        </Button>
-      </div>
-    </CartDrawer>
+              <motion.p className="flex items-center justify-center">
+                {scrambledPrice} ₽
+              </motion.p>
+
+              <ShoppingBag />
+
+              {cart.length > 0 && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                  className="absolute -top-2 -right-2 w-5 h-5 bg-green-500 text-white text-xs flex items-center justify-center rounded-full"
+                >
+                  {cart.length}
+                </motion.div>
+              )}
+            </Button>
+          </div>
+        </CartDrawer>
+      }
+    </>
   );
 };

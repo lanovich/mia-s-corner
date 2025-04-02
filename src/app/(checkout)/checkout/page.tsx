@@ -125,7 +125,7 @@ export default function CheckoutPage() {
               disabled={
                 loading ||
                 (selectedDeliveryMethod === "fastDelivery" &&
-                  deliveryPrice === 0)
+                  deliveryPrice === 0 || fullPrice === 0)
               }
             >
               {submitting ? "Оформление..." : "Подтвердить заказ"}

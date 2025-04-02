@@ -68,6 +68,8 @@ export async function POST(req: NextRequest) {
           customerName: order.name,
           customerPhone: order.phone,
           customerEmail: order.email,
+          deliveryComment: order.comment,
+          wishes: order.wishes,
           deliveryAddress: {
             city: order.city,
             street: order.street,
@@ -76,7 +78,6 @@ export async function POST(req: NextRequest) {
             floor: order.sfloor,
             flat: order.sflat,
           },
-          status: order.status,
         }
       );
     }

@@ -65,12 +65,10 @@ export const DeliveryForm: React.FC<Props> = ({ className }) => {
       <div className="space-y-2">
         {/* Город */}
         <FormInput
-          placeholder="Город"
+          placeholder="Город (СПб и ЛО)"
           name="city"
           defaultValue="Санкт-Петербург"
-          readOnly
-          disabled
-          noChange={true}
+          disabled={!!deliveryPrice}
         />
 
         {/* Улица */}

@@ -23,7 +23,7 @@ export const getProductsByCategory = async (
     return [];
   }
 
-  const formattedData = data.map((product: Product) => ({
+  const formattedData = data.sort((a, b) => a.episode_number - b.episode_number).map((product: Product) => ({
     ...product,
     product_sizes: product.product_sizes.map((productSize) => ({
       ...productSize,

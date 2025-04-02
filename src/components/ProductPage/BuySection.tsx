@@ -24,6 +24,8 @@ export const BuySection: React.FC<Props> = ({
 }) => {
   const [expanded, setExpanded] = useState(true);
 
+  const formattedEpisode = productEpisode?.replace(/\n/g, "\n");
+
   return (
     <div
       className={cn(
@@ -43,12 +45,12 @@ export const BuySection: React.FC<Props> = ({
           <div className="relative">
             <p
               className={cn(
-                "border-b-2 pb-3 border-neutral-200 cursor-pointer overflow-hidden transition-all duration-50 ease-in-out",
-                expanded ? "max-h-[30rem] opacity-100" : "max-h-10 opacity-80"
+                "border-b-2 pb-3 border-neutral-200 cursor-pointer overflow-hidden transition-all duration-300 ease-in-out whitespace-pre-wrap",
+                expanded ? "max-h-[500rem]" : "max-h-12"
               )}
               onClick={() => setExpanded(!expanded)}
             >
-              {productEpisode}
+              {formattedEpisode}
             </p>
             <span className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-inherit z-20">
               <button onClick={() => setExpanded(!expanded)}>

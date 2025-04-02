@@ -32,41 +32,23 @@ export const AboutQuestions = () => {
         variants={containerVariants}
       >
         <motion.div
-          className=" bg-white p-6 md:p-8 rounded-lg shadow-md aspect-square flex flex-col items-center justify-between"
+          className=" bg-white p-6 md:p-8 rounded-lg shadow-md flex flex-col items-center justify-between"
           variants={itemVariants}
         >
           <p className="text-md md:text-lg text-gray-900 text-center">
             Может, это теплое летнее утро в деревне, где воздух наполнен
             сладостью цветущих лугов?
           </p>
-          <div className="w-full h-full relative rounded-lg overflow-hidden mt-4">
-            <Image
-              src="/morning.jpg"
-              alt="Утро в деревне"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
         </motion.div>
 
         <motion.div
-          className="bg-white p-6 md:p-8 rounded-lg shadow-md aspect-square flex flex-col items-center justify-between"
+          className="bg-white p-6 md:p-8 rounded-lg shadow-md flex flex-col items-center justify-between"
           variants={itemVariants}
         >
           <p className="text-md md:text-lg text-gray-900 text-center">
             Или, быть может, это история о ней — той самой девушке, которая
             влюбилась в простого парня из соседней деревни?
           </p>
-          <div className="w-full h-full relative rounded-lg overflow-hidden mt-4">
-            <Image
-              src="/lubov.jpg"
-              alt="Утро в деревне"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-          </div>
         </motion.div>
       </motion.div>
 
