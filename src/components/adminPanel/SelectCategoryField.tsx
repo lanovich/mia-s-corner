@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Select,
   SelectTrigger,
@@ -22,14 +22,13 @@ export const SelectCategoryField: React.FC<SelectCategoryFieldProps> = ({
   value,
   options = [],
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const { setSelectedCategory } = useAdminStore();
+  const { setSelectedCategory, selectedCategory } = useAdminStore();
 
-  const filteredOptions = options.filter(
-    (option) =>
-      option.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      option.compound?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    if (options.length > 0 && !selectedCategory) {
+      setSelectedCategory(options[0]);
+    }
+  }, [options, selectedCategory, setSelectedCategory]);
 
   const handleSelectChange = async (id: string) => {
     const selected = options.find((opt) => opt.id.toString() === id);
@@ -38,18 +37,25 @@ export const SelectCategoryField: React.FC<SelectCategoryFieldProps> = ({
     }
   };
 
+  const currentValue =
+    value?.id.toString() ||
+    selectedCategory?.id.toString() ||
+    (options.length > 0 ? options[0].id.toString() : undefined);
+
   return (
     <div className={className}>
-      <p className="text-gray-500 text-sm mb-2">Категория, количество</p>
-      <Select value={value?.id.toString()} onValueChange={handleSelectChange}>
+      <Select value={currentValue} onValueChange={handleSelectChange}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Выбери категорию"></SelectValue>
+          <SelectValue placeholder="Выбери категорию">
+            {selectedCategory?.title ||
+              (options.length > 0 ? options[0].title : "Выбери категорию")}
+          </SelectValue>
         </SelectTrigger>
 
         <SelectContent>
           <div className="max-h-[300px] overflow-y-auto">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((category) => (
+            {options.length > 0 ? (
+              options.map((category) => (
                 <SelectItem
                   key={category.id}
                   value={category.id.toString()}
@@ -57,10 +63,7 @@ export const SelectCategoryField: React.FC<SelectCategoryFieldProps> = ({
                 >
                   <div className="flex gap-10">
                     <div className="text-sm font-medium">
-                      кол-во:{" "}
-                      {(Number(category.quantity) < 10
-                        ? `0${category.quantity}`
-                        : category.quantity) ?? 0}
+                      кол-во: {category.quantity}
                     </div>
                     <div className="font-medium">{category.title}</div>
                   </div>

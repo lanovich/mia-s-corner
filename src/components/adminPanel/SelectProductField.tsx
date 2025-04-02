@@ -1,13 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/shadcn-ui/select";
+import {Select, SelectTrigger, SelectValue, SelectContent, SelectItem} from "@/components/shadcn-ui/select";
 import { Input } from "@/components/shadcn-ui/input";
 import { ProductOption } from "@/types/ProductOption";
 import { useAdminStore } from "@/store/useAdminStore";
@@ -41,7 +35,6 @@ export const SelectProductField: React.FC<SelectProductFieldProps> = ({
 
   return (
     <div className={className}>
-      <p className="text-gray-500 text-sm mb-2">Название, аромат, количество</p>
       <Select value={value?.id.toString()} onValueChange={handleSelectChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Выбери продукт"></SelectValue>

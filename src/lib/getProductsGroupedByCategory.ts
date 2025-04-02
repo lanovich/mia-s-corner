@@ -1,5 +1,7 @@
 import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import { supabase } from "./supabase";
+import { SizeDetails } from "@/types/SizeDetails";
+import { CategoryProduct } from "@/types/CategoryProduct";
 
 interface Size {
   id: number;
@@ -26,33 +28,6 @@ interface Product {
   slug: string;
   category_slug: string;
   category_name?: string;
-}
-
-export interface SizeDetails {
-  id: number;
-  timeOfExploitation: string | null;
-  dimensions: { x: number; y: number; z: number } | null;
-  size: string | null;
-  quantity: number;
-  price: number;
-  oldPrice: number | null;
-  isDefault: boolean;
-}
-
-export interface CategoryProduct {
-  categorizedQuantity: number;
-  product: {
-    id: number;
-    title: string;
-    product_description: string | null;
-    measure: string | null;
-    slug: string;
-    category: {
-      slug: string;
-      name?: string;
-    };
-    sizes: SizeDetails[];
-  };
 }
 
 export type ProductsByCategory = Record<string, CategoryProduct[]>;

@@ -5,11 +5,11 @@ import { useAdminStore } from "@/store/useAdminStore";
 import { SelectCategoryField } from "./SelectCategoryField";
 import { cn, findCurrentProduct } from "@/lib";
 import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
-import { Button } from "../shadcn-ui/button";
-import { useState } from "react";
-import { Input } from "../shadcn-ui/input";
+import { ProductHeading } from "./ProductHeading";
+import { ProductDetails } from "./ProductDetails";
+import { PlaceholderForm } from ".";
 
-interface Props {
+interface ProductControlPanelProps {
   className?: string;
   categorizedProducts: ProductsByCategory;
 }
@@ -21,19 +21,18 @@ interface CategoryOption {
   quantity?: number;
 }
 
-export const ProductControlPanel: React.FC<Props> = ({
+export const ProductControlPanel: React.FC<ProductControlPanelProps> = ({
   className,
   categorizedProducts,
 }) => {
   const { selectedProduct, selectedCategory } = useAdminStore();
-  const [selectedSize, setSelectedSize] = useState<number>(0);
 
-  const matchingProducts = findCurrentProduct(
+  const productsInAllCategories = findCurrentProduct(
     categorizedProducts,
     selectedProduct?.title
   );
 
-  const categoryOptions: CategoryOption[] = matchingProducts.map(
+  const categoryOptions: CategoryOption[] = productsInAllCategories.map(
     ({ categorySlug, product }, index) => ({
       id: index,
       title: CATEGORY_SLUG_MAP[categorySlug] || categorySlug,
@@ -42,73 +41,46 @@ export const ProductControlPanel: React.FC<Props> = ({
     })
   );
 
-  const currentProduct =
-    matchingProducts.find((p) => p.categorySlug === selectedCategory?.slug)
-      ?.product || matchingProducts[0]?.product;
+  const productDataInSelectedCategory =
+    productsInAllCategories.find(
+      (p) => p.categorySlug === selectedCategory?.slug
+    )?.product || productsInAllCategories[0]?.product;
 
-  if (!selectedProduct || matchingProducts.length === 0) {
+  if (!selectedProduct || productsInAllCategories.length === 0) {
     return (
-      <div className={cn("space-y-4", className)}>
-        <p className="text-gray-500">Выберите продукт для просмотра деталей</p>
+      <div className={cn("min-h-[800px]", className)}>
+        <div className="flex flex-row gap-2 mb-2">
+          <div className="h-8 bg-gray-200 rounded-sm w-3/5"></div>
+          <div className="h-6 bg-gray-200 rounded-sm w-1/5 mt-2"></div>
+          <div className="h-6 bg-gray-200 rounded-sm w-10 mt-2"></div>
+        </div>
+        <div className="flex h-10 w-full bg-gray-100 items-center rounded-md mb-4">
+          <p className="text-gray-500 text-md ml-4 -mt-1">
+            Выберите продукт для просмотра деталей
+          </p>
+        </div>
+        <div className="flex h-6 w-1/6 bg-gray-200 items-center rounded-sm mb-2" />
+        <div className="flex h-[140px] w-full bg-gray-100 items-center justify-center rounded-md mb-4" />
+        <PlaceholderForm />
       </div>
     );
   }
 
+  console.log(productDataInSelectedCategory);
+
   return (
     <div className={cn("", className)}>
-      <div className="bg-white flex flex-row gap-2">
-        <h2 className="text-xl font-semibold mb-4">
-          {currentProduct?.product.title || selectedProduct.title}
-        </h2>
-        {selectedProduct.compound && (
-          <span className="text-sm mt-2 text-gray-500">
-            ({selectedProduct.compound})
-          </span>
-        )}
-        <span className="text-sm mt-2 text-gray-500">
-          ({currentProduct?.categorizedQuantity || 0})
-        </span>
-      </div>
-
+      <ProductHeading
+        className="bg-white flex flex-row gap-2"
+        productDataInSelectedCategory={productDataInSelectedCategory}
+        selectedProduct={selectedProduct}
+      />
       <SelectCategoryField options={categoryOptions} className="w-full" />
 
-      {currentProduct?.product.sizes?.length > 0 && (
-        <div className="bg-white space-y-3">
-          <h3 className="text-sm text-gray-500 mt-4">Размеры:</h3>
-
-          {/* Размеры */}
-          <div className="flex flex-col gap-2">
-            <div>
-              {currentProduct.product.sizes
-                .sort((a, b) => {
-                  const sizeA = a.size ? parseFloat(a.size) : 0;
-                  const sizeB = b.size ? parseFloat(b.size) : 0;
-                  return sizeA - sizeB;
-                })
-                .map((size, index) => (
-                  <Button
-                    key={index}
-                    onClick={() => setSelectedSize(size.id)}
-                    className={
-                      " p-2 border-2 gap-2 rounded-lg max-w-36 min-w-24 "
-                    }
-                    disabled={selectedSize === size.id}
-                  >
-                    {size.size || "Без размера"} - {size.quantity} шт
-                  </Button>
-                ))}
-            </div>
-            {/* Разделитель */}
-            <div>
-              {/* Инпут с изменением размера */}
-              {/* Инпут с изменением старого размера */}
-              {/* 3 инпута с габаритами */}
-              {/* Время эксплатуатации инпут */}
-              {/* По умолчанию или нет? */}
-            </div>
-          </div>
-        </div>
-      )}
+      <ProductDetails
+        className="min-h-[800px]"
+        productDataInSelectedCategory={productDataInSelectedCategory}
+      />
     </div>
   );
 };

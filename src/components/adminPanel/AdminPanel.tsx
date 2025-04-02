@@ -1,34 +1,30 @@
-import { getTotalProductQuantity } from "@/lib/getTotalProductQuantity";
 import { ChapterHeading, Container } from "../shared";
-import { InventorySummary } from "./InventorySummary";
-import { SelectProductField } from "./SelectProductField";
-import { ProductControlPanel } from "./ProductControlPanel";
-import { ProductInformationPanel } from "./ProductInformationPanel";
-import { getProductsGroupedByCategory } from "@/lib";
+import { getProductsGroupedByCategory, getTotalProductQuantity } from "@/lib";
+import { ProductControlPanel, InventorySummary, ProductInformationPanel, SelectProductField} from ".";
 
 export const AdminPanel = async () => {
   const totals = await getTotalProductQuantity();
   const categorizedProducts = await getProductsGroupedByCategory();
 
-  console.log(categorizedProducts);
-
   return (
-    <Container className="bg-gray-100 pt-5 gap-y-4 mb-5 pb-5 p-8">
-      <ChapterHeading className="mb-5">Управление товаром</ChapterHeading>
-      <InventorySummary totals={totals} />
-      <div className="flex flex-col gap-5">
-        <SelectProductField
-          className="border-gray-200 border-2 p-2 rounded-xl bg-white"
-          options={totals.products}
-        />
-        <div className="flex gap-5">
-          <ProductControlPanel
-            className="border-gray-200 border-2 p-2 rounded-xl bg-white h-[300px] w-2/3"
-            categorizedProducts={categorizedProducts}
+    <div className="bg-gray-400 h-full">
+      <Container className="bg-gray-200 pt-5 gap-y-4 mb-5 pb-5 p-8">
+        <ChapterHeading className="mb-5">Управление товаром</ChapterHeading>
+        <InventorySummary totals={totals} />
+        <div className="flex flex-col gap-5">
+          <SelectProductField
+            className="border-gray-200 border-2 p-2 rounded-xl bg-white"
+            options={totals.products}
           />
-          <ProductInformationPanel className="border-gray-200 border-2 p-2 rounded-xl bg-white h-[300px] w-1/3" />
+          <div className="flex gap-5">
+            <ProductControlPanel
+              className="border-gray-200 border-2 p-2 rounded-xl bg-white w-2/3"
+              categorizedProducts={categorizedProducts}
+            />
+            <ProductInformationPanel className="border-gray-200 border-2 p-2 rounded-xl bg-white w-1/3" />
+          </div>
         </div>
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
