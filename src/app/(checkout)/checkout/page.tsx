@@ -42,7 +42,7 @@ export default function CheckoutPage() {
       phone: "",
       email: "",
 
-      city: "Санкт-Петербург",
+      city: "",
       street: "",
       building: "",
       porch: "",

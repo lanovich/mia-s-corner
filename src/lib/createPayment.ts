@@ -46,7 +46,7 @@ export async function createPayment(details: PaymentParams) {
         type: "redirect",
         return_url:
           process.env.YOOKASSA_CALLBACK_URL ||
-          "https://www.mias-corner.ru/payment-callback",
+          "https://www.mias-corner.ru",
       },
       receipt: {
         customer: {

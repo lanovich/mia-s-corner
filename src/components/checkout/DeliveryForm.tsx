@@ -67,7 +67,7 @@ export const DeliveryForm: React.FC<Props> = ({ className }) => {
         <FormInput
           placeholder="Город (СПб и ЛО)"
           name="city"
-          defaultValue="Санкт-Петербург"
+          defaultValue=""
           disabled={!!deliveryPrice}
         />
 
