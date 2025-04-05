@@ -5,11 +5,12 @@ import { Container } from "@/components/shared";
 import { Breadcrumbs } from "@/components/ProductPage";
 import { Metadata } from "next";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { historyId: string };
+type HistoryParams = Promise<{ historyId: string }>;
+
+export async function generateMetadata(props: {
+  params: HistoryParams;
 }): Promise<Metadata> {
+  const params = await props.params;
   const historyId = Number(params.historyId);
   const histories = await getHistories();
   const currentHistory = histories.find((h) => h.id === historyId);
@@ -18,7 +19,8 @@ export async function generateMetadata({
   if (!currentHistory) {
     return {
       title: "Ароматическая коллекция | Mia's Corner",
-      description: "Купить свечи в СПб с историями, наша ароматическая продукция разделена на истории со своими эпизодами. Найдите свою уникальную историю",
+      description:
+        "Купить свечи в СПб с историями, наша ароматическая продукция разделена на истории со своими эпизодами. Найдите свою уникальную историю",
     };
   }
 
@@ -36,11 +38,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function HistoriesPage({
-  params,
-}: {
-  params: { historyId: string };
-}) {
+export default async function HistoriesPage(props: { params: HistoryParams }) {
+  const params = await props.params;
   const historyId = Number(params.historyId);
   const histories = await getHistories();
   const products = await getProductsByHistory(historyId);

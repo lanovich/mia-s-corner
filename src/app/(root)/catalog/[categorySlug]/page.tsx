@@ -3,11 +3,12 @@ import { getCategories } from "@/lib/cache";
 import { CatalogProductsLoader, Categories } from "@/components/catalog";
 import { Container } from "@/components/shared";
 
-type Props = {
-  params: { categorySlug: string };
-};
+type Params = Promise<{ categorySlug: string }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Params;
+}): Promise<Metadata> {
+  const params = await props.params;
   const categories = await getCategories();
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];
@@ -67,11 +68,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CatalogPage({
-  params,
-}: {
-  params: { categorySlug: string };
-}) {
+export default async function CatalogPage(props: { params: Params }) {
+  const params = await props.params;
   const categories = await getCategories();
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];

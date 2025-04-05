@@ -11,14 +11,12 @@ import {
 import { MobileSizeAndBuy } from "@/components/ProductPage/MobileSizeAndBuy";
 import { Container } from "@/components/shared";
 
-type Props = {
-  params: {
-    categorySlug: string;
-    productSlug: string;
-  };
-};
+type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: ProductParams;
+}): Promise<Metadata> {
+  const params = await props.params;
   const product = await getProductWithHistory(
     params.categorySlug,
     params.productSlug
@@ -149,8 +147,6 @@ function generateProductKeywords(product: ProductWithHistory): string[] {
 
   return keywords;
 }
-
-type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
 export default async function ProductPage(props: { params: ProductParams }) {
   const params = await props.params;

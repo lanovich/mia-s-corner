@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function GET(_req: Request, props: { params: { id: string } }) {
+type Params = Promise<{ id: string }>
+
+export async function GET(_req: Request, props: { params:  Params}) {
   const params = await props.params;
   const productId = Number(params.id);
 
