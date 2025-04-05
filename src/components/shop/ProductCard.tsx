@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { AddToCartButton } from "./ui";
+import { AddToCartButton } from "../shop";
 import Link from "next/link";
 import { LINKS } from "@/constants";
 
@@ -12,10 +12,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
   const imageUrl = product.images?.[0]?.url ?? "/placeholder.jpg";
 
   return (
-    <Link
-      href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
-      className="group block select-none"
-    >
+    <div className="group block select-none">
       {/* Основной контейнер без overflow-hidden */}
       <div className="relative rounded-lg transition-transform duration-300 md:hover:scale-105 bg-gray-200">
         {/* Эпизод */}
@@ -23,30 +20,40 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           Эпизод {product.episode_number}
         </div>
 
-        {/* Product Image */}
-        <div className="relative aspect-[3/4]">
-          <Image
-            src={imageUrl}
-            fill
-            className="object-cover hover:sepia md:hover:sepia-0 duration-300 rounded-t-lg"
-            alt={product.title}
-          />
-        </div>
+        {/* Product Image с обернутой ссылкой */}
+        <Link
+          href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
+          className="block"
+        >
+          <div className="relative aspect-[3/4]">
+            <Image
+              src={imageUrl}
+              fill
+              className="object-cover hover:sepia md:hover:sepia-0 duration-300 rounded-t-lg"
+              alt={product.title}
+            />
+          </div>
+        </Link>
 
         {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
         <div className="p-2 bg-slate-50 shadow-md rounded-b-lg">
-          <div>
-            <span className="text-sm line-clamp-1">{product.compound}</span>
-            <p className="text-xs text-black/50 line-clamp-1">
-              {product.title}
-            </p>
-          </div>
-          <div className="flex items-end gap-2 mb-2">
-            <span className="text-md">{defaultSize?.price} ₽</span>
-            <span className="text-sm text-black/50">
-              {defaultSize?.size?.size} {product.measure}
-            </span>
-          </div>
+          <Link
+            href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
+            className="block"
+          >
+            <div>
+              <span className="text-sm line-clamp-1">{product.compound}</span>
+              <p className="text-xs text-black/50 line-clamp-1">
+                {product.title}
+              </p>
+            </div>
+            <div className="flex items-end gap-2 mb-2">
+              <span className="text-md">{defaultSize?.price} ₽</span>
+              <span className="text-sm text-black/50">
+                {defaultSize?.size?.size} {product.measure}
+              </span>
+            </div>
+          </Link>
           <AddToCartButton
             selectedSize={defaultSize || null}
             className="w-full"
@@ -55,6 +62,6 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
           </AddToCartButton>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };

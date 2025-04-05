@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { LINKS } from "@/constants";
-import { AddToCartButton } from "../shop/ui";
+import { AddToCartButton } from "../shop";
 
 interface Props {
   product: Product;

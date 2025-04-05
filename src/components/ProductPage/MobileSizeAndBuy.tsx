@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib";
 import React, { useState } from "react";
-import { AddToCartButton } from "../shop/ui";
+import { AddToCartButton } from "../shop";
 import { Button } from "../shadcn-ui/button";
 import { Dot, Heart, ShoppingBag } from "lucide-react";
 import {

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { AddToCartButton } from "../shop/ui";
+import { AddToCartButton } from "../shop";
 import { Button } from "../shadcn-ui/button";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
