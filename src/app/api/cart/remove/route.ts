@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { getUserToken } from "@/lib/getUserToken";
 
 export async function POST(req: Request) {
   const authHeader = req.headers.get("Authorization");

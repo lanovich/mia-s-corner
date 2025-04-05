@@ -6,6 +6,45 @@ import {
 import { Container } from "@/components/shared";
 import React from "react";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "О нас | Mia's Corner - истории за каждым ароматом",
+  description:
+    "Узнайте о философии Mia's Corner: как мы создаем ароматы с историей. Наши вдохновляющие нарративы, подход к созданию свечей и диффузоров, и почему каждый аромат - это отдельный мир.",
+  alternates: {
+    canonical: "https://www.mias-corner.ru/about",
+  },
+  openGraph: {
+    title: "Истории за ароматами | О нас - Mia's Corner",
+    description:
+      "Каждый аромат Mia's Corner - это часть уникальной истории. Узнайте о нашей философии создания парфюмерных композиций.",
+    url: "https://www.mias-corner.ru/about",
+    images: [
+      {
+        url: "https://www.mias-corner.ru/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Философия Mia's Corner - ароматы с историей",
+      },
+    ],
+    type: "website",
+    siteName: "Mia's Corner",
+  },
+  keywords: [
+    "история Mia's Corner",
+    "философия бренда ароматов",
+    "как создаются ароматические свечи",
+    "сторителлинг в парфюмерии",
+    "авторские духи с историей",
+    "вдохновение для создания ароматов",
+    "нарративные парфюмерные композиции",
+    "истории за запахами",
+    "концепция ароматов Mia's Corner",
+    "почему ароматы - это эмоции",
+  ],
+};
+
 export default function AboutPage() {
   const fragrances = [
     {

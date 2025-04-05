@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import { cookies } from "next/headers";
 
-export async function POST() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
+export async function POST(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  const token = authHeader?.split(" ")[1];
 
   if (!token) {
     return NextResponse.json({ error: "No token" }, { status: 401 });

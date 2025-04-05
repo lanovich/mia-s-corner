@@ -1,15 +1,15 @@
 import axios from "axios";
-import { getUserToken } from "@/lib/getUserToken"
+import { getUserToken } from "@/lib/getUserToken";
 
 export const cartService = {
   async loadCartItems() {
     const token = await getUserToken();
-    const res = await axios.get("/api/cart/load", {
+    const response = await axios.get("/api/cart/load", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return res.data;
+    return response.data as CartItem[];
   },
 
   async getProductById(productId: number) {
@@ -24,7 +24,7 @@ export const cartService = {
 
   async addToCart(productId: number, sizeId: number) {
     const token = await getUserToken();
-    await axios.post(
+    const response = await axios.post(
       "/api/cart/add",
       { productId, sizeId },
       {
@@ -33,11 +33,12 @@ export const cartService = {
         },
       }
     );
+    return response.data as CartItem[];
   },
 
   async decreaseQuantity(productId: number, sizeId: number) {
     const token = await getUserToken();
-    await axios.post(
+    const response = await axios.post(
       "/api/cart/decrease",
       { productId, sizeId },
       {
@@ -46,9 +47,10 @@ export const cartService = {
         },
       }
     );
+    return response.data as CartItem[];
   },
 
-  async updateCartFullPrice(fullPrice: number) {
+  async updateCartFullPrice(fullPrice: number, p0?: { signal: AbortSignal; }) {
     const token = await getUserToken();
     await axios.post(
       "/api/cart/update-price",

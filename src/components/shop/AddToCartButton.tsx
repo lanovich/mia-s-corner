@@ -59,7 +59,7 @@ export const AddToCartButton: React.FC<Props> = ({
       } finally {
         setLoading(false);
       }
-    }, 300),
+    }, 0),
     [modifyItemQuantity, selectedSize]
   );
 

@@ -16,7 +16,7 @@ export async function GET(req: Request) {
         id, quantity, size_id,
         product:products(
           id, title, history_id, category_id, compound, slug, category_slug,
-          scent_pyramid, description, images, wick, wax, measure, episode,
+          scent_pyramid, description, images, measure, episode,
           product_sizes:product_sizes!product_id(
             *, size:size_id(*)
           )

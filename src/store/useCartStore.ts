@@ -33,7 +33,6 @@ const calculateTotals = (cart: CartItem[]) => {
   return { productTotalAmount, fullPrice };
 };
 
-// Вспомогательная функция для поиска индекса товара в корзине
 const findCartItemIndex = (
   cart: CartItem[],
   productId: number,
@@ -43,7 +42,6 @@ const findCartItemIndex = (
     (item) => item.product.id === productId && item.size_id === sizeId
   );
 
-// Debounce для обновления fullPrice на сервере
 let debounceTimer: NodeJS.Timeout;
 const debouncedUpdateCartFullPrice = (fullPrice: number) => {
   clearTimeout(debounceTimer);

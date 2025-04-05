@@ -1,5 +1,4 @@
 import { ChapterHeading, СhapterContainer } from "@/components/shared";
-import Link from "next/link";
 
 export default function PrivacyPage() {
   return (

@@ -12,7 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/shadcn-ui/sheet";
 import { Button } from "../shadcn-ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Trash2 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { CartDrawerItem } from ".";
 import { InfoAboutCartPrice } from "./ui";
@@ -23,7 +23,7 @@ interface Props {
 }
 
 export const CartDrawer: React.FC<Props> = ({ children }) => {
-  const { cart, fullPrice, productTotalAmount } = useCartStore();
+  const { cart, fullPrice, productTotalAmount, clearCart } = useCartStore();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -31,6 +31,10 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
     startTransition(() => {
       router.push("/checkout");
     });
+  };
+
+  const handleClearCart = () => {
+    clearCart();
   };
 
   const formatCartItemsText = (count: number) => {
@@ -81,6 +85,17 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
             <ArrowRight className="w-5" />
           </Button>
         </SheetFooter>
+          {cart.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleClearCart}
+                className="text-destructive hover:text-destructive/80 hover:bg-destructive/10 h-fit w-fit mx-auto"
+              >
+                <Trash2 className="h-4 w-4" />
+                Очистить корзину
+              </Button>
+            )}
       </SheetContent>
     </Sheet>
   );

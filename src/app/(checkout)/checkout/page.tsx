@@ -30,9 +30,9 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
     "transfer"
   );
-  const { loading, fullPrice, clearCart } = useCartStore();
+  const { loading, fullPrice, clearCart, loadCart } = useCartStore();
   const { selectedDeliveryMethod } = useDeliveryStore();
-  const { deliveryPrice } = useDeliveryStore();
+  const { deliveryPrice, setDeliveryPrice } = useDeliveryStore();
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(schema),
@@ -70,14 +70,24 @@ export default function CheckoutPage() {
 
       setSubmitting(true);
       const paymentUrl = await createOrder(data, deliveryPrice);
-      console.log(paymentUrl);
+
+      if (paymentUrl.error || !paymentUrl) {
+        throw new Error("Не удалось получить платежную ссылку");
+      }
+
+      console.log("Платежная ссылка получена:", paymentUrl);
 
       await clearCart();
+      setDeliveryPrice(0);
 
       router.push(paymentUrl);
     } catch (error) {
       console.error("Ошибка при создании заказа", error);
-      toast.error("Не удалось создать заказ!", { position: "top-center" });
+      toast.error("Не удалось создать заказ!", {
+        position: "top-center",
+        description:
+          error instanceof Error ? error.message : "Попробуйте еще раз",
+      });
     } finally {
       setSubmitting(false);
     }
@@ -116,6 +126,31 @@ export default function CheckoutPage() {
             setPaymentMethod={setPaymentMethod}
           />
 
+          <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="text-sm text-blue-800 leading-snug">
+              <span className="font-semibold text-blue-800">
+                Если вы столкнулись с ошибкой при оформлении
+              </span>
+              <ol className="list-decimal list-inside space-y-1.5 mt-1.5 pl-1 marker:text-blue-800">
+                <li className="pl-1">Нажмите "Очистить корзину"</li>
+                <li className="pl-1">Добавьте товары заново</li>
+                <li className="pl-1">Повторите попытку оформления</li>
+              </ol>
+              <div className="mt-2 text-blue-800">
+                Cообщите нам в
+                <a
+                  href="https://t.me/mias_corner_support"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline hover:text-blue-800 ml-1 font-bold"
+                >
+                  поддержку
+                </a>
+                — это поможет сделать сервис лучше.
+              </div>
+            </div>
+          </div>
+
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               loading={loading}
@@ -125,7 +160,8 @@ export default function CheckoutPage() {
               disabled={
                 loading ||
                 (selectedDeliveryMethod === "fastDelivery" &&
-                  deliveryPrice === 0 || fullPrice === 0)
+                  deliveryPrice === 0) ||
+                fullPrice === 0
               }
             >
               {submitting ? "Оформление..." : "Подтвердить заказ"}

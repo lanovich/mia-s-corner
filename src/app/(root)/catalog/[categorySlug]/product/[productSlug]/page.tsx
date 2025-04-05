@@ -1,13 +1,154 @@
+import { Metadata } from "next";
 import { getProductWithHistory } from "@/lib/cache";
+import { ProductWithHistory } from "@/types";
 import {
-  AboutProduct,
-  BuySection,
+  Breadcrumbs,
   ProductGallery,
+  BuySection,
+  AboutProduct,
   SimilarProducts,
 } from "@/components/ProductPage";
-import { Breadcrumbs } from "@/components/ProductPage";
-import { Container } from "@/components/shared";
 import { MobileSizeAndBuy } from "@/components/ProductPage/MobileSizeAndBuy";
+import { Container } from "@/components/shared";
+
+type Props = {
+  params: {
+    categorySlug: string;
+    productSlug: string;
+  };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const product = await getProductWithHistory(
+    params.categorySlug,
+    params.productSlug
+  );
+
+  if (!product) {
+    return {
+      title: "Продукт не найден | Mia's Corner",
+      description: "Ароматическая продукция ручной работы",
+    };
+  }
+
+  const productType =
+    product.category_slug === "candles"
+      ? "свеча"
+      : product.category_slug === "diffusers"
+      ? "диффузор"
+      : "ароматический продукт";
+
+  const baseSize = product.product_sizes[0]?.size || "";
+  const price = product.product_sizes[0]?.price
+    ? `за ${product.product_sizes[0].price} ₽`
+    : "";
+
+  if (!product) {
+    return {
+      title: "Продукт не найден | Mia's Corner",
+      description: "Ароматическая продукция ручной работы",
+    };
+  }
+
+  const metadata: Metadata = {
+    title: `${product.title} ${baseSize} | ${productType} | Mia's Corner ${price}`,
+    description: `${product.description.slice(0, 150)}... ${getProductFeatures(
+      product
+    )} Купить в Санкт-Петербурге с доставкой.`,
+    alternates: {
+      canonical: `https://www.mias-corner.ru/catalog/${params.categorySlug}/product/${params.productSlug}`,
+    },
+    openGraph: {
+      title: `${product.title} | Mia's Corner | ${productType} ручной работы`,
+      description: `${product.description.slice(
+        0,
+        100
+      )}... ${getShortProductFeatures(product)}`,
+      images:
+        product.images.length > 0
+          ? [
+              {
+                url: `${product.images[0].url}`,
+                width: 800,
+                height: 600,
+                alt: `${product.title} - ${productType}`,
+              },
+            ]
+          : "product.images[0].url",
+      type: "article",
+      url: `https://www.mias-corner.ru/catalog/${params.categorySlug}/product/${params.productSlug}`,
+      siteName: "Mia's Corner",
+    },
+    keywords: generateProductKeywords(product),
+  };
+
+  return metadata;
+}
+
+function getProductFeatures(product: ProductWithHistory): string {
+  const features = [];
+
+  if (product.compound) {
+    features.push(
+      `Состав: ${product.compound.split(",").slice(0, 3).join(", ")}`
+    );
+  }
+
+  if (product.measure) {
+    features.push(`Объем: ${product.measure}`);
+  }
+
+  if (product.category_slug === "candles") {
+    features.push("Соевый воск", "Хлопковый фитиль", "Горение до 50 часов");
+  } else if (product.category_slug === "diffusers") {
+    features.push("Натуральные аромамасла", "Срок действия 3-6 месяцев");
+  }
+
+  return features.join(". ") + ".";
+}
+
+function getShortProductFeatures(product: ProductWithHistory): string {
+  if (product.category_slug === "candles") {
+    return `Соевая свеча ручной работы ${
+      product.measure ? product.measure : ""
+    }.`;
+  }
+  return `Ароматический диффузор ${product.measure ? product.measure : ""}.`;
+}
+
+function generateProductKeywords(product: ProductWithHistory): string[] {
+  const keywords = [];
+  const productName = product.title.toLowerCase();
+  const productType =
+    product.category_slug === "candles" ? "свеча" : "диффузор";
+
+  keywords.push(
+    `купить ${productName} СПб`,
+    `${productType} ${productName}`,
+    `${productName} цена`
+  );
+
+  product.product_sizes.forEach((size) => {
+    if (size.size) keywords.push(`${productName} ${size.size}`);
+    if (size.price) keywords.push(`${productName} за ${size.price} руб`);
+  });
+
+  if (product.category_slug === "candles") {
+    keywords.push(
+      "соевые свечи ручной работы",
+      "свечи в стеклянных банках",
+      "эко свечи спб"
+    );
+  } else {
+    keywords.push(
+      "ароматические диффузоры",
+      "диффузоры для дома",
+      "стеклянные диффузоры"
+    );
+  }
+
+  return keywords;
+}
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 

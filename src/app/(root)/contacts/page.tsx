@@ -1,63 +1,43 @@
-"use client";
+import { Metadata } from "next";
+import ContactPageClient from "@/components/contacts/ContactPageClient";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { motion } from "framer-motion";
-import { toast } from "sonner";
-import { Container } from "@/components/shared";
-import {
-  contactFormSchema,
-  ContactFormValues,
-} from "@/constants/contactFormSchema";
-import { sendContactMessage } from "@/app/actions";
-import { FormProvider } from "react-hook-form";
-import { ContactForm } from "@/components/contacts/ContactForm";
-import { ContactDetails } from "@/components/contacts/ContactDetails";
+export const metadata: Metadata = {
+  title: "Контакты | Mia's Corner - связь с магазином ароматов",
+  description:
+    "Контактная информация магазина ароматических свечей и диффузоров Mia's Corner. Адрес, телефон, email и форма обратной связи в Санкт-Петербурге.",
+  alternates: {
+    canonical: "https://www.mias-corner.ru/contacts",
+  },
+  openGraph: {
+    title: "Контакты | Mia's Corner",
+    description:
+      "Свяжитесь с нами по вопросам покупки ароматических свечей, диффузоров, духов, саше",
+    url: "https://www.mias-corner.ru/contacts",
+    images: [
+      {
+        url: "https://www.mias-corner.ru/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Контактная информация Mia's Corner",
+      },
+    ],
+    type: "website",
+    siteName: "Mia's Corner",
+  },
+  keywords: [
+    "контакты Mia's Corner",
+    "как связаться с Mia's Corner",
+    "адрес магазина ароматов СПб",
+    "телефон для заказа свечей",
+    "форма обратной связи",
+    "контакты магазина свечей Санкт-Петербург",
+    "где купить аромадиффузоры в СПб",
+    "официальные контакты Mia's Corner",
+    "электронная почта магазина ароматов",
+    "график работы Mia's Corner",
+  ],
+};
 
 export default function ContactPage() {
-  const methods = useForm<ContactFormValues>({
-    resolver: zodResolver(contactFormSchema),
-  });
-
-  const onSubmit = async (data: ContactFormValues) => {
-    try {
-      const result = await sendContactMessage(data);
-
-      if (result.success) {
-        toast.success("Сообщение успешно отправлено!");
-        methods.reset();
-      } else {
-        toast.error(result.error || "Не удалось отправить сообщение.");
-      }
-    } catch (error) {
-      console.error("Ошибка при отправке сообщения:", error);
-      toast.error("Произошла ошибка. Попробуйте ещё раз.");
-    }
-  };
-
-  return (
-    <Container className="my-8 mx-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="flex flex-col items-center space-y-12"
-      >
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center">
-          Свяжитесь с нами
-        </h1>
-
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="w-full flex flex-col items-center"
-          >
-            <ContactForm />
-          </form>
-        </FormProvider>
-
-        <ContactDetails />
-      </motion.div>
-    </Container>
-  );
+  return <ContactPageClient />;
 }
