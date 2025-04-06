@@ -10,6 +10,7 @@ import {
 } from "@/components/ProductPage";
 import { MobileSizeAndBuy } from "@/components/ProductPage/MobileSizeAndBuy";
 import { Container } from "@/components/shared";
+import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
@@ -37,23 +38,14 @@ export async function generateMetadata(props: {
     };
   }
 
-  const productType =
-    product.category_slug === "candles"
-      ? "свеча"
-      : product.category_slug === "diffusers"
-      ? "диффузор"
-      : "ароматический продукт";
-
-  const baseSize = product.product_sizes[0]?.size || "";
-  const price = product.product_sizes[0]?.price
-    ? `за ${product.product_sizes[0].price} ₽`
-    : "";
+  const productType = CATEGORY_SLUG_MAP[product.category_slug];
 
   const metadata: Metadata = {
-    title: `${product.title} ${baseSize} | ${productType} | Mia's Corner ${price}`,
-    description: `${product.description.slice(0, 150)}... ${getProductFeatures(
-      product
-    )} Купить в Санкт-Петербурге с доставкой.`,
+    title: `${product.title} | ${productType} | Mia's Corner`,
+    description: `${product.description.slice(
+      0,
+      160
+    )}... Купить в Санкт-Петербурге с доставкой.`,
     alternates: {
       canonical: `https://www.mias-corner.ru/catalog/${params.categorySlug}/product/${params.productSlug}`,
     },
@@ -61,8 +53,8 @@ export async function generateMetadata(props: {
       title: `${product.title} | Mia's Corner | ${productType} ручной работы`,
       description: `${product.description.slice(
         0,
-        100
-      )}... ${getShortProductFeatures(product)}`,
+        160
+      )}`,
       images:
         product.images.length > 0
           ? [
@@ -106,20 +98,10 @@ function getProductFeatures(product: ProductWithHistory): string {
   return features.join(". ") + ".";
 }
 
-function getShortProductFeatures(product: ProductWithHistory): string {
-  if (product.category_slug === "candles") {
-    return `Соевая свеча ручной работы ${
-      product.measure ? product.measure : ""
-    }.`;
-  }
-  return `Ароматический диффузор ${product.measure ? product.measure : ""}.`;
-}
-
 function generateProductKeywords(product: ProductWithHistory): string[] {
   const keywords = [];
   const productName = product.title.toLowerCase();
-  const productType =
-    product.category_slug === "candles" ? "свеча" : "диффузор";
+  const productType = CATEGORY_SLUG_MAP[product.category_slug]
 
   keywords.push(
     `купить ${productName} СПб`,
