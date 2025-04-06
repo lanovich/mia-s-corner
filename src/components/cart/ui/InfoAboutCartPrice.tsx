@@ -15,10 +15,10 @@ export const InfoAboutCartPrice: React.FC<Props> = ({
   cartDiscount,
 }) => {
   return (
-    <div className={cn("pt-4 border-t", className)}>
+    <div className={cn("pt-2 border-t", className)}>
 
       {/* Скидка и доставка */}
-      <div className="pb-4 border-b">
+      <div className="pb-2 border-b flex justify-between">
         <div>
           <span className="text-sm">Стоимость товаров: </span>
           <span className="font-bold">{productTotalPrice} ₽</span>
@@ -30,7 +30,7 @@ export const InfoAboutCartPrice: React.FC<Props> = ({
       </div>
       {/* Итоговая сумма
        */}
-      <div className=" pt-4 flex justify-between text-lg font-medium">
+      <div className=" py-2 flex justify-between text-lg font-medium">
         <span>Итого:</span>
         <span className="font-bold">{fullPrice} ₽</span>
       </div>

@@ -29,10 +29,13 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
     setCursorPosition({ x, y });
   };
 
+  const imageSizes =
+    "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px";
+
   return (
     <div className={cn("flex gap-4 items-center h-[500px]", className)}>
       {/* Миниатюры (вертикальные) */}
-      <div className="h-[480px] hidden md:flex">
+      <div className="h-[500px] hidden md:flex">
         <Swiper
           direction="vertical"
           spaceBetween={8}
@@ -51,6 +54,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
                 <Image
                   src={url ?? "/placeholder.jpg"}
                   fill
+                  sizes="60px"
                   alt={`Thumbnail ${type}`}
                   className="rounded-md object-cover"
                 />
@@ -90,6 +94,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
               <Image
                 src={url}
                 fill
+                sizes={imageSizes}
                 alt={`Product image ${index}`}
                 className="object-cover rounded-lg transition-transform duration-300"
                 style={{

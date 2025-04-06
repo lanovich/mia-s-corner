@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, A11y } from "swiper/modules"; // Убраны Pagination и Scrollbar
+import { Navigation, A11y } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import { ProductCategories } from "./ProductCategories";
 import { GoToButton } from "./ui";
