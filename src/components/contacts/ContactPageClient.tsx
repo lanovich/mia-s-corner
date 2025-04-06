@@ -12,11 +12,18 @@ import { useForm, FormProvider } from "react-hook-form";
 import { toast } from "sonner";
 import { ContactDetails } from "./ContactDetails";
 import { ContactForm } from "./ContactForm";
+import { useEffect, useState } from "react";
 
 export default function ContactPageClient() {
   const methods = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
   });
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const onSubmit = async (data: ContactFormValues) => {
     try {
@@ -34,8 +41,10 @@ export default function ContactPageClient() {
     }
   };
 
+  if (!mounted) return null;
+
   return (
-    <Container className="my-8 mx-4">
+    <Container className="my-8 mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
