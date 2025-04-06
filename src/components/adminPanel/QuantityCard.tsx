@@ -4,11 +4,13 @@ interface QuantityCardProps {
   label: string;
   value: number;
   className?: string;
+  endSymbol?: string;
 }
 
 export const QuantityCard = ({
   label,
   value,
+  endSymbol,
   className,
 }: QuantityCardProps) => (
   <div
@@ -19,6 +21,8 @@ export const QuantityCard = ({
   >
     <span>{label}</span>
     <div className="flex-1 border-b border-dashed border-b-black relative -top-1 mx-2" />
-    <span>{value}</span>
+    <span>
+      {value} {endSymbol}
+    </span>
   </div>
 );

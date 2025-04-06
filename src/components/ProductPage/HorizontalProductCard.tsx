@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { LINKS } from "@/constants";
 import { AddToCartButton } from "../shop";
+import { cn } from "@/lib";
 
 interface Props {
   product: Product;
@@ -39,7 +40,19 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
             </p>
           </div>
           <div className="flex items-end gap-2">
-            <span className="text-xl">{defaultSize?.price} ₽</span>
+            <span
+              className={cn(
+                "text-md font-bold",
+                defaultSize?.oldPrice ? "text-red-500 font-bold" : ""
+              )}
+            >
+              {defaultSize?.price} ₽
+            </span>
+            {defaultSize?.oldPrice && (
+              <span className="text-gray-500 text-sm line-through">
+                {defaultSize?.oldPrice} ₽
+              </span>
+            )}
             <span className="text-sm text-black/50">
               {defaultSize?.size.size} {product.measure}
             </span>

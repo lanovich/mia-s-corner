@@ -34,7 +34,7 @@ export const GoToButton: React.FC<Props> = ({
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-lg font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 py-6 min-w-[160px]",
+            "text-lg inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 py-6 min-w-[160px]",
             className
           )}
         >
@@ -50,7 +50,7 @@ export const GoToButton: React.FC<Props> = ({
         href={href}
         onClick={handleInternalClick}
         className={cn(
-          `inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-lg font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 py-6 ${
+          `inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-md font-medium bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 py-6 ${
             isLoading ? "opacity-70 cursor-not-allowed" : ""
           }`,
           "min-w-[160px]",

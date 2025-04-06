@@ -1,7 +1,13 @@
 "use client";
 
-import { motion, useScroll, useTransform, useAnimation } from "framer-motion";
-import { useRef, useEffect } from "react";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useMotionValue,
+  useAnimation,
+} from "framer-motion";
+import { useRef } from "react";
 
 type ForegroundLayer = {
   imageUrl: string;
@@ -28,22 +34,10 @@ export const MotionImage = ({
 
   const bgY = useTransform(scrollYProgress, [0, 1], ["-25%", "25%"]);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const resizeObserver = new ResizeObserver(() => {
-      controls.start("visible");
-    });
-
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, [controls]);
-
   return (
     <div
       ref={containerRef}
       className="relative h-[70vh] w-full overflow-hidden"
-      style={{ position: "relative" }}
     >
       <div
         ref={windowRef}
@@ -53,9 +47,8 @@ export const MotionImage = ({
           style={{
             y: bgY,
             backgroundImage: `url(${imageUrl})`,
-            position: "absolute",
           }}
-          className="inset-0 w-full h-full bg-cover bg-center"
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
         />
 
         {foregroundLayers.map((layer, index) => {
@@ -73,9 +66,8 @@ export const MotionImage = ({
                 y: layerY,
                 zIndex: layer.zIndex || 15,
                 backgroundImage: `url(${layer.imageUrl})`,
-                position: "absolute",
               }}
-              className={`inset-0 w-full h-full bg-cover bg-center ${
+              className={`absolute inset-0 w-full h-full bg-cover bg-center ${
                 layer.className || ""
               }`}
             />

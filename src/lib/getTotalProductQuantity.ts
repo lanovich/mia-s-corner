@@ -3,6 +3,7 @@ import { supabase } from "./supabase";
 interface ProductSizeRow {
   id: number;
   quantity_in_stock: number;
+  price: number;
   product_id: number;
   products: Product | null;
 }
@@ -19,6 +20,7 @@ interface CategoryQuantityResult {
   categoryId: number;
   categorySlug: string;
   categoryName: string;
+  totalPrice: number;
   totalQuantity: number;
 }
 
@@ -32,6 +34,7 @@ interface ProductSummary {
 interface FinalResult {
   categories: CategoryQuantityResult[];
   products: ProductSummary[];
+  totalAllProductsPrice: number;
   totalOfTotals: number;
 }
 
@@ -52,6 +55,7 @@ const fetchProductSizes = async (): Promise<ProductSizeRow[]> => {
       `
       id,
       quantity_in_stock,
+      price,
       product_id,
       products:products!product_id (
         id,
@@ -89,7 +93,9 @@ const processProductData = (productSizes: ProductSizeRow[]): FinalResult => {
 
   const totalOfTotals = calculateTotalQuantity(categories);
 
-  return { categories, products, totalOfTotals };
+  const totalAllProductsPrice = calculateAllProductsPrice(productSizes);
+
+  return { categories, products, totalOfTotals, totalAllProductsPrice };
 };
 
 const updateCategoryMap = (
@@ -101,6 +107,7 @@ const updateCategoryMap = (
 
   const currentCategory = map.get(categoryKey) || createNewCategory(product);
   currentCategory.totalQuantity += item.quantity_in_stock;
+  currentCategory.totalPrice += item.price * item.quantity_in_stock
 
   map.set(categoryKey, currentCategory);
 };
@@ -111,6 +118,7 @@ const createNewCategory = (product: Product): CategoryQuantityResult => ({
   categoryName:
     CATEGORY_SLUG_MAP[product.category_slug] || product.category_slug,
   totalQuantity: 0,
+  totalPrice: 0,
 });
 
 const updateProductMap = (
@@ -141,8 +149,13 @@ const calculateTotalQuantity = (
   return categories.reduce((sum, item) => sum + item.totalQuantity, 0);
 };
 
+const calculateAllProductsPrice = (products: ProductSizeRow[]): number => {
+  return products.reduce((sum, item) => sum + (item.price * item.quantity_in_stock), 0);
+};
+
 const getEmptyResult = (): FinalResult => ({
   categories: [],
   products: [],
   totalOfTotals: 0,
+  totalAllProductsPrice: 0,
 });
