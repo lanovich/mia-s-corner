@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://www.mias-corner.ru/og.jpg",
-        width: 1200,
+        width: 630,
         height: 630,
         alt: "Ароматическая продукция Mia's Corner",
       },

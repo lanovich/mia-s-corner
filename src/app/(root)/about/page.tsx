@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://www.mias-corner.ru/og.jpg",
-        width: 1200,
+        width: 630,
         height: 630,
         alt: "Философия Mia's Corner - ароматы с историей",
       },
