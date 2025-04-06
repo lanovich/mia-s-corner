@@ -11,6 +11,7 @@ interface Props {
   productEpsiodeId?: number;
   productEpisode?: string | null;
   productTitle: string;
+  measure: string;
   sizes: ProductSize[];
 }
 
@@ -19,6 +20,7 @@ export const BuySection: React.FC<Props> = ({
   productCompound,
   productEpsiodeId,
   productEpisode,
+  measure,
   productTitle,
   sizes,
 }) => {
@@ -61,7 +63,7 @@ export const BuySection: React.FC<Props> = ({
         </>
       )}
       <div className="hidden md:flex">
-        <SizeAndBuy sizes={sizes} />
+        <SizeAndBuy sizes={sizes} measure={measure} />
       </div>
     </div>
   );

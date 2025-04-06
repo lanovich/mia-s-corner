@@ -19,14 +19,14 @@ export const getCategories = unstable_cache(fetchCategories, ["categories"], {
 
 export const getProductsByCategory = unstable_cache(
   fetchProducts,
-  ["products"],
+  ["products_by_category"],
   {
     revalidate: REVALIDATE_TIME,
   }
 );
 export const getProductsByHistory = unstable_cache(
   fetchProductsByHistory,
-  ["products"],
+  ["products_by_history"],
   {
     revalidate: REVALIDATE_TIME,
   }

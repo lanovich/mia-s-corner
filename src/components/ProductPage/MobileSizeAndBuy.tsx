@@ -19,9 +19,10 @@ import { toast } from "sonner";
 interface Props {
   className?: string;
   sizes: ProductSize[];
+  measure: string;
 }
 
-export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
+export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
   const hasSizes = sizes.length > 0;
   const [selectedSize, setSelectedSize] = useState<ProductSize | null>(
     hasSizes ? sizes[0] : null
@@ -92,7 +93,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
                       : "bg-inherit text-black border-black"
                   }`}
                 >
-                  {`${size.size.size} мл`}
+                  {`${size.size.size} ${measure}`}
                 </Button>
                 <p className="text-center text-xs mt-1 text-gray-700">
                   {size.price} ₽

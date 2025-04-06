@@ -1,4 +1,4 @@
-import { getProductsByCategory } from "@/lib";
+import { getProductsByCategory } from "@/lib/cache";
 import { ProductCard } from "@/components/shop";
 import { Container } from "@/components/shared";
 

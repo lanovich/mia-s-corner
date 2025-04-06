@@ -49,7 +49,8 @@ export const getProductsGroupedByCategory =
         id,
         time_of_exploitation,
         dimensions,
-        size
+        size,
+        category_name
       ),
       products:product_id (
         id,

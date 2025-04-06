@@ -1,6 +1,9 @@
 "use client";
 
-import { ProductsByCategory } from "@/lib/getProductsGroupedByCategory";
+import {
+  getProductsGroupedByCategory,
+  ProductsByCategory,
+} from "@/lib/getProductsGroupedByCategory";
 import { useAdminStore } from "@/store/useAdminStore";
 import { SelectCategoryField } from "./SelectCategoryField";
 import { cn, findCurrentProduct } from "@/lib";
@@ -8,6 +11,8 @@ import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import { ProductHeading } from "./ProductHeading";
 import { ProductDetails } from "./ProductDetails";
 import { PlaceholderForm } from ".";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface ProductControlPanelProps {
   className?: string;
@@ -26,6 +31,23 @@ export const ProductControlPanel: React.FC<ProductControlPanelProps> = ({
   categorizedProducts,
 }) => {
   const { selectedProduct, selectedCategory } = useAdminStore();
+  const [localProducts, setLocalProducts] =
+    useState<ProductsByCategory>(categorizedProducts);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleProductUpdated = async () => {
+    setIsLoading(true);
+    try {
+      const updatedProducts = await getProductsGroupedByCategory();
+      setLocalProducts(updatedProducts);
+      toast.success("Данные продукта обновлены");
+    } catch (error) {
+      console.error("Ошибка при обновлении данных:", error);
+      toast.error("Не удалось обновить данные продукта");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const productsInAllCategories = findCurrentProduct(
     categorizedProducts,
@@ -80,6 +102,7 @@ export const ProductControlPanel: React.FC<ProductControlPanelProps> = ({
       <ProductDetails
         className="min-h-[800px]"
         productDataInSelectedCategory={productDataInSelectedCategory}
+        onProductUpdated={handleProductUpdated}
       />
     </div>
   );

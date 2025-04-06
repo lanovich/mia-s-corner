@@ -40,7 +40,7 @@ export async function generateMetadata(props: {
       url: `https://www.mias-corner.ru/catalog/${currentCategory.slug}`,
       images: [
         {
-          url: currentCategory.image || "og.jpg",
+          url: currentCategory.image || "https://www.mias-corner.ru/og.jpg",
           width: 1200,
           height: 630,
           alt: `Категория ${currentCategory.name}`,

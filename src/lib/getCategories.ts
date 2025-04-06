@@ -1,7 +1,6 @@
-import { cache } from "react";
 import { supabase } from "@/lib/supabase";
 
-export const getCategories = cache(async (): Promise<Category[]> => {
+export const getCategories = async (): Promise<Category[]> => {
   console.log("🔄 Запрос категорий в Supabase...");
   const { data, error } = await supabase
     .from("categories")
@@ -13,4 +12,4 @@ export const getCategories = cache(async (): Promise<Category[]> => {
   }
 
   return data.sort((a, b) => a["order"] - b["order"]);
-});
+};

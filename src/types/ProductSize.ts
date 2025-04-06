@@ -1,6 +1,6 @@
 type ProductSize = {
   is_default: boolean;
-  oldPrice?: number;
+  oldPrice?: number | null;
   size: Size;
   price: number;
   product_id: number;

@@ -19,3 +19,4 @@ export { getAllProductsWithCategories } from "./getAllProductsWithCategories";
 export { getProductsGroupedByCategory } from "./getProductsGroupedByCategory";
 export { findCurrentProduct } from "./findCurrentProduct";
 export { getTotalProductQuantity } from "./getTotalProductQuantity";
+export { getSizesByCategory } from "./getSizesByCategory";

@@ -134,22 +134,30 @@ export const AddToCartButton: React.FC<Props> = ({
       />
     </div>
   ) : (
-    <QuantityButton
-      onClick={(event) => handleModifyQuantity(event, 1)}
-      className={
-        "flex items-center justify-center rounded-lg border border-black px-2 py-1 sm:px-3 sm:py-2 text-black transition hover:bg-black hover:text-white min-h-[40px] sm:min-h-[50px] w-full"
-      }
-      icon={
-        loading ? (
-          <Hexagon className="animate-spin" />
-        ) : (
-          <>
-            <span className="hidden sm:inline">{children}</span>
-            <ShoppingCart className="sm:hidden w-5 h-5" />
-          </>
-        )
-      }
-      loading={loading}
-    />
+    <div
+      className={cn(
+        "flex items-center rounded-lg text-lg font-semibold min-h-[40px] sm:min-h-[50px] w-full border-none",
+        className,
+        loading ? "opacity-50" : ""
+      )}
+    >
+      <QuantityButton
+        onClick={(event) => handleModifyQuantity(event, 1)}
+        className={
+          "flex items-center justify-center rounded-lg border border-black px-2 py-1 sm:px-3 sm:py-2 text-black transition hover:bg-black hover:text-white min-h-[40px] sm:min-h-[50px] w-full"
+        }
+        icon={
+          loading ? (
+            <Hexagon className="animate-spin" />
+          ) : (
+            <>
+              <span className="hidden sm:inline">{children}</span>
+              <ShoppingCart className="sm:hidden w-5 h-5" />
+            </>
+          )
+        }
+        loading={loading}
+      />
+    </div>
   );
 };

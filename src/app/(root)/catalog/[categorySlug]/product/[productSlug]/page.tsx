@@ -13,9 +13,14 @@ import { Container } from "@/components/shared";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
+type GenerateMetadataResult = {
+  metadata: Metadata;
+  product: ProductWithHistory | null;
+};
+
 export async function generateMetadata(props: {
   params: ProductParams;
-}): Promise<Metadata> {
+}): Promise<GenerateMetadataResult> {
   const params = await props.params;
   const product = await getProductWithHistory(
     params.categorySlug,
@@ -24,8 +29,11 @@ export async function generateMetadata(props: {
 
   if (!product) {
     return {
-      title: "Продукт не найден | Mia's Corner",
-      description: "Ароматическая продукция ручной работы",
+      metadata: {
+        title: "Продукт не найден | Mia's Corner",
+        description: "Ароматическая продукция ручной работы",
+      },
+      product: null,
     };
   }
 
@@ -40,13 +48,6 @@ export async function generateMetadata(props: {
   const price = product.product_sizes[0]?.price
     ? `за ${product.product_sizes[0].price} ₽`
     : "";
-
-  if (!product) {
-    return {
-      title: "Продукт не найден | Mia's Corner",
-      description: "Ароматическая продукция ручной работы",
-    };
-  }
 
   const metadata: Metadata = {
     title: `${product.title} ${baseSize} | ${productType} | Mia's Corner ${price}`,
@@ -80,7 +81,7 @@ export async function generateMetadata(props: {
     keywords: generateProductKeywords(product),
   };
 
-  return metadata;
+  return { metadata, product };
 }
 
 function getProductFeatures(product: ProductWithHistory): string {
@@ -150,10 +151,10 @@ function generateProductKeywords(product: ProductWithHistory): string[] {
 
 export default async function ProductPage(props: { params: ProductParams }) {
   const params = await props.params;
-  const categorySlug = params.categorySlug;
-  const productSlug = params.productSlug;
-
-  const product = await getProductWithHistory(categorySlug, productSlug);
+  const product = await getProductWithHistory(
+    params.categorySlug,
+    params.productSlug
+  );
 
   if (!product) {
     return <div className="container mx-auto px-4 py-6">Продукт не найден</div>;
@@ -168,21 +169,23 @@ export default async function ProductPage(props: { params: ProductParams }) {
 
   return (
     <>
-      <Breadcrumbs categorySlug={categorySlug} productTitle={product.title} />
+      <Breadcrumbs
+        categorySlug={params.categorySlug}
+        productTitle={product.title}
+      />
       <Container className="max-w-[1380px] px-5">
-        <div className="flex flex-col md:flex-row  gap-6">
+        <div className="flex flex-col md:flex-row gap-6">
           <div className="md:w-1/2">
             <ProductGallery images={product.images} className="" />
-
             <BuySection
               productCompound={product.compound}
               productEpsiodeId={product.episode_number}
               productEpisode={product.episode}
               productTitle={product.title}
+              measure={product.measure}
               sizes={product.product_sizes}
               className="mt-5 md:hidden sticky top-4 mb-5 flex"
             />
-
             <AboutProduct
               className="md:flex md:flex-col hidden mt-5"
               product={product}
@@ -194,6 +197,7 @@ export default async function ProductPage(props: { params: ProductParams }) {
               productEpsiodeId={product.episode_number}
               productEpisode={product.episode}
               productTitle={product.title}
+              measure={product.measure}
               sizes={product.product_sizes}
               className="hidden md:flex sticky top-4 mb-5"
             />
@@ -213,7 +217,10 @@ export default async function ProductPage(props: { params: ProductParams }) {
         </div>
 
         <div className="flex md:hidden">
-          <MobileSizeAndBuy sizes={product.product_sizes} />
+          <MobileSizeAndBuy
+            sizes={product.product_sizes}
+            measure={product.measure}
+          />
         </div>
       </Container>
     </>

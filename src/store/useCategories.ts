@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CategoryWithProducts } from "@/types"
-import { getCategoriesWithProducts } from "@/lib";
+import { getCategoriesWithProducts } from "@/lib/cache";
 
 interface CategoriesWithProductsStore {
   categoriesWithProducts: CategoryWithProducts[] | null;

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { AddToCartButton } from "../shop";
 import { Button } from "../shadcn-ui/button";
 import { Heart } from "lucide-react";
@@ -9,16 +9,20 @@ import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
 
 interface Props {
   className?: string;
+  measure: string;
   sizes: ProductSize[];
 }
 
-export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
+export const SizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
   const hasSizes = sizes && sizes.length > 0;
   const { selectedSize, setSelectedSize } = useSelectedSizeStore();
 
-  if (!selectedSize && hasSizes) {
-    setSelectedSize(sizes.find((size) => size.is_default === true) || sizes[0]);
-  }
+  useEffect(() => {
+    if (!hasSizes) return;
+
+    const defaultSize = sizes.find((s) => s.is_default) || sizes[0];
+    setSelectedSize(defaultSize);
+  }, [sizes, hasSizes, setSelectedSize]);
 
   const handleAddToFavorite = () => {
     toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅", {
@@ -43,7 +47,7 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
                     : "bg-inherit text-black border-black"
                 }`}
               >
-                {`${size.size.size} мл`}
+                {`${size.size.size} ${measure}`}
               </Button>
             ))}
         </div>
@@ -67,7 +71,7 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes }) => {
       </div>
 
       {/* Кнопка добавления в корзину и избранное */}
-      <div className="flex items-center gap-4 mr-10">
+      <div className="flex items-center gap-4 mr-10 md:min-w-80">
         <AddToCartButton
           selectedSize={selectedSize}
           className="flex flex-1 border-2"
