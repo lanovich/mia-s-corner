@@ -17,3 +17,4 @@ export { BurgerMenu } from "./BurgerMenu";
 export { MobileCartButton } from "./MobileCartButton";
 export { RadioButton } from "./RadioButton";
 export { CatalogCard } from "./CatalogCard";
+export { ProductCardSkeleton } from "./ProductCardSkeleton";

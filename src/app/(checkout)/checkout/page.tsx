@@ -30,7 +30,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
     "transfer"
   );
-  const { loading, fullPrice, clearCart, loadCart } = useCartStore();
+  const { loading, fullPrice, clearCart } = useCartStore();
   const { selectedDeliveryMethod } = useDeliveryStore();
   const { deliveryPrice, setDeliveryPrice } = useDeliveryStore();
 

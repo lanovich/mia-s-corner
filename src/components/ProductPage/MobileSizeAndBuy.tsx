@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/lib";
-import React, { useState } from "react";
+import React from "react";
 import { AddToCartButton } from "../shop";
 import { Button } from "../shadcn-ui/button";
-import { Dot, Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
 import {
   Dialog,
   DialogTrigger,
@@ -15,6 +15,7 @@ import {
   DialogDescription,
 } from "@/components/shadcn-ui/dialog";
 import { toast } from "sonner";
+import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
 
 interface Props {
   className?: string;
@@ -22,11 +23,13 @@ interface Props {
   measure: string;
 }
 
-export const MobileSizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
+export const MobileSizeAndBuy: React.FC<Props> = ({
+  className,
+  sizes,
+  measure,
+}) => {
   const hasSizes = sizes.length > 0;
-  const [selectedSize, setSelectedSize] = useState<ProductSize | null>(
-    hasSizes ? sizes[0] : null
-  );
+  const { selectedSize, setSelectedSize } = useSelectedSizeStore();
 
   const handleAddToFavorite = () => {
     toast.info("Разработчик Николай обещал добавить эту функцию, ждём 😅", {

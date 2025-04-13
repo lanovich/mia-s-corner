@@ -78,7 +78,6 @@ export default async function CatalogPage() {
             <CatalogCard
               key={history.order}
               title={history.title}
-              image={"/Placeholder.jpg"}
               description={history.description}
               href={`${LINKS.CATALOG}/${LINKS.HISTORIES}/${history.id}`}
               slug={history.history_slug}
