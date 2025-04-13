@@ -44,7 +44,7 @@ export default function ContactPageClient() {
   if (!mounted) return null;
 
   return (
-    <Container className="my-8 mx-auto">
+    <Container className="my-8 mx-auto px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

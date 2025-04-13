@@ -58,7 +58,7 @@ export const ContactDetails = () => (
     </div>
     <div>
       <h2 className="text-2xl font-bold text-gray-900 mb-4">Реквизиты</h2>
-      <ul className="flex flex-col  justify-between space-y-2 text-gray-700">
+      <ul className="flex flex-col  justify-between space-y-2 text-gray-700  text-end">
         <li className="flex justify-between">
           <span className="font-medium">ИП:</span>
           <span>Добромыслова Мария Алексеевна</span>

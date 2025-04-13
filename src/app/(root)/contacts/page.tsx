@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import ContactPageClient from "@/components/contacts/ContactPageClient";
+import { LINKS } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Контакты | Mia's Corner - связь с магазином ароматов",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Контакты | Mia's Corner",
     description:
-      "Свяжитесь с нами по вопросам покупки ароматических свечей, диффузоров, духов, саше",
+      "Свяжитесь с нами по вопросам покупки ароматических свечей, диффузоров, саше",
     url: "https://www.mias-corner.ru/contacts",
     images: [
       {
@@ -36,6 +37,10 @@ export const metadata: Metadata = {
     "электронная почта магазина ароматов",
     "график работы Mia's Corner",
   ],
+  other: {
+    email: LINKS.GMAIL,
+    contact: `email: ${LINKS.GMAIL}`,
+  },
 };
 
 export default function ContactPage() {

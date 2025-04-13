@@ -14,14 +14,9 @@ import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
-type GenerateMetadataResult = {
-  metadata: Metadata;
-  product: ProductWithHistory | null;
-};
-
 export async function generateMetadata(props: {
   params: ProductParams;
-}): Promise<GenerateMetadataResult> {
+}): Promise<Metadata> {
   const params = await props.params;
   const product = await getProductWithHistory(
     params.categorySlug,
@@ -30,11 +25,8 @@ export async function generateMetadata(props: {
 
   if (!product) {
     return {
-      metadata: {
-        title: "Продукт не найден | Mia's Corner",
-        description: "Ароматическая продукция ручной работы",
-      },
-      product: null,
+      title: "Mia's Corner | Ароматические свечи, диффузоры, саше ручной работы в СПб",
+      description: "Ароматическая продукция ручной работы",
     };
   }
 
@@ -51,10 +43,7 @@ export async function generateMetadata(props: {
     },
     openGraph: {
       title: `${product.title} | Mia's Corner | ${productType} ручной работы`,
-      description: `${product.description.slice(
-        0,
-        160
-      )}`,
+      description: `${product.description.slice(0, 160)}`,
       images:
         product.images.length > 0
           ? [
@@ -65,7 +54,7 @@ export async function generateMetadata(props: {
                 alt: `${product.title} - ${productType}`,
               },
             ]
-          : "product.images[0].url",
+          : product.images[0].url,
       type: "article",
       url: `https://www.mias-corner.ru/catalog/${params.categorySlug}/product/${params.productSlug}`,
       siteName: "Mia's Corner",
@@ -73,35 +62,13 @@ export async function generateMetadata(props: {
     keywords: generateProductKeywords(product),
   };
 
-  return { metadata, product };
-}
-
-function getProductFeatures(product: ProductWithHistory): string {
-  const features = [];
-
-  if (product.compound) {
-    features.push(
-      `Состав: ${product.compound.split(",").slice(0, 3).join(", ")}`
-    );
-  }
-
-  if (product.measure) {
-    features.push(`Объем: ${product.measure}`);
-  }
-
-  if (product.category_slug === "candles") {
-    features.push("Соевый воск", "Хлопковый фитиль", "Горение до 50 часов");
-  } else if (product.category_slug === "diffusers") {
-    features.push("Натуральные аромамасла", "Срок действия 3-6 месяцев");
-  }
-
-  return features.join(". ") + ".";
+  return metadata;
 }
 
 function generateProductKeywords(product: ProductWithHistory): string[] {
   const keywords = [];
   const productName = product.title.toLowerCase();
-  const productType = CATEGORY_SLUG_MAP[product.category_slug]
+  const productType = CATEGORY_SLUG_MAP[product.category_slug];
 
   keywords.push(
     `купить ${productName} СПб`,
@@ -110,7 +77,7 @@ function generateProductKeywords(product: ProductWithHistory): string[] {
   );
 
   product.product_sizes.forEach((size) => {
-    if (size.size) keywords.push(`${productName} ${size.size}`);
+    if (size.size.size) keywords.push(`${productName} ${size.size.size}`);
     if (size.price) keywords.push(`${productName} за ${size.price} руб`);
   });
 
