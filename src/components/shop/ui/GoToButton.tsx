@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Hexagon } from "lucide-react";
 
@@ -19,11 +20,12 @@ export const GoToButton: React.FC<Props> = ({
   target,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleInternalClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    window.location.href = href;
+    router.push(href);
   };
 
   if (target === "_blank") {

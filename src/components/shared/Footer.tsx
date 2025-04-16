@@ -23,7 +23,7 @@ export const Footer = () => {
               <ul className="flex flex-wrap justify-center gap-6 text-gray-300">
                 <li>
                   <Link
-                    href={LINKS.CATALOG}
+                    href={`${LINKS.CATALOG}`}
                     className="hover:text-white transition"
                   >
                     Каталог
@@ -31,7 +31,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href={LINKS.ABOUT}
+                    href={`/${LINKS.ABOUT}`}
                     className="hover:text-white transition"
                   >
                     О нас
@@ -39,7 +39,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <Link
-                    href={LINKS.CONTACTS}
+                    href={`/${LINKS.CONTACTS}`}
                     className="hover:text-white transition"
                   >
                     Контакты
