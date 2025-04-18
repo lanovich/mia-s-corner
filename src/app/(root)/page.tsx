@@ -19,7 +19,7 @@ export default function Home() {
           description="Звёздный маскарад, вишнёвые воспоминания и миг, когда весь мир замер — лишь чтобы их сердца снова встретились"
           buttonText="Перейти к истории"
           buttonPosition="center"
-          smallImage="/history_1.jpg"
+          smallImage="https://www.mias-corner.ru/history_1.jpg"
           buttonUrl={`${LINKS.CATALOG}/${LINKS.HISTORIES}/1`}
           backgroundImage=""
           className="bg-gradient-to-tl from-purple-50 to-indigo-100"
