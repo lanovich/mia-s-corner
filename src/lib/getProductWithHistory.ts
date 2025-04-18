@@ -15,7 +15,7 @@ export const getProductWithHistory = async (
       product_sizes:product_sizes!product_id(
         *, size:size_id(id, size, time_of_exploitation, dimensions)
       ),
-      history:histories(id, title, description),
+      history:histories(id, title, description, imageUrl),
       product_detail_links:product_detail_links(
         details:product_details(details)
       )

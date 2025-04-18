@@ -79,6 +79,7 @@ export default async function CatalogPage() {
               key={history.order}
               title={history.title}
               description={history.description}
+              image={history.imageUrl || "/Placeholder.jpg"}
               href={`${LINKS.CATALOG}/${LINKS.HISTORIES}/${history.id}`}
               slug={history.history_slug}
             />
