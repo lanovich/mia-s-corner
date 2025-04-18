@@ -38,7 +38,7 @@ export const AboutSection = () => {
             initial={{ opacity: 0, y: 20 }}
             className="text-block text-2xl md:text-3xl font-bold z-10"
           >
-            Каждый наш аромат — часть истории.
+            Каждый аромат — часть истории.
           </motion.h2>
 
           <motion.h3

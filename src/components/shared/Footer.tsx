@@ -14,7 +14,7 @@ export const Footer = () => {
                 Mia's Corner | Санкт-Петербург
               </h2>
               <p className="text-gray-400 text-sm mt-1">
-                Каждый наш аромат - часть истории
+                Каждый аромат - часть истории.
               </p>
             </div>
 

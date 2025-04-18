@@ -64,29 +64,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       }}
     >
       {/* Текст */}
-      <div className="relative z-10 max-w-2xl text-center ">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-800">
+      <div className="relative z-10 max-w-2xl text-center">
+        <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-gray-800">
           {title}
         </h2>
+        {smallImage && (
+          <div className="relative z-10 mt-8 w-full">
+            <Image
+              src={smallImage}
+              alt="Small Image"
+              width={200}
+              height={200}
+              className="mx-auto rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
+              priority
+            />
+          </div>
+        )}
         {description && (
-          <p className="mt-4 text-base sm:text-lg md:text-xl text-gray-600">
+          <p className="mt-4 text-lg sm:text-xl md:text-2xl text-gray-600">
             {description}
           </p>
         )}
       </div>
-
-      {smallImage && (
-        <div className="relative z-10 mt-8">
-          <Image
-            src={smallImage}
-            alt="Small Image"
-            width={200}
-            height={200}
-            className="rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
-            priority
-          />
-        </div>
-      )}
 
       {buttonText && buttonUrl && (
         <div

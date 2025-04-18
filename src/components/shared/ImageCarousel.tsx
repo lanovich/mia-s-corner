@@ -11,6 +11,8 @@ interface ImageCarouselProps {
   children: React.ReactNode;
 }
 
+const AUTO_SWIPE_DELAY = 6000;
+
 export function ImageCarousel({ children }: ImageCarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const swiperRef = useRef<any>(null);
@@ -26,7 +28,7 @@ export function ImageCarousel({ children }: ImageCarouselProps) {
       <Swiper
         modules={[Autoplay, Navigation]}
         autoplay={{
-          delay: 3000,
+          delay: AUTO_SWIPE_DELAY,
           disableOnInteraction: true,
         }}
         navigation={{

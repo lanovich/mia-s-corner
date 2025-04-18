@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useAnimation,
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 type ForegroundLayer = {
@@ -25,7 +19,6 @@ export const MotionImage = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
-  const controls = useAnimation();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

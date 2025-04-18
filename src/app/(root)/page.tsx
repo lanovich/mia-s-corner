@@ -16,10 +16,11 @@ export default function Home() {
           title="Откройте для себя новую историю"
           textXPosition={"center"}
           textYPosition={"center"}
-          description="окунитесь в момент встречи двух влюблённых на старом тихом чердаке"
-          buttonText="Перейти к новой истории"
+          description="Звёздный маскарад, вишнёвые воспоминания и миг, когда весь мир замер — лишь чтобы их сердца снова встретились"
+          buttonText="Перейти к истории"
           buttonPosition="center"
-          buttonUrl={`${LINKS.CATALOG}/${LINKS.HISTORIES}/4`}
+          smallImage="/history_1.jpg"
+          buttonUrl={`${LINKS.CATALOG}/${LINKS.HISTORIES}/1`}
           backgroundImage=""
           className="bg-gradient-to-tl from-purple-50 to-indigo-100"
           
@@ -39,7 +40,7 @@ export default function Home() {
           title={"Мы теперь в Telegram"}
           textXPosition={"center"}
           textYPosition={"center"}
-          description="подписывайтесь на наш Telegram, чтобы не пропустить всё самое важное"
+          description="подписывайтесь на Telegram, чтобы не пропустить всё самое важное"
           buttonPosition="center"
           className="bg-gradient-to-br from-blue-50 to-blue-100"
           buttonText="Подписаться на Telegram"

@@ -31,7 +31,7 @@ export const AboutContent: React.FC<Props> = ({ fragrances }) => {
         className="text-lg md:text-xl text-gray-700 mb-6"
         variants={itemVariants}
       >
-        Каждый наш аромат — часть истории. Названия связаны между собой,
+        Каждый аромат — часть истории. Названия связаны между собой,
         создавая единую линию повествования, которую каждый понимает по своему.
       </motion.p>
 
