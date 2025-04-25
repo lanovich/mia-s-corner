@@ -160,13 +160,11 @@ Yandex Delivery используется для получения стоимо�
 
 ## 📸 Скриншоты
 
-```md
 ![Главная страница](screenshots/home.png)
 ![Каталог](screenshots/catalog.png)
 ![Карточка товара](screenshots/product.png)
 ![Страница с заказом](screenshots/cart.png)
 ![Админка](screenshots/histories.png)
-```
 
 ---
 
