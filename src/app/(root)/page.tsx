@@ -21,7 +21,7 @@ export default function Home() {
           buttonPosition="center"
           smallImage="https://www.mias-corner.ru/history_1.jpg"
           buttonUrl={`${LINKS.CATALOG}/${LINKS.HISTORIES}/1`}
-          backgroundImage=""
+z
           className="bg-gradient-to-tl from-purple-50 to-indigo-100"
           
         />
