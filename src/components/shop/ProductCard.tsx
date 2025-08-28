@@ -3,6 +3,7 @@ import { AddToCartButton } from "../shop";
 import Link from "next/link";
 import { LINKS } from "@/constants";
 import { cn } from "@/lib";
+import { Product } from "@/entities/product/model";
 
 interface Props {
   product: Product;

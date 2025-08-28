@@ -1,3 +1,4 @@
+import { Product } from "@/entities/product/model";
 import { supabase } from "@/lib/supabase";
 
 export const getProductsByCategory = async (
@@ -23,13 +24,15 @@ export const getProductsByCategory = async (
     return [];
   }
 
-  const formattedData = data.sort((a, b) => a.episode_number - b.episode_number).map((product: Product) => ({
-    ...product,
-    product_sizes: product.product_sizes.map((productSize) => ({
-      ...productSize,
-      size: productSize.size,
-    })),
-  }));
+  const formattedData = data
+    .sort((a, b) => a.episode_number - b.episode_number)
+    .map((product: Product) => ({
+      ...product,
+      product_sizes: product.product_sizes.map((productSize) => ({
+        ...productSize,
+        size: productSize.size,
+      })),
+    }));
 
   return formattedData;
 };

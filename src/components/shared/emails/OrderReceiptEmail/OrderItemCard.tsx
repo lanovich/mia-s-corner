@@ -1,6 +1,5 @@
-import { findSelectedSize } from "@/lib";
-import { OrderItem } from "@/types/OrderItem";
 import { styles } from "./styles";
+import { OrderItem } from "@/entities/order/model";
 
 export const OrderItemCard: React.FC<{ item: OrderItem; size_id: number }> = ({
   item,

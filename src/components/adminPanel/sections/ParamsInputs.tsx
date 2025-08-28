@@ -2,8 +2,8 @@ import React from "react";
 import { InputField } from "..";
 import { cn } from "@/lib";
 import { Box, Clock, Ruler } from "lucide-react";
-import { SizeDetails } from "@/types/SizeDetails";
-import { CategoryProduct } from "@/types/CategoryProduct";
+import { CategoryProduct } from "@/entities/category/model";
+import { SizeDetails } from "@/entities/product/model";
 
 interface Props {
   className?: string;

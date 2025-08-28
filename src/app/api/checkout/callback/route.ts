@@ -1,10 +1,9 @@
 import { NewOrderAlertEmail, SuccessEmail } from "@/components/shared/emails";
 import { LINKS } from "@/constants";
+import { Order, OrderStatus } from "@/entities/order/model";
+import { YookassaOrderStatus } from "@/entities/yookassa/model";
 import { sendEmail } from "@/lib";
 import { supabase } from "@/lib/supabase";
-import { Order } from "@/types/Order";
-import { OrderStatus } from "@/types/OrderStatus";
-import { YookassaOrderStatus } from "@/types/YookassaOrderStatus";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

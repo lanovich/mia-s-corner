@@ -4,6 +4,8 @@ import {
   getHistories,
   getAllProductsWithCategories,
 } from "@/lib";
+import { Category } from "@/entities/category/model";
+import { HistoryData } from "@/entities/history/model";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.mias-corner.ru";

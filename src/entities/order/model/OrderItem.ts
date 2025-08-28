@@ -1,3 +1,5 @@
+import { Product } from "@/entities/product/model";
+
 export interface OrderItem {
   id: number;
   size: number;

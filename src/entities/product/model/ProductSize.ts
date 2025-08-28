@@ -1,3 +1,5 @@
+import { Size } from "./Size";
+
 export type ProductSize = {
   is_default: boolean;
   oldPrice?: number | null;

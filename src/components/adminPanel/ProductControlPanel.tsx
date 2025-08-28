@@ -13,17 +13,11 @@ import { ProductDetails } from "./ProductDetails";
 import { PlaceholderForm } from ".";
 import { useState } from "react";
 import { toast } from "sonner";
+import { CategoryOption } from "@/entities/category/model";
 
 interface ProductControlPanelProps {
   className?: string;
   categorizedProducts: ProductsByCategory;
-}
-
-interface CategoryOption {
-  id: number;
-  title: string;
-  slug: string;
-  quantity?: number;
 }
 
 export const ProductControlPanel: React.FC<ProductControlPanelProps> = ({

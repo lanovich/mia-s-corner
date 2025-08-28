@@ -1,3 +1,4 @@
+import { Size } from "@/entities/product/model";
 import { supabase } from "./supabase";
 
 export const getSizesByCategory = async (

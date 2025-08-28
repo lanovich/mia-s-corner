@@ -1,4 +1,4 @@
-import { OrderItem } from "@/types/OrderItem";
+import { OrderItem } from "@/entities/order/model";
 import { OrderItemCard } from "../OrderReceiptEmail/OrderItemCard";
 import { styles } from "./styles";
 

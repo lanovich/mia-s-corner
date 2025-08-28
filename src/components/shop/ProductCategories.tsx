@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { CartButtonWithPrice } from "../cart";
 import { useEffect, useRef, useState } from "react";
+import { Category } from "@/entities/category/model";
 interface Props {
   categories: Category[];
   current: number;

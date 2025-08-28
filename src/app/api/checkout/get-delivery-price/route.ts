@@ -1,4 +1,4 @@
-import { YandexDeliveryBodyType } from "@/types/YandexDeliveryBodyType";
+import { YandexDeliveryBodyType } from "@/entities/yandexDelivery/model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

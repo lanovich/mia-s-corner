@@ -6,6 +6,7 @@ import { Button } from "../shadcn-ui/button";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
 import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
+import { ProductSize } from "@/entities/product/model";
 
 interface Props {
   className?: string;

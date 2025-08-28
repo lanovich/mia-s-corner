@@ -5,6 +5,7 @@ import { CartButtonWithPrice, Container } from "@/components/shared";
 import { useEffect, useState, useRef } from "react";
 import { HistoriesList } from "./HistoriesList";
 import { cn } from "@/lib";
+import { HistoryData } from "@/entities/history/model";
 
 interface StickyHistoriesHeaderProps {
   className?: string;

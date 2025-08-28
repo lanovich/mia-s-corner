@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib";
 import { LINKS } from "@/constants";
+import { HistoryData } from "@/entities/history/model";
 
 interface HistoriesListProps {
   histories: HistoryData[];

@@ -5,6 +5,7 @@ import { CartButtonWithPrice, Container } from "@/components/shared";
 import { useEffect, useState, useRef } from "react";
 import { CategoriesList } from "./CategoriesList";
 import { cn } from "@/lib";
+import { Category } from "@/entities/category/model";
 
 interface StickyHeaderProps {
   className?: string;

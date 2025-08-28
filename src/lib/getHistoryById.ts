@@ -1,3 +1,4 @@
+import { HistoryData } from "@/entities/history/model";
 import { supabase } from "@/lib/supabase";
 
 export const getHistoryById = async (

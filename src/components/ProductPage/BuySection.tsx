@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { SizeAndBuy } from "./SizeAndBuy";
 import { cn } from "@/lib";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { ProductSize } from "@/entities/product/model";
 
 interface Props {
   className?: string;

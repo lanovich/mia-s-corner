@@ -1,3 +1,4 @@
+import { Category } from "@/entities/category/model";
 import { Breadcrumbs } from "../ProductPage";
 import { StickyCategoriesHeader } from "./StickyCategoriesHeader";
 import { ChapterHeading, Container } from "@/components/shared";

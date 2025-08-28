@@ -6,7 +6,7 @@ import { Navigation, A11y } from "swiper/modules";
 import "swiper/swiper-bundle.css";
 import { ProductCategories } from "./ProductCategories";
 import { GoToButton } from "./ui";
-import { CategoryWithProducts } from "@/types";
+import { CategoryWithProducts } from "@/entities/category/model";
 import { ProductGroupList } from "./ProductGroupList";
 import { LINKS } from "@/constants";
 

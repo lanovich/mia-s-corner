@@ -1,7 +1,7 @@
 import React from "react";
 import { styles } from "./styles";
 import { OrderItemCard } from "./OrderItemCard";
-import { OrderItem } from "@/types/OrderItem";
+import { OrderItem } from "@/entities/order/model";
 
 export interface EmailTemplateProps {
   orderId: number;

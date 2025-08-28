@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { calcNumberOfProducts } from "./lib";
 import { ProductCard } from "./ProductCard";
+import { Product } from "@/entities/product/model";
 
 interface Props {
   products: Product[];
