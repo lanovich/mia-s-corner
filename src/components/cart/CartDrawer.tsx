@@ -23,6 +23,7 @@ import { useCartStore } from "@/store/useCartStore";
 import { CartDrawerItem } from ".";
 import { InfoAboutCartPrice } from "./ui";
 import { calcFullPrice } from "../../lib/calcFullPrice";
+import { CartItem } from "@/entities/cart/model";
 
 interface Props {
   children?: React.ReactNode;

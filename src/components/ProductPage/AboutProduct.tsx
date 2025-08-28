@@ -3,7 +3,7 @@
 import React from "react";
 import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
 import { ProductDetail } from "./ProductDetail";
-import { ProductWithHistory } from "@/types";
+import { ProductWithHistory } from "@/entities/product/model";
 interface Props {
   className?: string;
   product: ProductWithHistory;

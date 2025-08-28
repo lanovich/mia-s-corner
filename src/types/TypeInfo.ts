@@ -1,1 +1,0 @@
-type CategorySlug = "candles" | "aroma-diffusers" | "aroma-sachet" | "perfume"

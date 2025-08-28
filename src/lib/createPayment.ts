@@ -1,4 +1,4 @@
-import { OrderItem } from "@/types/OrderItem";
+import { OrderItem } from "@/entities/order/model";
 import axios from "axios";
 import { randomUUID } from "crypto";
 

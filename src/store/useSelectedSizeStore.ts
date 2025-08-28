@@ -1,3 +1,4 @@
+import { ProductSize } from "@/entities/product/model";
 import { create } from "zustand";
 
 interface SelectedSizeStore {

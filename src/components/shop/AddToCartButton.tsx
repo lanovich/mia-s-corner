@@ -7,6 +7,7 @@ import { MouseEvent, useCallback, useState, ChangeEvent } from "react";
 import { Hexagon, Minus, Plus, ShoppingCart } from "lucide-react";
 import throttle from "lodash.throttle";
 import QuantityButton from "./QuantityButton";
+import { ProductSize } from "@/entities/product/model";
 
 interface Props {
   selectedSize: ProductSize | null;

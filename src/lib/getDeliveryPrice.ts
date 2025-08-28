@@ -1,4 +1,4 @@
-import { YandexDeliveryResponseType } from "@/types/YandexDeliveryResponseType";
+import { YandexDeliveryResponseType } from "@/entities/yandexDelivery/model";
 import axios from "axios";
 
 

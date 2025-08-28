@@ -15,6 +15,8 @@ import {
 import { getCategories, getSizesByCategory } from "@/lib";
 import { ChapterHeading, Container } from "@/components/shared";
 import { GoToButton } from "@/components/shop/ui";
+import { Category } from "@/entities/category/model";
+import { Size } from "@/entities/product/model";
 
 export default function AddProduct() {
   const [categories, setCategories] = useState<Category[]>([]);

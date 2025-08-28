@@ -1,3 +1,4 @@
+import { HistoryData } from "@/entities/history/model";
 import { StickyHistoriesHeader } from "./StickyHistoriesHeader";
 import { ChapterHeading } from "@/components/shared";
 

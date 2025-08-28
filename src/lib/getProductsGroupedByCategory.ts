@@ -1,33 +1,14 @@
 import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import { supabase } from "./supabase";
-import { SizeDetails } from "@/types/SizeDetails";
-import { CategoryProduct } from "@/types/CategoryProduct";
+import { CategoryProduct } from "@/entities/category/model";
+import { Product, ProductSize, SizeDetails } from "@/entities/product/model";
 
-interface Size {
+
+interface RawSize {
   id: number;
   time_of_exploitation: string | null;
   dimensions: { x: number; y: number; z: number } | null;
   size: string | null;
-}
-
-interface ProductSize {
-  id: number;
-  quantity_in_stock: number;
-  price: number;
-  oldPrice: number | null;
-  is_default: boolean;
-  size_id: number;
-  product_id: number;
-}
-
-interface Product {
-  id: number;
-  title: string;
-  description: string | null;
-  measure: string | null;
-  slug: string;
-  category_slug: string;
-  category_name?: string;
 }
 
 export type ProductsByCategory = Record<string, CategoryProduct[]>;
@@ -64,7 +45,7 @@ export const getProductsGroupedByCategory =
       )
       .returns<
         (ProductSize & {
-          sizes: Size | null;
+          sizes: RawSize | null;
           products: Product | null;
         })[]
       >();
@@ -117,7 +98,7 @@ export const getProductsGroupedByCategory =
         size: size.size,
         quantity: item.quantity_in_stock,
         price: item.price,
-        oldPrice: item.oldPrice,
+        oldPrice: item.oldPrice ?? null,
         isDefault: item.is_default,
       };
 

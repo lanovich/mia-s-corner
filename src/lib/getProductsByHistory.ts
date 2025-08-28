@@ -1,3 +1,4 @@
+import { Product } from "@/entities/product/model";
 import { supabase } from "@/lib/supabase";
 
 export const getProductsByHistory = async (

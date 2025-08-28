@@ -2,10 +2,8 @@
 
 import { Save, Book, Plus } from "lucide-react";
 import { DimensionInputs } from "./sections/DimensionInputs";
-import { CategoryProduct } from "@/types/CategoryProduct";
 import { Button, Checkbox, Label } from "../shadcn-ui";
 import React, { useState, useEffect } from "react";
-import { SizeDetails } from "@/types/SizeDetails";
 import { useConfirm } from "./hooks/useConfirm";
 import { InputField, PlaceholderForm, Section } from ".";
 import { PriceInputs } from "./sections/PriceInputs";
@@ -19,6 +17,8 @@ import {
 } from "../shadcn-ui/select";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
+import { CategoryProduct } from "@/entities/category/model";
+import { SizeDetails } from "@/entities/product/model";
 
 interface ProductDetailsProps {
   className?: string;

@@ -1,8 +1,8 @@
 import { cn } from "@/lib";
 import React from "react";
 import { InputField } from "..";
-import { SizeDetails } from "@/types/SizeDetails";
 import { BadgePercent, Tag } from "lucide-react";
+import { SizeDetails } from "@/entities/product/model";
 
 interface Props {
   className?: string;

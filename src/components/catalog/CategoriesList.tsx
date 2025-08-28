@@ -1,4 +1,5 @@
 import { CategoryButton } from "@/components/shared";
+import { Category } from "@/entities/category/model";
 
 interface CategoriesListProps {
   categories: Category[];

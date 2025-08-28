@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware";
 import { cartService } from "@/services/cartService";
 import { calcFullPrice } from "@/lib/calcFullPrice";
 import { findSelectedSize } from "@/lib";
+import { CartItem } from "@/entities/cart/model";
 
 interface CartStore {
   cart: CartItem[];

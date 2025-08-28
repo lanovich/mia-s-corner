@@ -2,7 +2,8 @@ import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import {
   ProductsByCategory,
 } from "./getProductsGroupedByCategory";
-import { CategoryProduct } from "@/types/CategoryProduct";
+import { CategoryProduct } from "@/entities/category/model";
+
 
 interface CurrentProductResult {
   categorySlug: string;

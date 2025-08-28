@@ -9,7 +9,7 @@ import {
   SelectItem,
 } from "@/components/shadcn-ui/select";
 import { useAdminStore } from "@/store/useAdminStore";
-import { CategoryOption } from "@/types";
+import { CategoryOption } from "@/entities/category/model";
 
 interface SelectCategoryFieldProps {
   className?: string;

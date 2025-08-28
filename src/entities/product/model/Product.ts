@@ -1,3 +1,6 @@
+import { ProductSize } from "./ProductSize";
+import { ScentPyramid } from "./ScentPyramid";
+
 export type Product = {
   category_id: number;
   category_slug: string;

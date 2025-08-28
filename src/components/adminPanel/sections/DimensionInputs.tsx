@@ -1,4 +1,4 @@
-import { SizeDetails } from "@/types/SizeDetails";
+import { SizeDetails } from "@/entities/product/model";
 import { InputField } from "../InputField";
 
 interface DimensionInputsProps {

@@ -1,4 +1,5 @@
-import { CategoryWithProducts } from "@/types";
+
+import { CategoryWithProducts } from "@/entities/category/model";
 import { supabase } from "./supabase";
 
 export const getCategoriesWithProducts = async (): Promise<

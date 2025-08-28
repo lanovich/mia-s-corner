@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getUserToken } from "@/lib/getUserToken";
+import { CartItem } from "@/entities/cart/model";
 
 export const cartService = {
   async loadCartItems() {

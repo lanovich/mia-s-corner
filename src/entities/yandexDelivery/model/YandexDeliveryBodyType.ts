@@ -1,3 +1,5 @@
+import { Size } from "@/entities/product/model"
+
 export interface YandexDeliveryBodyType {
   route_points: RoutePoint[]
   items: YandexItem[]
@@ -14,7 +16,7 @@ export type RoutePoint = {
   sfloor: string
 }
 
-export type YandexItem = {
+type YandexItem = {
   quantity: number
   size: Size
   weight: number

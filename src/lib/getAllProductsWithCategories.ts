@@ -1,8 +1,7 @@
+import { Product } from "@/entities/product/model";
 import { supabase } from "./supabase";
 
-export const getAllProductsWithCategories = async (): Promise<
-  Array<Product>
-> => {
+export const getAllProductsWithCategories = async (): Promise<Product[]> => {
   const { data, error } = await supabase
     .from("products")
     .select(

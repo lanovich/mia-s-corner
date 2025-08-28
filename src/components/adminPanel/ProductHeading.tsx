@@ -1,5 +1,5 @@
-import { ProductOption } from "@/types";
-import { CategoryProduct } from "@/types/CategoryProduct";
+import { CategoryProduct } from "@/entities/category/model";
+import { ProductOption } from "@/entities/product/model";
 import React from "react";
 
 interface Props {

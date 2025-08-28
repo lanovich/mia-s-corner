@@ -16,6 +16,7 @@ import {
 } from "@/components/shadcn-ui/dialog";
 import { toast } from "sonner";
 import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
+import { ProductSize } from "@/entities/product/model";
 
 interface Props {
   className?: string;

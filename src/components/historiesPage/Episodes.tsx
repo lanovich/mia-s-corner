@@ -1,3 +1,4 @@
+import { Product } from "@/entities/product/model";
 import { EpisodeBlock } from "./EpisodeBlock";
 import { EpisodeProductCard } from "./EpisodeProductCard";
 import { cn } from "@/lib";

@@ -9,10 +9,11 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { cn } from "@/lib";
+import { ImageData } from "@/shared/types";
 
 interface Props {
   className?: string;
-  images: Image[];
+  images: ImageData[];
 }
 
 export const ProductGallery: React.FC<Props> = ({ images, className }) => {

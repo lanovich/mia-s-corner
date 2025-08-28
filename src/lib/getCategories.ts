@@ -1,3 +1,4 @@
+import { Category } from "@/entities/category/model";
 import { supabase } from "@/lib/supabase";
 
 export const getCategories = async (): Promise<Category[]> => {

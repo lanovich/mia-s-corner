@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import {Select, SelectTrigger, SelectValue, SelectContent, SelectItem} from "@/components/shadcn-ui/select";
 import { Input } from "@/components/shadcn-ui/input";
-import { ProductOption } from "@/types/ProductOption";
 import { useAdminStore } from "@/store/useAdminStore";
+import { ProductOption } from "@/entities/product/model";
 
 interface SelectProductFieldProps {
   className?: string;

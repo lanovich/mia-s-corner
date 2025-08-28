@@ -1,5 +1,5 @@
-import { ProductOption, CategoryOption } from "@/types";
-import { SizeDetails } from "@/types/SizeDetails";
+import { CategoryOption } from "@/entities/category/model";
+import { ProductOption, SizeDetails } from "@/entities/product/model";
 import { create } from "zustand";
 
 interface AdminStore {

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { useCartStore } from "@/store/useCartStore";
 import { ChangeQuantityButton } from "./ui";
+import { CartItem } from "@/entities/cart/model";
 
 interface Props {
   cartItem: CartItem;
