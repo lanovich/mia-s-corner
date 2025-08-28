@@ -2,7 +2,7 @@
 
 import { Menu, X } from "lucide-react";
 import React from "react";
-import { useDropDownNavigation } from "@/store/useDropDownNavigation";
+import { useDropDownNavigation } from "@/shared/model";
 import {
   Sheet,
   SheetContent,

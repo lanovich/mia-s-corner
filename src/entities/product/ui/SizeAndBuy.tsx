@@ -5,7 +5,7 @@ import { AddToCartButton } from "@/features/modify-cart-quantity/ui";
 import { Button } from "@/shared/shadcn-ui";
 import { Heart } from "lucide-react";
 import { toast } from "sonner";
-import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
+import { useSelectedSizeStore } from "@/entities/product/model/useSelectedSizeStore";
 import { ProductSize } from "@/entities/product/model";
 
 interface Props {

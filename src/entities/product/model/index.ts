@@ -5,3 +5,4 @@ export * from "./ProductWithHistory";
 export * from "./ScentPyramid";
 export * from "./Size";
 export * from "./SizeDetails";
+export * from "./useSelectedSizeStore";

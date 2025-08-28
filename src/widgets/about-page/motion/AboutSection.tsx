@@ -3,7 +3,7 @@
 import { motion, useInView, stagger, useAnimate } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { MotionImage } from "./";
-import { LINKS } from "@/constants";
+import { LINKS } from "@/shared/model";
 import { GoToButton } from "@/shared/ui";
 
 export const AboutSection = () => {

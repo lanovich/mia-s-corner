@@ -1,11 +1,9 @@
 import { MetadataRoute } from "next";
-import {
-  getCategories,
-  getHistories,
-  getAllProductsWithCategories,
-} from "@/lib";
 import { Category } from "@/entities/category/model";
 import { HistoryData } from "@/entities/history/model";
+import { getCategories } from "@/entities/category/api";
+import { getHistories } from "@/entities/history/api";
+import { getAllProductsWithCategories } from "@/entities/product/api";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.mias-corner.ru";

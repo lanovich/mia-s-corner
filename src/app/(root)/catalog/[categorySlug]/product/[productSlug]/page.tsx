@@ -1,7 +1,5 @@
 import { Metadata } from "next";
-import { getProductWithHistory } from "@/lib/cache";
 import { Breadcrumbs, Container } from "@/shared/ui";
-import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import { ProductWithHistory } from "@/entities/product/model";
 import {
   AboutProduct,
@@ -10,6 +8,8 @@ import {
   ProductGallery,
   SimilarProducts,
 } from "@/entities/product/ui";
+import { getProductWithHistory } from "@/entities/product/api";
+import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 

@@ -1,6 +1,7 @@
-import { ImageType } from "@/shared/types";
+import { ImageType } from "@/shared/model";
 import { ProductSize } from "./ProductSize";
 import { ScentPyramid } from "./ScentPyramid";
+import { CategoryProduct } from "@X/entities/category/model";
 
 export type Product = {
   category_id: number;
@@ -18,3 +19,5 @@ export type Product = {
   scent_pyramid: ScentPyramid;
   episode_number: number;
 };
+
+export type ProductsByCategory = Record<string, CategoryProduct[]>;

@@ -1,7 +1,6 @@
-import useSWR from "swr";
-import { getProductsByCategory } from "@/lib/cache";
 import { Container } from "@/shared/ui";
 import { ProductCard } from "@/entities/product/ui";
+import { getProductsByCategory } from "@/entities/product/api";
 
 interface Props {
   categoryId: number;
@@ -9,7 +8,6 @@ interface Props {
 
 export async function CatalogProductsLoader({ categoryId }: Props) {
   const products = await getProductsByCategory(categoryId);
-
   if (!products) return <p className="text-gray-500">Загрузка товаров...</p>;
 
   return (

@@ -1,12 +1,13 @@
 "use server";
 
 import { ContactEmailTemplate, OrderReceiptEmail } from "@/entities/mail/ui";
-import { LINKS } from "@/constants";
-import { CheckoutFormValues } from "@/constants/checkoutFormSchema";
-import { ContactFormValues } from "@/constants/contactFormSchema";
-import { createPayment, sendEmail } from "@/lib";
-import { supabase } from "@/lib/supabase";
+import { CheckoutFormValues } from "@/entities/order/model/checkoutFormSchema";
+import { ContactFormValues } from "@/shared/model/contactFormSchema";
+import { supabase } from "@/shared/api/supabase/client/supabase";
 import { cookies } from "next/headers";
+import { createPayment } from "@/entities/order/api";
+import { sendEmail } from "@/entities/mail/api";
+import { LINKS } from "@/shared/model";
 
 export async function createOrder(
   data: CheckoutFormValues,

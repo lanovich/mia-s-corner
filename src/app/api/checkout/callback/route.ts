@@ -1,9 +1,9 @@
+import { sendEmail } from "@/entities/mail/api";
 import { NewOrderAlertEmail, SuccessEmail } from "@/entities/mail/ui";
-import { LINKS } from "@/constants";
 import { Order, OrderStatus } from "@/entities/order/model";
 import { YookassaOrderStatus } from "@/entities/yookassa/model";
-import { sendEmail } from "@/lib";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/shared/api/supabase/client/supabase";
+import { LINKS } from "@/shared/model";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

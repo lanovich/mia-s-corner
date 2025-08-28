@@ -4,7 +4,7 @@ import { sendContactMessage } from "@/app/actions";
 import {
   ContactFormValues,
   contactFormSchema,
-} from "@/constants/contactFormSchema";
+} from "@/shared/model/contactFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { Container } from "@/shared/ui";

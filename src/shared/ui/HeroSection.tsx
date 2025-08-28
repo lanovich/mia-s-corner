@@ -1,4 +1,4 @@
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import Image from "next/image";
 import { GoToButton } from "@/shared/ui";
 

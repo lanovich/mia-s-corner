@@ -1,5 +1,5 @@
+import { getCategoriesWithProducts } from "@/entities/category/api";
 import { ShopCarousel } from "./ShopCarousel";
-import { getCategoriesWithProducts } from "@/lib/cache";
 
 export async function Shop() {
   const categoriesWithProducts = await getCategoriesWithProducts();

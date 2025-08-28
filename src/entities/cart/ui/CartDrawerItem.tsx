@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
-import { useCartStore } from "@/store/useCartStore";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { CartItem } from "@/entities/cart/model";
 import { ChangeQuantityButton } from "./ChangeQuantityButton";
 

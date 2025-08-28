@@ -1,6 +1,6 @@
 "use client";
 import { FormInput } from "@/shared/ui";
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 
 interface Props {
   className?: string;

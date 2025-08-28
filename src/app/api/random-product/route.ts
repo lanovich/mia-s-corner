@@ -1,7 +1,7 @@
+import { getRandomSlugs } from "@/shared/api/supabase/queries";
+import { chooseRandomItem } from "@/shared/lib";
+import { LINKS } from "@/shared/model";
 import { NextResponse } from "next/server";
-import { getRandomSlugs } from "@/lib/cache";
-import { chooseRandomItem } from "@/lib";
-import { LINKS } from "@/constants";
 
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;

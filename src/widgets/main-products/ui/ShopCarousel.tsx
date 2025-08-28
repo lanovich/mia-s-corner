@@ -8,7 +8,7 @@ import { ProductCategories } from "./ProductCategories";
 import { GoToButton } from "@/shared/ui";
 import { CategoryWithProducts } from "@/entities/category/model";
 import { ProductGroupList } from "./ProductGroupList";
-import { LINKS } from "@/constants";
+import { LINKS } from "@/shared/model";
 
 interface Props {
   categoriesWithProducts: CategoryWithProducts[];

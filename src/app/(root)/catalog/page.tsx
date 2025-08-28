@@ -1,10 +1,10 @@
-import { getCategories, getHistories } from "@/lib/cache";
 import { Breadcrumbs, Container } from "@/shared/ui";
 import { CatalogCard } from "@/shared/ui";
-import { LINKS } from "@/constants";
-
 import { Metadata } from "next";
 import { metadata as rootMetadata } from "@/app/(root)/layout";
+import { getCategories } from "@/entities/category/api";
+import { getHistories } from "@/entities/history/api";
+import { LINKS } from "@/shared/model";
 
 export const metadata: Metadata = {
   ...rootMetadata,

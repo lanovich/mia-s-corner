@@ -1,6 +1,6 @@
 import React from "react";
 import { Hexagon } from "lucide-react";
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 
 interface QuantityButtonProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

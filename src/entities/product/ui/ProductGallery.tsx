@@ -8,8 +8,8 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-import { cn } from "@/lib";
-import { ImageType } from "@/shared/types";
+import { cn } from "@/shared/lib";
+import { ImageType } from "@/shared/model";
 
 interface Props {
   className?: string;

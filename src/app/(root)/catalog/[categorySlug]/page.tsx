@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import { getCategories } from "@/lib/cache";
 import { Container } from "@/shared/ui";
 import { Categories } from "@/entities/category/ui";
 import { CatalogProductsLoader } from "@/widgets/catalog/ui";
+import { getCategories } from "@/entities/category/api";
 
 type Params = Promise<{ categorySlug: string }>;
 

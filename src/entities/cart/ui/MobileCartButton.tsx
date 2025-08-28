@@ -2,9 +2,9 @@
 
 import React from "react";
 import { ShoppingBag } from "lucide-react";
-import { useCartStore } from "@/store/useCartStore";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { motion } from "framer-motion";
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import { useParams } from "next/navigation";
 import { CartDrawer } from ".";
 
