@@ -1,4 +1,4 @@
-import { ChapterHeading, СhapterContainer } from "@/components/shared";
+import { ChapterHeading, СhapterContainer } from "@/shared/ui";
 
 export default function PrivacyPage() {
   return (

@@ -1,8 +1,6 @@
-import { Histories } from "@/components/historiesPage/Histories";
-import { Episodes } from "@/components/historiesPage/Episodes";
+import { Episodes, Histories } from "@/entities/history/ui";
 import { getProductsByHistory, getHistories } from "@/lib/cache";
-import { Container } from "@/components/shared";
-import { Breadcrumbs } from "@/components/ProductPage";
+import { Breadcrumbs, Container } from "@/shared/ui";
 import { Metadata } from "next";
 
 type HistoryParams = Promise<{ historyId: string }>;

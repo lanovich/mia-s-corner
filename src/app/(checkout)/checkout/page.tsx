@@ -3,9 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/shadcn-ui/button";
 import { motion } from "framer-motion";
-import { Container } from "@/components/shared";
+import { Container } from "@/shared/ui";
 import {
   OrderSummary,
   ContactInfo,
@@ -13,16 +12,17 @@ import {
   TotalAmount,
   PaymentMethods,
   OrderWishes,
-} from "@/components/checkout";
+  DeliveryMethods,
+  SelfPickup,
+  PostalDelivery,
+} from "@/entities/order/ui";
 import { FormProvider, useForm } from "react-hook-form";
 import { CheckoutFormValues, schema } from "@/constants/checkoutFormSchema";
 import { createOrder } from "@/app/actions";
 import { toast } from "sonner";
 import { useCartStore } from "@/store/useCartStore";
-import { SelfPickup } from "@/components/checkout/SelfPickup";
-import { DeliveryMethods } from "@/components/checkout/DeliveryMethods";
 import { useDeliveryStore } from "@/store/useDeliveryStore";
-import { PostalDelivery } from "@/components/checkout/PostalDelivery";
+import { Button } from "@/shared/shadcn-ui";
 
 export default function CheckoutPage() {
   const router = useRouter();

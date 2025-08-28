@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "../globals.css";
-import { Footer, Header, MobileCartButton } from "@/components/shared";
+import { CookieBanner } from "@/shared/ui";
 import { Toaster } from "sonner";
-import { CookieBanner } from "@/components/shared/CookieBanner";
+import { Header } from "@/widgets/header/ui";
+import { Footer } from "@/widgets/footer/ui";
+import { MobileCartButton } from "@/entities/cart/ui";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],

@@ -1,4 +1,4 @@
-import { NewOrderAlertEmail, SuccessEmail } from "@/components/shared/emails";
+import { NewOrderAlertEmail, SuccessEmail } from "@/entities/mail/ui";
 import { LINKS } from "@/constants";
 import { Order, OrderStatus } from "@/entities/order/model";
 import { YookassaOrderStatus } from "@/entities/yookassa/model";

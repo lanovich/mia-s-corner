@@ -1,0 +1,9 @@
+export { AboutProduct } from "./AboutProduct";
+export { BuySection } from "./BuySection";
+export { HorizontalProductCard } from "./HorizontalProductCard";
+export { MobileSizeAndBuy } from "./MobileSizeAndBuy";
+export { ProductDetail } from "./ProductDetail";
+export { ProductGallery } from "./ProductGallery";
+export { SimilarProducts } from "./SimilarProducts";
+export { SizeAndBuy } from "./SizeAndBuy";
+export { ProductCard } from "./ProductCard";
