@@ -3,10 +3,10 @@ import {
   ImageCarousel,
   СhapterContainer,
   HeroSection,
-} from "@/components/shared";
-import Shop from "@/components/shop/Shop";
-import { AboutSection } from "@/components/about";
+} from "@/shared/ui";
 import { LINKS } from "@/constants";
+import { AboutSection } from "@/widgets/about-page/motion";
+import { Shop } from "@/widgets/main-products/ui";
 
 export default function Home() {
   return (

@@ -1,16 +1,15 @@
 import { Metadata } from "next";
 import { getProductWithHistory } from "@/lib/cache";
-import {
-  Breadcrumbs,
-  ProductGallery,
-  BuySection,
-  AboutProduct,
-  SimilarProducts,
-} from "@/components/ProductPage";
-import { MobileSizeAndBuy } from "@/components/ProductPage/MobileSizeAndBuy";
-import { Container } from "@/components/shared";
+import { Breadcrumbs, Container } from "@/shared/ui";
 import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import { ProductWithHistory } from "@/entities/product/model";
+import {
+  AboutProduct,
+  BuySection,
+  MobileSizeAndBuy,
+  ProductGallery,
+  SimilarProducts,
+} from "@/entities/product/ui";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
@@ -25,7 +24,8 @@ export async function generateMetadata(props: {
 
   if (!product) {
     return {
-      title: "Mia's Corner | Ароматические свечи, диффузоры, саше ручной работы в СПб",
+      title:
+        "Mia's Corner | Ароматические свечи, диффузоры, саше ручной работы в СПб",
       description: "Ароматическая продукция ручной работы",
     };
   }

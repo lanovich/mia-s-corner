@@ -1,7 +1,6 @@
 import { getCategories, getHistories } from "@/lib/cache";
-import { Container } from "@/components/shared";
-import { Breadcrumbs } from "@/components/ProductPage";
-import { CatalogCard } from "@/components/shared";
+import { Breadcrumbs, Container } from "@/shared/ui";
+import { CatalogCard } from "@/shared/ui";
 import { LINKS } from "@/constants";
 
 import { Metadata } from "next";

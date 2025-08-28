@@ -1,3 +1,4 @@
+import { Product } from "@/entities/product/model";
 import { supabase } from "./supabase";
 
 export const getSimilarProducts = async (
@@ -21,7 +22,7 @@ export const getSimilarProducts = async (
     .eq("history_id", historyId)
     .neq("id", productId)
     .order("category_id")
-    .order("episode_number")
+    .order("episode_number");
 
   if (error) {
     console.error(`❌ Ошибка загрузки товаров из той же истории:`, error);

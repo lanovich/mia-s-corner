@@ -4,17 +4,17 @@ import { useState, useEffect } from "react";
 import slugify from "slugify";
 import axios from "axios";
 import { toast } from "sonner";
-import { Input, Button, Textarea } from "@/components/shadcn-ui";
+import { Input, Button, Textarea } from "@/shared/shadcn-ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcn-ui/select";
+} from "@/shared/shadcn-ui/select";
 import { getCategories, getSizesByCategory } from "@/lib";
-import { ChapterHeading, Container } from "@/components/shared";
-import { GoToButton } from "@/components/shop/ui";
+import { ChapterHeading, Container } from "@/shared/ui";
+import { GoToButton } from "@/shared/ui";
 import { Category } from "@/entities/category/model";
 import { Size } from "@/entities/product/model";
 

@@ -1,0 +1,12 @@
+export { ContactInfo } from "./ContactInfo";
+export { DeliveryForm } from "./DeliveryForm";
+export { OrderSummary } from "./OrderSummary";
+export { PaymentMethods } from "./PaymentMethods";
+export { TotalAmount } from "./TotalAmount";
+export { PriceCounter } from "./PriceCounter";
+export { OrderWishes } from "./OrderWishes";
+export { AboutWishesTooltip } from "./AboutWishesTooltip";
+export { TotalAmountLoader } from "./TotalAmountLoader";
+export { DeliveryMethods } from "./DeliveryMethods";
+export { SelfPickup } from "./SelfPickup";
+export { PostalDelivery } from "./PostalDelivery";

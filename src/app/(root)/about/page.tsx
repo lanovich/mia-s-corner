@@ -1,12 +1,12 @@
+import { Container } from "@/shared/ui";
+import React from "react";
+
+import { Metadata } from "next";
 import {
   AboutContent,
   AboutHeader,
   AboutQuestions,
-} from "@/components/aboutPage";
-import { Container } from "@/components/shared";
-import React from "react";
-
-import { Metadata } from "next";
+} from "@/widgets/about-page/sections";
 
 export const metadata: Metadata = {
   title: "О нас | Mia's Corner - истории за каждым ароматом",

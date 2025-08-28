@@ -1,3 +1,4 @@
+import { ImageType } from "@/shared/types";
 import { ProductSize } from "./ProductSize";
 import { ScentPyramid } from "./ScentPyramid";
 
@@ -9,7 +10,7 @@ export type Product = {
   episode: string | null;
   history_id: number;
   id: number;
-  images: Image[];
+  images: ImageType[];
   measure: string;
   title: string;
   slug: string;

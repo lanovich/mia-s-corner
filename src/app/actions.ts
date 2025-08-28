@@ -1,9 +1,6 @@
 "use server";
 
-import {
-  ContactEmailTemplate,
-  OrderReceiptEmail,
-} from "@/components/shared/emails";
+import { ContactEmailTemplate, OrderReceiptEmail } from "@/entities/mail/ui";
 import { LINKS } from "@/constants";
 import { CheckoutFormValues } from "@/constants/checkoutFormSchema";
 import { ContactFormValues } from "@/constants/contactFormSchema";
@@ -134,7 +131,7 @@ export async function createOrder(
       description: `Оплата заказа #${order.id}`,
       customerEmail: order.email,
       items: order.items,
-      deliveryPrice: order.delivery_price
+      deliveryPrice: order.delivery_price,
     });
 
     if (!paymentData?.id) {
