@@ -1,0 +1,1 @@
+export { NewOrderAlertEmail } from "./NewOrderAlertEmail";

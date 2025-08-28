@@ -1,0 +1,1 @@
+export { SuccessEmail } from "./SuccessEmail";
