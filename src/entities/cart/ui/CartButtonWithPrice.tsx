@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/shared/shadcn-ui";
 import { ShoppingBag } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
-import { useCartStore } from "@/store/useCartStore";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { motion, useMotionValue } from "framer-motion";
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 
 interface Props {
   className?: string;

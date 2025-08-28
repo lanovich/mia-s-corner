@@ -1,8 +1,8 @@
-import { getSimilarProducts } from "@/lib/cache";
 import React from "react";
 import { HorizontalProductCard } from "./HorizontalProductCard";
-import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
 import { Product } from "@/entities/product/model";
+import { getSimilarProducts } from "@/entities/product/api";
+import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
 
 interface Props {
   className?: string;

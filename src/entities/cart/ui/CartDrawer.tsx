@@ -19,9 +19,9 @@ import {
 import { useMediaQuery } from "../lib";
 import { Button } from "@/shared/shadcn-ui";
 import { ArrowRight, Trash2 } from "lucide-react";
-import { useCartStore } from "@/store/useCartStore";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { CartDrawerItem, InfoAboutCartPrice } from ".";
-import { calcFullPrice } from "@/lib/calcFullPrice";
+import { calcFullPrice } from "@/shared/lib/calcFullPrice";
 import { CartItem } from "@/entities/cart/model";
 
 interface Props {

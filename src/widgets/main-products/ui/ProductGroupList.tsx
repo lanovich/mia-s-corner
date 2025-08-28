@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { calcNumberOfProducts } from "../lib";
-import { ProductCard } from "../../../entities/product/ui/ProductCard";
+import { ProductCard } from "@/entities/product/ui";
 import { Product } from "@/entities/product/model";
 
 interface Props {

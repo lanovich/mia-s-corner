@@ -1,5 +1,5 @@
-import { LINKS } from "@/constants";
-import { Container } from "../../../shared/ui/Container";
+import { LINKS } from "@/shared/model";
+import { Container } from "@/shared/ui";
 import Link from "next/link";
 
 export const Footer = () => {

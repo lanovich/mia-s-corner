@@ -1,8 +1,8 @@
 "use client";
 
 import { toast } from "sonner";
-import { cn } from "@/lib";
-import { useCartStore } from "@/store/useCartStore";
+import { cn } from "@/shared/lib";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { MouseEvent, useCallback, useState, ChangeEvent } from "react";
 import { Hexagon, Minus, Plus, ShoppingCart } from "lucide-react";
 import throttle from "lodash.throttle";

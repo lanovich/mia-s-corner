@@ -9,7 +9,7 @@ import { MobileCartButton } from "@/entities/cart/ui";
 
 const roboto = Roboto({
   subsets: ["cyrillic"],
-  variable: "--font-nunito",
+  variable: "--font-roboto",
   weight: ["100", "300", "400", "500", "700", "900"],
 });
 

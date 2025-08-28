@@ -1,10 +1,10 @@
 "use client";
-import { getDeliveryPrice } from "@/lib/getDeliveryPrice";
+import { getDeliveryPrice } from "@/entities/yandexDelivery/api/getDeliveryPrice";
 import { Button } from "@/shared/shadcn-ui";
 import { FormInput, FormTextarea } from "@/shared/ui";
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import { useMemo } from "react";
-import { useDeliveryStore } from "@/store/useDeliveryStore";
+import { useDeliveryStore } from "@/entities/yandexDelivery/model/useDeliveryStore";
 import { useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 

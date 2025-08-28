@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { AddToCartButton } from "@/features/modify-cart-quantity/ui";
 import Link from "next/link";
-import { LINKS } from "@/constants";
-import { cn } from "@/lib";
+import { LINKS } from "@/shared/model";
+import { cn } from "@/shared/lib";
 import { Product } from "@/entities/product/model";
 
 interface Props {

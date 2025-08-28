@@ -1,7 +1,8 @@
-import { cn } from "@/lib";
-import { getCategoryBySlug, getHistoryById } from "@/lib/cache";
 import Link from "next/link";
 import { Container } from "@/shared/ui";
+import { getCategoryBySlug } from "@/entities/category/api";
+import { getHistoryById } from "@/entities/history/api";
+import { cn } from "@/shared/lib";
 
 interface Props {
   categorySlug?: string;

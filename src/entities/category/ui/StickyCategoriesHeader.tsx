@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Container } from "@/shared/ui";
 import { CartButtonWithPrice } from "@/entities/cart/ui";
 import { useEffect, useState, useRef } from "react";
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import { Category } from "@/entities/category/model";
 import { CategoriesList } from "./CategoriesList";
 

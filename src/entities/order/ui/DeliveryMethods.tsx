@@ -1,5 +1,8 @@
-import { cn } from "@/lib";
-import { DeliveryMethod, useDeliveryStore } from "@/store/useDeliveryStore";
+import { cn } from "@/shared/lib";
+import {
+  DeliveryMethod,
+  useDeliveryStore,
+} from "@/entities/yandexDelivery/model/useDeliveryStore";
 import React from "react";
 import { RadioButton } from "@/shared/ui";
 

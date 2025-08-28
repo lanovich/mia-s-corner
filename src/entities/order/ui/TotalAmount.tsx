@@ -1,8 +1,8 @@
-import { useCartStore } from "@/store/useCartStore";
-import { calcFullPrice } from "@/lib/calcFullPrice";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
+import { calcFullPrice } from "@/shared/lib/calcFullPrice";
 import { PriceCounter } from "./PriceCounter";
 import { Skeleton } from "@/shared/shadcn-ui";
-import { useDeliveryStore } from "@/store/useDeliveryStore";
+import { useDeliveryStore } from "@/entities/yandexDelivery/model/useDeliveryStore";
 
 export const TotalAmount = () => {
   const productTotalAmount = useCartStore((state) => state.productTotalAmount);

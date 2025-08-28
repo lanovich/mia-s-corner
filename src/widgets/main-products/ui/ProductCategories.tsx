@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { motion } from "framer-motion";
 import { CartButtonWithPrice } from "@/entities/cart/ui";
 import { useEffect, useRef, useState } from "react";

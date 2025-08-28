@@ -1,5 +1,5 @@
-import { LINKS } from "@/constants";
-import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
+import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
+import { LINKS } from "@/shared/model";
 import Link from "next/link";
 
 interface ProductCardProps {

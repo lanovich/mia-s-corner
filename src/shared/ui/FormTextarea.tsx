@@ -1,4 +1,4 @@
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import { Textarea } from "@/shared/shadcn-ui";
 import React from "react";
 import { ClearButton, ErrorText } from "@/shared/ui";

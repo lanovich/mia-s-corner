@@ -1,10 +1,10 @@
+import { LINKS } from "@/shared/model";
 import {
   ChapterHeading,
   ImageCarousel,
   СhapterContainer,
   HeroSection,
 } from "@/shared/ui";
-import { LINKS } from "@/constants";
 import { AboutSection } from "@/widgets/about-page/motion";
 import { Shop } from "@/widgets/main-products/ui";
 

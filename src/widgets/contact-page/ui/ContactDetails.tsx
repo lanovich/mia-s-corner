@@ -1,4 +1,4 @@
-import { LINKS } from "@/constants";
+import { LINKS } from "@/shared/model";
 import Link from "next/link";
 
 export const ContactDetails = () => (

@@ -1,5 +1,5 @@
 import { CustomLink } from "./CustomLink";
-import { LINKS } from "@/constants";
+import { LINKS } from "@/shared/model";
 
 interface Props {
   className?: string;

@@ -1,4 +1,4 @@
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import React from "react";
 import { Card, CardContent } from "@/shared/shadcn-ui/card";
 

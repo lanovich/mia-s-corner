@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useSelectedSizeStore } from "@/store/useSelectedSizeStore";
+import { useSelectedSizeStore } from "@/entities/product/model/useSelectedSizeStore";
 import { ProductDetail } from "./ProductDetail";
 import { ProductWithHistory } from "@/entities/product/model";
 interface Props {

@@ -1,5 +1,6 @@
+import { getHistories } from "@/entities/history/api";
 import { Episodes, Histories } from "@/entities/history/ui";
-import { getProductsByHistory, getHistories } from "@/lib/cache";
+import { getProductsByHistory } from "@/entities/product/api";
 import { Breadcrumbs, Container } from "@/shared/ui";
 import { Metadata } from "next";
 

@@ -1,9 +1,9 @@
-import { useCartStore } from "@/store/useCartStore";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { Card, CardContent } from "@/shared/shadcn-ui/card";
 import { Skeleton } from "@/shared/shadcn-ui";
 import Image from "next/image";
 import React from "react";
-import { findSelectedSize } from "@/lib";
+import { findSelectedSize } from "@/shared/lib";
 
 interface Props {
   className?: string;

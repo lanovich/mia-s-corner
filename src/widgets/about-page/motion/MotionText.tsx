@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import { motion } from "framer-motion";
 
 interface MotionTextProps {

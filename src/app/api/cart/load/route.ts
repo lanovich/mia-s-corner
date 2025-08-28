@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/shared/api/supabase/client/supabase";
 
 export async function GET(req: Request) {
   const authHeader = req.headers.get("Authorization");

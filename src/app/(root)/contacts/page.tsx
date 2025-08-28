@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { LINKS } from "@/constants";
 import { ContactPageClient } from "@/widgets/contact-page/ui";
+import { LINKS } from "@/shared/model";
 
 export const metadata: Metadata = {
   title: "Контакты | Mia's Corner - связь с магазином ароматов",

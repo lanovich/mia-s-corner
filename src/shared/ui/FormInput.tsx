@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from "@/shared/shadcn-ui";
 import * as RHF from "react-hook-form";
 import { ErrorText, ClearButton } from "@/shared/ui";
-import { cn } from "@/lib";
+import { cn } from "@/shared/lib";
 import debounce from "lodash.debounce";
 
 const { useFormContext } = RHF;

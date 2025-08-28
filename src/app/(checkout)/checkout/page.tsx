@@ -17,11 +17,14 @@ import {
   PostalDelivery,
 } from "@/entities/order/ui";
 import { FormProvider, useForm } from "react-hook-form";
-import { CheckoutFormValues, schema } from "@/constants/checkoutFormSchema";
+import {
+  CheckoutFormValues,
+  schema,
+} from "@/entities/order/model/checkoutFormSchema";
 import { createOrder } from "@/app/actions";
 import { toast } from "sonner";
-import { useCartStore } from "@/store/useCartStore";
-import { useDeliveryStore } from "@/store/useDeliveryStore";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
+import { useDeliveryStore } from "@/entities/yandexDelivery/model/useDeliveryStore";
 import { Button } from "@/shared/shadcn-ui";
 
 export default function CheckoutPage() {

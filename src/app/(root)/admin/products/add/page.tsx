@@ -12,11 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/shadcn-ui/select";
-import { getCategories, getSizesByCategory } from "@/lib";
 import { ChapterHeading, Container } from "@/shared/ui";
 import { GoToButton } from "@/shared/ui";
 import { Category } from "@/entities/category/model";
 import { Size } from "@/entities/product/model";
+import { getSizesByCategory } from "@/entities/product/api";
+import { getCategories } from "@/entities/category/api";
 
 export default function AddProduct() {
   const [categories, setCategories] = useState<Category[]>([]);
