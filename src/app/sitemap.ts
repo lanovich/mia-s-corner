@@ -1,16 +1,16 @@
 import { MetadataRoute } from "next";
 import { Category } from "@/entities/category/model";
 import { HistoryData } from "@/entities/history/model";
-import { getCategories } from "@/entities/category/api";
-import { getHistories } from "@/entities/history/api";
-import { getAllProductsWithCategories } from "@/entities/product/api";
+import { categoriesApi } from "@/entities/category/api";
+import { historiesApi } from "@/entities/history/api";
+import { productsApi } from "@/entities/product/api";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.mias-corner.ru";
   const currentDate = new Date();
 
-  const categories = await getCategories();
-  const histories = await getHistories();
+  const categories = await categoriesApi.fetchCategories();
+  const histories = await historiesApi.fetchHistories();
 
   const staticPages = [
     {
@@ -59,7 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const products = await getAllProductsWithCategories();
+  const products = await productsApi.fetchAllProducts();
   const productPages = products.map((product) => ({
     url: `${baseUrl}/catalog/${product.category_slug}/product/${product.slug}`,
     lastModified: new Date(currentDate),

@@ -4,22 +4,27 @@ import { Breadcrumbs, ChapterHeading } from "@/shared/ui";
 
 interface CategoriesProps {
   categories: Category[];
-  currentCategorySlug: string;
+  categoryInfo: { slug: string; name: string };
 }
 
 export const Categories: React.FC<CategoriesProps> = ({
   categories,
-  currentCategorySlug,
+  categoryInfo,
 }) => {
   return (
     <>
-      <Breadcrumbs categorySlug={currentCategorySlug} />
+      <Breadcrumbs
+        categoryInfo={{
+          slug: categoryInfo.slug,
+          name: categoryInfo.name || categoryInfo.slug,
+        }}
+      />
       <div className="mx-auto">
         <ChapterHeading className="my-3">Каталог</ChapterHeading>
       </div>
       <StickyCategoriesHeader
         categories={categories}
-        currentCategorySlug={currentCategorySlug}
+        currentCategorySlug={categoryInfo.slug}
       />
     </>
   );

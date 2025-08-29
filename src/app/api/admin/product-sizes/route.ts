@@ -1,18 +1,18 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/client/supabase";
+import { supabase } from "@/shared/api/supabase/server";
 
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
 
     const {
-      sizeId,
+      id: sizeId,
       productId,
       price,
       oldPrice,
-      quantityInStock,
+      quantity,
       isDefault,
-      sizeValue,
+      size,
       timeOfExploitation,
       dimensions,
     } = body;
@@ -29,7 +29,7 @@ export async function PUT(request: Request) {
       .update({
         price,
         oldPrice: oldPrice,
-        quantity_in_stock: quantityInStock,
+        quantity_in_stock: quantity,
         is_default: isDefault,
       })
       .eq("size_id", sizeId)
@@ -42,7 +42,7 @@ export async function PUT(request: Request) {
       .update({
         time_of_exploitation: timeOfExploitation,
         dimensions: dimensions,
-        size: sizeValue,
+        size: size,
       })
       .eq("id", sizeId);
 

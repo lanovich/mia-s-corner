@@ -1,8 +1,9 @@
-import { getCategoriesWithProducts } from "@/entities/category/api";
+import { categoriesApi } from "@/entities/category/api";
 import { ShopCarousel } from "./ShopCarousel";
 
 export async function Shop() {
-  const categoriesWithProducts = await getCategoriesWithProducts();
+  const categoriesWithProducts =
+    await categoriesApi.fetchCategoriesWithProducts();
 
   return <ShopCarousel categoriesWithProducts={categoriesWithProducts} />;
 }

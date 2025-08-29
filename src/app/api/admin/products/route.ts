@@ -1,5 +1,38 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/client/supabase";
+import { supabase } from "@/shared/api/supabase/server";
+import { NextRequest } from "next/server";
+import { getEmptyResult, processProductData } from "@/shared/api";
+import { ProductSizeRow } from "@/features/admin-control/model";
+
+export async function GET(req: NextRequest) {
+  try {
+    const { data: productSizes, error } = await supabase
+      .from("product_sizes")
+      .select(
+        `
+        id,
+        quantity_in_stock,
+        price,
+        product_id,
+        products:products!product_id (
+          id,
+          title,
+          compound,
+          category_id,
+          category_slug
+        )
+      `
+      )
+      .returns<ProductSizeRow[]>();
+
+    if (error) throw error;
+    const finalResult = processProductData(productSizes);
+    return new Response(JSON.stringify(finalResult), { status: 200 });
+  } catch (err) {
+    console.error("Error fetching product summary:", err);
+    return new Response(JSON.stringify(getEmptyResult()), { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {

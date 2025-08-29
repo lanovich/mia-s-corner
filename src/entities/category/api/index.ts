@@ -1,3 +1,1 @@
-export * from "./getCategories";
-export * from "./getCategoriesWithProducts";
-export * from "./getCategoryBySlug";
+export * from "./categoriesApi";

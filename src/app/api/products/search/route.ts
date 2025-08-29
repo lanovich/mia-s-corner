@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/client/supabase";
+import { supabase } from "@/shared/api/supabase/server";
 
 export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams.get("query") || "";

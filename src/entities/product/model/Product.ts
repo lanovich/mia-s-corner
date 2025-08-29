@@ -6,6 +6,7 @@ import { CategoryProduct } from "@X/entities/category/model";
 export type Product = {
   category_id: number;
   category_slug: string;
+  category_name?: string;
   compound: string;
   description: string;
   episode: string | null;

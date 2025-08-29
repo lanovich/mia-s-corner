@@ -10,13 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/shadcn-ui/select";
-import { supabase } from "@/shared/api/supabase/client/supabase";
 import { toast } from "sonner";
 import { CategoryProduct } from "@/entities/category/model";
 import { SizeDetails } from "@/entities/product/model";
 import { Button, Checkbox, Label } from "@/shared/shadcn-ui";
 import { useConfirm } from "../lib";
 import { DimensionInputs, ParamsInputs, PriceInputs } from ".";
+import { adminApi } from "../api";
+import { apiFetch } from "@/shared/api";
 
 interface ProductDetailsProps {
   className?: string;
@@ -47,10 +48,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
 
   useEffect(() => {
     const fetchSizes = async () => {
-      const { data, error } = await supabase.from("sizes").select("*");
-      if (!error && data) {
-        setAvailableSizes(data);
-      }
+      const sizes = await adminApi.fetchSizes();
+      setAvailableSizes(sizes);
     };
     fetchSizes();
   }, []);
@@ -126,15 +125,10 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
     const toastId = toast.loading("Добавление размера...");
 
     try {
-      const { error } = await supabase.from("product_sizes").insert({
-        product_id: productDataInSelectedCategory.product.id,
-        size_id: Number(selectedNewSize),
-        is_default: false,
-        price: 0,
-        quantity_in_stock: 0,
+      await adminApi.addProductSize({
+        productId: productDataInSelectedCategory.product.id,
+        sizeId: Number(selectedNewSize),
       });
-
-      if (error) throw error;
 
       toast.success("Размер успешно добавлен", { id: toastId });
 
@@ -172,49 +166,23 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({
         throw new Error("Не удалось найти информацию о размере");
       }
 
-      const response = await fetch("/api/admin/product-sizes", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sizeId: sizeInfo.id,
-          productId: productId,
-          price: currentSizeDetails.price,
-          oldPrice: currentSizeDetails.oldPrice,
-          isDefault: currentSizeDetails.isDefault,
-          quantityInStock: currentSizeDetails.quantity,
-          sizeValue: currentSizeDetails.size,
-          timeOfExploitation: currentSizeDetails.timeOfExploitation,
-          dimensions: currentSizeDetails.dimensions,
-        }),
+      await adminApi.updateProductSize({
+        id: sizeInfo.id,
+        productId,
+        price: currentSizeDetails.price,
+        oldPrice: currentSizeDetails.oldPrice,
+        isDefault: currentSizeDetails.isDefault,
+        quantity: currentSizeDetails.quantity,
+        size: currentSizeDetails.size,
+        timeOfExploitation: currentSizeDetails.timeOfExploitation,
+        dimensions: currentSizeDetails.dimensions,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Ошибка при сохранении размера");
-      }
-
       if (description !== originalDescription) {
-        const descResponse = await fetch(
-          "/api/admin/products/update-description",
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              productId: productDataInSelectedCategory.product.id,
-              description,
-            }),
-          }
-        );
-
-        if (!descResponse.ok) {
-          const errorData = await descResponse.json();
-          throw new Error(errorData.error || "Ошибка при обновлении описания");
-        }
-
+        await adminApi.updateProductDescription({
+          productId: productDataInSelectedCategory.product.id,
+          description,
+        });
         setOriginalDescription(description);
       }
 

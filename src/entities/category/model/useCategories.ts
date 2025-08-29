@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { CategoryWithProducts } from "@/entities/category/model";
-import { getCategoriesWithProducts } from "../api";
+import { categoriesApi } from "../api";
 
 interface CategoriesWithProductsStore {
   categoriesWithProducts: CategoryWithProducts[] | null;
@@ -11,7 +11,7 @@ export const useCategories = create<CategoriesWithProductsStore>()((set) => ({
   categoriesWithProducts: null,
   fetchCategories: async () => {
     try {
-      const data = await getCategoriesWithProducts();
+      const data = await categoriesApi.fetchCategoriesWithProducts();
       set({ categoriesWithProducts: data });
     } catch (error) {
       console.error("Ошибка при загрузке категорий:", error);

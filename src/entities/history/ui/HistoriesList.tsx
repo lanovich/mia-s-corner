@@ -18,7 +18,7 @@ export const HistoriesList: React.FC<HistoriesListProps> = ({
           key={history.id}
           href={`${LINKS.CATALOG}/${LINKS.HISTORIES}/${history.id}`}
           className={`px-4 py-2 rounded-full transition text-nowrap ${
-            Number(currentHistoryId) === history.id
+            currentHistoryId === history.id
               ? "bg-black text-white"
               : "bg-gray-200 text-black hover:bg-gray-300"
           }`}
