@@ -1,2 +1,1 @@
-export * from "./getHistories";
-export * from "./getHistoryById";
+export * from "./historiesApi";

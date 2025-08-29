@@ -21,11 +21,11 @@ import {
   CheckoutFormValues,
   schema,
 } from "@/entities/order/model/checkoutFormSchema";
-import { createOrder } from "@/app/actions";
 import { toast } from "sonner";
 import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { useDeliveryStore } from "@/entities/yandexDelivery/model/useDeliveryStore";
 import { Button } from "@/shared/shadcn-ui";
+import { orderApi } from "@/entities/order/api";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -72,14 +72,20 @@ export default function CheckoutPage() {
       }
 
       setSubmitting(true);
-      const paymentUrl = await createOrder(data, deliveryPrice);
 
-      if (paymentUrl.error || !paymentUrl) {
-        throw new Error("Не удалось получить платежную ссылку");
+      const { paymentUrl, success, error } = await orderApi.createOrder(
+        data,
+        deliveryPrice
+      );
+
+      if (!success || !paymentUrl) {
+        toast.error("Не удалось получить платежную ссылку");
+        throw new Error(error || "Не удалось получить платежную ссылку");
       }
 
       console.log("Платежная ссылка получена:", paymentUrl);
-
+      router.push(paymentUrl);
+      
       await clearCart();
       setDeliveryPrice(0);
 

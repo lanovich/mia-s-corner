@@ -5,12 +5,12 @@ import {
   ProductInformationPanel,
   SelectProductField,
 } from ".";
-import { getTotalProductQuantity } from "@/shared/api/supabase/queries";
-import { getProductsGroupedByCategory } from "@/entities/product/api";
+import { productsApi } from "@/entities/product/api";
+import { adminApi } from "../api";
 
 export const AdminPanel = async () => {
-  const totals = await getTotalProductQuantity();
-  const categorizedProducts = await getProductsGroupedByCategory();
+  const totals = await adminApi.fetchSummary();
+  const categorizedProducts = await productsApi.fetchAllGroupedProducts();
 
   return (
     <div className="bg-gray-400 h-full">

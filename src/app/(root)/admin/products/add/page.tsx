@@ -16,8 +16,8 @@ import { ChapterHeading, Container } from "@/shared/ui";
 import { GoToButton } from "@/shared/ui";
 import { Category } from "@/entities/category/model";
 import { Size } from "@/entities/product/model";
-import { getSizesByCategory } from "@/entities/product/api";
-import { getCategories } from "@/entities/category/api";
+import { categoriesApi } from "@/entities/category/api";
+import { adminApi } from "@/features/admin-control/api";
 
 export default function AddProduct() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -40,7 +40,7 @@ export default function AddProduct() {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const data = await getCategories();
+        const data = await categoriesApi.fetchCategories();
         setCategories(data);
       } catch (error) {
         toast.error("Не удалось загрузить категории");
@@ -61,7 +61,7 @@ export default function AddProduct() {
           (c) => c.id.toString() === formData.category_id
         );
         if (category) {
-          const sizesData = await getSizesByCategory(category.name);
+          const sizesData = await adminApi.fetchSizesByCategoryName(category.name);
           setSizes(sizesData);
         }
       } catch (error) {

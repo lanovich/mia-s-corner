@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  getProductsGroupedByCategory,
-} from "@/entities/product/api";
+import { productsApi } from "@/entities/product/api";
 import { useAdminStore } from "@/features/admin-control/model/useAdminStore";
 import { SelectCategoryField } from "./SelectCategoryField";
 import { cn, findCurrentProduct } from "@/shared/lib";
@@ -31,7 +29,7 @@ export const ProductControlPanel: React.FC<ProductControlPanelProps> = ({
   const handleProductUpdated = async () => {
     setIsLoading(true);
     try {
-      const updatedProducts = await getProductsGroupedByCategory();
+      const updatedProducts = await productsApi.fetchAllGroupedProducts();
       setLocalProducts(updatedProducts);
       toast.success("Данные продукта обновлены");
     } catch (error) {

@@ -1,31 +1,30 @@
 import Link from "next/link";
 import { Container } from "@/shared/ui";
-import { getCategoryBySlug } from "@/entities/category/api";
-import { getHistoryById } from "@/entities/history/api";
 import { cn } from "@/shared/lib";
 
 interface Props {
-  categorySlug?: string;
-  historyId?: number;
+  categoryInfo?: { name: string; slug: string };
+  historyInfo?: { name: string; id: string };
   productTitle?: string;
   className?: string;
 }
 
-export const Breadcrumbs: React.FC<Props> = async ({
-  categorySlug,
-  historyId,
+//TODO: конфликт импортов, BREADCRUMBS должны только получать инфу из вне, не нужно делать запросов внутри
+
+export const Breadcrumbs: React.FC<Props> = ({
+  categoryInfo,
+  historyInfo,
   productTitle,
   className,
 }) => {
-  const category = categorySlug ? await getCategoryBySlug(categorySlug) : null;
-  const history = historyId ? await getHistoryById(historyId) : null;
-
   const breadcrumbs = [
     { name: "Главная", href: "/" },
     { name: "Каталог", href: "/catalog" },
-    ...(category ? [{ name: category, href: `/catalog/${categorySlug}` }] : []),
-    ...(history
-      ? [{ name: history.title, href: `/histories/${historyId}` }]
+    ...(categoryInfo?.slug
+      ? [{ name: categoryInfo?.name, href: `/catalog/${categoryInfo?.slug}` }]
+      : []),
+    ...(historyInfo?.id
+      ? [{ name: historyInfo?.name, href: `/histories/${historyInfo?.id}` }]
       : []),
     ...(productTitle ? [{ name: productTitle, href: "#" }] : []),
   ];

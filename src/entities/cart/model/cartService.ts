@@ -1,92 +1,47 @@
-import axios from "axios";
+import { cartApi } from "../api";
 import { CartItem } from "@/entities/cart/model";
-import { getUserToken } from "@/shared/lib";
 
 export const cartService = {
-  async loadCartItems() {
-    const token = await getUserToken();
-    const response = await axios.get("/api/cart/load", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data as CartItem[];
+  async fetchUserToken() {
+    const tokenData = await cartApi.fetchUserToken();
+    return tokenData.token;
+  },
+
+  async loadCartItems(): Promise<CartItem[]> {
+    const token = await this.fetchUserToken();
+    return cartApi.loadCartItems(token);
   },
 
   async getProductById(productId: number) {
-    const token = await getUserToken();
-    const res = await axios.get(`/api/cart/product/${productId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return res.data;
+    const token = await this.fetchUserToken();
+    return cartApi.getProductById(productId, token);
   },
 
-  async addToCart(productId: number, sizeId: number) {
-    const token = await getUserToken();
-    const response = await axios.post(
-      "/api/cart/add",
-      { productId, sizeId },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data as CartItem[];
+  async addToCart(productId: number, sizeId: number): Promise<CartItem[]> {
+    const token = await this.fetchUserToken();
+    return cartApi.addToCart(productId, sizeId, token);
   },
 
-  async decreaseQuantity(productId: number, sizeId: number) {
-    const token = await getUserToken();
-    const response = await axios.post(
-      "/api/cart/decrease",
-      { productId, sizeId },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data as CartItem[];
-  },
-
-  async updateCartFullPrice(fullPrice: number, p0?: { signal: AbortSignal }) {
-    const token = await getUserToken();
-    await axios.post(
-      "/api/cart/update-price",
-      { fullPrice },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  async decreaseQuantity(
+    productId: number,
+    sizeId: number
+  ): Promise<CartItem[]> {
+    const token = await this.fetchUserToken();
+    return cartApi.decreaseQuantity(productId, sizeId, token);
   },
 
   async removeFromCart(productId: number, sizeId: number) {
-    const token = await getUserToken();
-    await axios.post(
-      "/api/cart/remove",
-      { productId, sizeId },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const token = await this.fetchUserToken();
+    return cartApi.removeFromCart(productId, sizeId, token);
   },
 
   async clearCart() {
-    const token = await getUserToken();
-    await axios.post(
-      "/api/cart/clear",
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const token = await this.fetchUserToken();
+    return cartApi.clearCart(token);
+  },
+
+  async updateCartFullPrice(fullPrice: number) {
+    const token = await this.fetchUserToken();
+    return cartApi.updateCartFullPrice(fullPrice, token);
   },
 };

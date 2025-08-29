@@ -2,7 +2,7 @@ import { sendEmail } from "@/entities/mail/api";
 import { NewOrderAlertEmail, SuccessEmail } from "@/entities/mail/ui";
 import { Order, OrderStatus } from "@/entities/order/model";
 import { YookassaOrderStatus } from "@/entities/yookassa/model";
-import { supabase } from "@/shared/api/supabase/client/supabase";
+import { supabase } from "@/shared/api/supabase/server";
 import { LINKS } from "@/shared/model";
 import { NextRequest, NextResponse } from "next/server";
 

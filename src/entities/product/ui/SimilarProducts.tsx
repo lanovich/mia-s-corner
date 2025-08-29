@@ -1,7 +1,7 @@
 import React from "react";
 import { HorizontalProductCard } from "./HorizontalProductCard";
 import { Product } from "@/entities/product/model";
-import { getSimilarProducts } from "@/entities/product/api";
+import { productsApi } from "@/entities/product/api";
 import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
 
 interface Props {
@@ -15,7 +15,10 @@ export const SimilarProducts: React.FC<Props> = async ({
   historyId,
   productId,
 }) => {
-  const similarProducts = await getSimilarProducts(historyId, productId);
+  const similarProducts = await productsApi.fetchSimilarProducts(
+    historyId,
+    productId
+  );
 
   if (!similarProducts.length) {
     return null;

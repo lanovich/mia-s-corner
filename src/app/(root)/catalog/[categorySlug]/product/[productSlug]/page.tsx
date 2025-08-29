@@ -8,7 +8,7 @@ import {
   ProductGallery,
   SimilarProducts,
 } from "@/entities/product/ui";
-import { getProductWithHistory } from "@/entities/product/api";
+import { productsApi } from "@/entities/product/api";
 import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
@@ -17,7 +17,7 @@ export async function generateMetadata(props: {
   params: ProductParams;
 }): Promise<Metadata> {
   const params = await props.params;
-  const product = await getProductWithHistory(
+  const product = await productsApi.fetchProduct(
     params.categorySlug,
     params.productSlug
   );
@@ -100,7 +100,7 @@ function generateProductKeywords(product: ProductWithHistory): string[] {
 
 export default async function ProductPage(props: { params: ProductParams }) {
   const params = await props.params;
-  const product = await getProductWithHistory(
+  const product = await productsApi.fetchProduct(
     params.categorySlug,
     params.productSlug
   );
@@ -119,7 +119,10 @@ export default async function ProductPage(props: { params: ProductParams }) {
   return (
     <>
       <Breadcrumbs
-        categorySlug={params.categorySlug}
+        categoryInfo={{
+          slug: params.categorySlug,
+          name: product.category_name || product.category_slug,
+        }}
         productTitle={product.title}
       />
       <Container className="max-w-[1380px] px-5">

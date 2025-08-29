@@ -1,13 +1,13 @@
 import { Container } from "@/shared/ui";
 import { ProductCard } from "@/entities/product/ui";
-import { getProductsByCategory } from "@/entities/product/api";
+import { productsApi } from "@/entities/product/api";
 
 interface Props {
   categoryId: number;
 }
 
 export async function CatalogProductsLoader({ categoryId }: Props) {
-  const products = await getProductsByCategory(categoryId);
+  const products = await productsApi.fetchProductsByCategory(categoryId);
   if (!products) return <p className="text-gray-500">Загрузка товаров...</p>;
 
   return (
