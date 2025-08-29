@@ -4,6 +4,7 @@ import { cartService } from "@/entities/cart/model/cartService";
 import { calcFullPrice } from "@/shared/lib/calcFullPrice";
 import { CartItem } from "@/entities/cart/model";
 import { findSelectedSize } from "@/shared/lib";
+import { Product } from "@/entities/product/model";
 
 interface CartStore {
   cart: CartItem[];
@@ -67,7 +68,9 @@ const updateCartItemQuantity = async (
     if (item.quantity <= 0) newCart.splice(itemIndex, 1);
   } else {
     const product = await cartService.getProductById(productId);
-    if (product) newCart.push({ product, quantity: 1, size_id: sizeId });
+    if (product)
+      newCart.push({ product, quantity: 1, size_id: sizeId } as any);
+    // TODO: исправить этот костыль
   }
 
   return newCart;
