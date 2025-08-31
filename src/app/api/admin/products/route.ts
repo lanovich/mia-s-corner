@@ -1,36 +1,14 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/shared/api/supabase/server";
-import { NextRequest } from "next/server";
-import { getEmptyResult, processProductData } from "@/shared/api";
-import { ProductSizeRow } from "@/features/admin-control/model";
+import { getProductSummary } from "@/shared/api/queries";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const { data: productSizes, error } = await supabase
-      .from("product_sizes")
-      .select(
-        `
-        id,
-        quantity_in_stock,
-        price,
-        product_id,
-        products:products!product_id (
-          id,
-          title,
-          compound,
-          category_id,
-          category_slug
-        )
-      `
-      )
-      .returns<ProductSizeRow[]>();
-
-    if (error) throw error;
-    const finalResult = processProductData(productSizes);
-    return new Response(JSON.stringify(finalResult), { status: 200 });
-  } catch (err) {
-    console.error("Error fetching product summary:", err);
-    return new Response(JSON.stringify(getEmptyResult()), { status: 500 });
+    const summary = await getProductSummary();
+    return NextResponse.json(summary, { status: 200 });
+  } catch (error) {
+    console.error("Ошибка GET /products:", error);
+    return NextResponse.json({ error: "Ошибка загрузки" }, { status: 500 });
   }
 }
 

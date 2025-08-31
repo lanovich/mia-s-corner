@@ -5,6 +5,7 @@ import { metadata as rootMetadata } from "@/app/(root)/layout";
 import { categoriesApi } from "@/entities/category/api";
 import { historiesApi } from "@/entities/history/api";
 import { LINKS } from "@/shared/model";
+import { getCategories, getHistories } from "@/shared/api/queries";
 
 export const metadata: Metadata = {
   ...rootMetadata,
@@ -45,8 +46,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CatalogPage() {
-  const categories = await categoriesApi.fetchCategories();
-  const histories = await historiesApi.fetchHistories();
+  const categories = await getCategories();
+  const histories = await getHistories();
 
   return (
     <>
