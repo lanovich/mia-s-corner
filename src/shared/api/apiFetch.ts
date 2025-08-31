@@ -1,24 +1,26 @@
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    return "";
-  }
-  return process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-};
+type ApiFetchOptions = RequestInit & { revalidate?: number };
 
-export async function apiFetch<T>(
+export async function apiFetch<T = any>(
   url: string,
-  options: RequestInit & { revalidate?: number } = {}
+  options: ApiFetchOptions = {}
 ): Promise<T> {
   const { revalidate, ...init } = options;
 
-  const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}${url}`, {
+  const isServer = typeof window === "undefined";
+
+  const baseUrl = isServer
+    ? process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    : "";
+
+  const fullUrl = url.startsWith("http") ? url : baseUrl + url;
+
+  const res = await fetch(fullUrl, {
     ...init,
     next: revalidate ? { revalidate } : undefined,
   });
 
   if (!res.ok) {
-    throw new Error(`API error: ${res.status}`);
+    throw new Error(`API error ${res.status} on ${url}`);
   }
 
   return res.json();

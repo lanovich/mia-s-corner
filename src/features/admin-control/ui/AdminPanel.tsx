@@ -5,12 +5,11 @@ import {
   ProductInformationPanel,
   SelectProductField,
 } from ".";
-import { productsApi } from "@/entities/product/api";
-import { adminApi } from "../api";
+import { getGroupedProducts, getProductSummary } from "@/shared/api/queries";
 
 export const AdminPanel = async () => {
-  const totals = await adminApi.fetchSummary();
-  const categorizedProducts = await productsApi.fetchAllGroupedProducts();
+  const totals = await getProductSummary();
+  const categorizedProducts = await getGroupedProducts();
 
   return (
     <div className="bg-gray-400 h-full">
