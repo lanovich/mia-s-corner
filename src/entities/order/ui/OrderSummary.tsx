@@ -10,13 +10,12 @@ interface Props {
 }
 
 export const OrderSummary: React.FC<Props> = ({ className }) => {
-  const products = useCartStore((state) => state.cart);
-  const loading = useCartStore((state) => state.loading);
+  const { isLoading, cart } = useCartStore();
 
   return (
     <div className={className}>
       <h1 className="text-xl font-semibold border-b pb-3 mt-3">Ваш заказ</h1>
-      {loading ? (
+      {isLoading ? (
         <div className="mt-4 space-y-4">
           <Skeleton className="w-full h-24" />
           <Skeleton className="w-full h-24" />
@@ -24,7 +23,7 @@ export const OrderSummary: React.FC<Props> = ({ className }) => {
         </div>
       ) : (
         <div className="mt-4 space-y-4">
-          {products.map(({ product, quantity, size_id }) => {
+          {cart.map(({ product, quantity, size_id }) => {
             const selectedSize = findSelectedSize(product, size_id);
             const price = selectedSize ? selectedSize.price : 0;
             const measure = product.measure;

@@ -33,7 +33,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
     "transfer"
   );
-  const { loading, fullPrice, clearCart } = useCartStore();
+  const { isLoading, fullPrice, clearCart } = useCartStore();
   const { selectedDeliveryMethod } = useDeliveryStore();
   const { deliveryPrice, setDeliveryPrice } = useDeliveryStore();
 
@@ -85,7 +85,7 @@ export default function CheckoutPage() {
 
       console.log("Платежная ссылка получена:", paymentUrl);
       router.push(paymentUrl);
-      
+
       await clearCart();
       setDeliveryPrice(0);
 
@@ -162,12 +162,12 @@ export default function CheckoutPage() {
 
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
-              loading={loading}
+              loading={isLoading}
               className="w-full bg-black text-white py-3 rounded-lg"
               type="submit"
               form="orderForm"
               disabled={
-                loading ||
+                isLoading ||
                 (selectedDeliveryMethod === "fastDelivery" &&
                   deliveryPrice === 0) ||
                 fullPrice === 0

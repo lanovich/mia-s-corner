@@ -9,8 +9,6 @@ interface Props {
   className?: string;
 }
 
-//TODO: конфликт импортов, BREADCRUMBS должны только получать инфу из вне, не нужно делать запросов внутри
-
 export const Breadcrumbs: React.FC<Props> = ({
   categoryInfo,
   historyInfo,
