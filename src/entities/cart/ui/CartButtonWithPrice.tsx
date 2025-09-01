@@ -14,7 +14,7 @@ interface Props {
 
 export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
   const { cart, fullPrice } = useCartStore();
-  const [scrambledPrice, setScrambledPrice] = useState(fullPrice.toString());
+  const [scrambledPrice, setScrambledPrice] = useState(String(fullPrice));
 
   const priceMotion = useMotionValue(fullPrice);
 
@@ -30,7 +30,7 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
 
       if (iterations > 5) {
         clearInterval(scrambleInterval);
-        setScrambledPrice(fullPrice.toString());
+        setScrambledPrice(String(fullPrice));
       }
     }, 50);
 

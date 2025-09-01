@@ -5,10 +5,8 @@ import { Skeleton } from "@/shared/shadcn-ui";
 import { useDeliveryStore } from "@/entities/yandexDelivery/model/useDeliveryStore";
 
 export const TotalAmount = () => {
-  const productTotalAmount = useCartStore((state) => state.productTotalAmount);
+  const { cart, productTotalAmount, isLoading, fullPrice } = useCartStore();
   const discount = calcFullPrice(productTotalAmount).discount;
-  const fullPrice = useCartStore((state) => state.fullPrice);
-  const loading = useCartStore((state) => state.loading);
   const { deliveryPrice } = useDeliveryStore();
 
   return (
@@ -17,17 +15,21 @@ export const TotalAmount = () => {
       <PriceCounter
         type="products"
         amount={productTotalAmount}
-        loading={loading}
+        loading={isLoading}
       />
       {/* Скидка */}
       {discount > 0 && (
-        <PriceCounter type="discount" amount={discount} loading={loading} />
+        <PriceCounter type="discount" amount={discount} loading={isLoading} />
       )}
       {/* Стоимость доставки */}
-      <PriceCounter type="delivery" amount={deliveryPrice} loading={loading} />
+      <PriceCounter
+        type="delivery"
+        amount={deliveryPrice}
+        loading={isLoading}
+      />
       <div className="flex justify-between text-2xl font-semibold border-t pt-3 mt-3">
         <span>Итого:</span>
-        {loading ? (
+        {isLoading ? (
           <Skeleton className="w-32" />
         ) : (
           <span>{fullPrice + deliveryPrice} ₽</span>

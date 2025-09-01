@@ -4,15 +4,13 @@ import { cartService } from "@/entities/cart/model/cartService";
 import { calcFullPrice } from "@/shared/lib/calcFullPrice";
 import { CartItem } from "@/entities/cart/model";
 import { findSelectedSize } from "@/shared/lib";
-import { Product } from "@/entities/product/model";
 
 interface CartStore {
   cart: CartItem[];
   productTotalAmount: number;
   fullPrice: number;
   error: string | null;
-  loading: boolean;
-  loadCart: () => Promise<void>;
+  isLoading: boolean;
   updateCart: (cart: CartItem[]) => void;
   modifyItemQuantity: (
     productId: number,
@@ -52,111 +50,84 @@ const debouncedUpdateCartFullPrice = (fullPrice: number) => {
   }, 500);
 };
 
-const updateCartItemQuantity = async (
-  cart: CartItem[],
-  productId: number,
-  sizeId: number,
-  delta: number
-) => {
-  const itemIndex = findCartItemIndex(cart, productId, sizeId);
-  if (itemIndex === -1 && delta < 0) return cart;
-
-  const newCart = [...cart];
-  if (itemIndex !== -1) {
-    const item = newCart[itemIndex];
-    item.quantity += delta;
-    if (item.quantity <= 0) newCart.splice(itemIndex, 1);
-  } else {
-    const product = await cartService.getProductById(productId);
-    if (product)
-      newCart.push({ product, quantity: 1, size_id: sizeId } as any);
-    // TODO: исправить этот костыль
-  }
-
-  return newCart;
-};
-
 export const useCartStore = create<CartStore>()(
   persist(
     (set, get) => ({
       cart: [],
       productTotalAmount: 0,
       fullPrice: 0,
-      loading: false,
+      isLoading: false,
       error: null,
-
-      loadCart: async () => {
-        set({ loading: true, error: null });
-        try {
-          const cartItems = await cartService.loadCartItems();
-          set({
-            cart: cartItems,
-            ...calculateTotals(cartItems),
-            loading: false,
-          });
-        } catch (error) {
-          console.error("Ошибка при загрузке корзины:", error);
-          set({ error: "Не удалось загрузить корзину", loading: false });
-        }
-      },
 
       updateCart: (cart) => {
         set({ cart, ...calculateTotals(cart) });
       },
 
       modifyItemQuantity: async (productId, sizeId, delta) => {
-        set({ loading: true, error: null });
+        set({ isLoading: true, error: null });
         try {
           const { cart } = get();
-          const newCart = await updateCartItemQuantity(
-            cart,
-            productId,
-            sizeId,
-            delta
-          );
-          set({ cart: newCart, ...calculateTotals(newCart), loading: false });
+          let newCart = [...cart];
+          const itemIndex = findCartItemIndex(newCart, productId, sizeId);
 
-          if (delta > 0) await cartService.addToCart(productId, sizeId);
-          else await cartService.decreaseQuantity(productId, sizeId);
+          if (delta > 0) {
+            const { newItem } = await cartService.addToCart(productId, sizeId);
+
+            if (itemIndex !== -1) {
+              newCart[itemIndex].quantity += delta;
+            } else {
+              newCart.push(newItem);
+            }
+          } else {
+            await cartService.decreaseQuantity(productId, sizeId);
+
+            if (itemIndex !== -1) {
+              newCart[itemIndex].quantity += delta;
+              if (newCart[itemIndex].quantity <= 0)
+                newCart.splice(itemIndex, 1);
+            }
+          }
+
+          set({ cart: newCart, ...calculateTotals(newCart), isLoading: false });
           debouncedUpdateCartFullPrice(get().fullPrice);
         } catch (error) {
-          console.error("Ошибка при изменении количества товара:", error);
           set({
             error: "Не удалось изменить количество товара",
-            loading: false,
+            isLoading: false,
           });
+          throw new Error("Ошибка при изменении количества товара");
         }
       },
 
       removeFromCart: async (productId, sizeId) => {
-        set({ loading: true, error: null });
+        set({ isLoading: true, error: null });
         try {
           const newCart = get().cart.filter(
             (item) => item.product.id !== productId || item.size_id !== sizeId
           );
-          set({ cart: newCart, ...calculateTotals(newCart), loading: false });
+          set({ cart: newCart, ...calculateTotals(newCart), isLoading: false });
           await cartService.removeFromCart(productId, sizeId);
           debouncedUpdateCartFullPrice(get().fullPrice);
         } catch (error) {
           console.error("Ошибка при удалении товара:", error);
-          set({ error: "Не удалось удалить товар", loading: false });
+          set({ error: "Не удалось удалить товар", isLoading: false });
         }
       },
 
       clearCart: async () => {
-        set({ loading: true, error: null });
+        set({ isLoading: true, error: null });
         try {
           set({
             cart: [],
             productTotalAmount: 0,
             fullPrice: 0,
-            loading: false,
+            isLoading: false,
           });
           await cartService.clearCart();
           debouncedUpdateCartFullPrice(0);
         } catch (error) {
           console.error("Ошибка при очистке корзины:", error);
-          set({ error: "Не удалось очистить корзину", loading: false });
+          set({ error: "Не удалось очистить корзину", isLoading: false });
         }
       },
     }),

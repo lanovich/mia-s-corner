@@ -54,7 +54,7 @@ export const AddToCartButton: React.FC<Props> = ({
           toast.success("Товар удален из корзины", { position: "top-center" });
         }
       } catch (error) {
-        toast.error("Ошибка изменения количества товара!", {
+        toast.error(`${error}`, {
           position: "top-center",
         });
       } finally {

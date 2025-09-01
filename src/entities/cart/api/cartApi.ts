@@ -5,19 +5,13 @@ export const cartApi = {
   fetchUserToken: () =>
     apiFetch<{ token: string }>(API_ROUTES.userToken, { revalidate: 60 }),
 
-  loadCartItems: (token: string) =>
-    apiFetch<CartItem[]>(API_ROUTES.loadCart, {
-      headers: { Authorization: `Bearer ${token}` },
-      revalidate: 60,
-    }),
-
   getProductById: (productId: number, token: string) =>
     apiFetch<CartItem>(API_ROUTES.cartProduct(productId), {
       headers: { Authorization: `Bearer ${token}` },
     }),
 
   addToCart: (productId: number, sizeId: number, token: string) =>
-    apiFetch<CartItem[]>(API_ROUTES.addToCart, {
+    apiFetch<{ newItem: CartItem }>(API_ROUTES.addToCart, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

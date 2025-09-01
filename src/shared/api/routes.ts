@@ -22,7 +22,6 @@ export const API_ROUTES = {
   addToCart: `${BASE_API_URL}/cart/add`,
   clearCart: `${BASE_API_URL}/cart/clear`,
   decreaseCart: `${BASE_API_URL}/cart/decrease`,
-  loadCart: `${BASE_API_URL}/cart/load`,
   cartProduct: (productId: number) =>
     `${BASE_API_URL}/cart/product/${productId}`,
   removeFromCart: `${BASE_API_URL}/cart/remove`,
