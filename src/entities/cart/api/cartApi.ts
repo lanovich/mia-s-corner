@@ -1,17 +1,17 @@
-import { API_ROUTES, apiFetch } from "@/shared/api";
+import { API, apiFetch } from "@/shared/api";
 import { CartItem } from "@/entities/cart/model";
 
 export const cartApi = {
   fetchUserToken: () =>
-    apiFetch<{ token: string }>(API_ROUTES.userToken, { revalidate: 60 }),
+    apiFetch<{ token: string }>(API.cart.getToken, { revalidate: 60 }),
 
   getProductById: (productId: number, token: string) =>
-    apiFetch<CartItem>(API_ROUTES.cartProduct(productId), {
+    apiFetch<CartItem>(API.cart.getProduct(productId), {
       headers: { Authorization: `Bearer ${token}` },
     }),
 
   addToCart: (productId: number, sizeId: number, token: string) =>
-    apiFetch<{ newItem: CartItem }>(API_ROUTES.addToCart, {
+    apiFetch<{ newItem: CartItem }>(API.cart.add, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -21,7 +21,7 @@ export const cartApi = {
     }),
 
   decreaseQuantity: (productId: number, sizeId: number, token: string) =>
-    apiFetch<CartItem[]>(API_ROUTES.decreaseCart, {
+    apiFetch<CartItem[]>(API.cart.decrease, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -31,7 +31,7 @@ export const cartApi = {
     }),
 
   removeFromCart: (productId: number, sizeId: number, token: string) =>
-    apiFetch<void>(API_ROUTES.removeFromCart, {
+    apiFetch<void>(API.cart.remove, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -41,13 +41,13 @@ export const cartApi = {
     }),
 
   clearCart: (token: string) =>
-    apiFetch<void>(API_ROUTES.clearCart, {
+    apiFetch<void>(API.cart.clear, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
     }),
 
   updateCartFullPrice: (fullPrice: number, token: string) =>
-    apiFetch<void>(API_ROUTES.updateCartPrice, {
+    apiFetch<void>(API.cart.updatePrice, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

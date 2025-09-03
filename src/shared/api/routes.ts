@@ -1,38 +1,64 @@
+import { withQuery } from "./withQuery";
+
 const BASE_API_URL = "/api";
 
-export const API_ROUTES = {
-  categories: `${BASE_API_URL}/categories`,
-  categoriesWithProducts: `${BASE_API_URL}/categories/with-products`,
-  categoryBySlug: (slug: string) => `${BASE_API_URL}/categories/${slug}`,
+const ADMIN_BASE = `${BASE_API_URL}/admin`;
+const CART_BASE = `${BASE_API_URL}/cart`;
+const CATEGORIES_BASE = `${BASE_API_URL}/categories`;
+const HISTORIES_BASE = `${BASE_API_URL}/histories`;
+const CHECKOUT_BASE = `${BASE_API_URL}/checkout`;
+const ORDER_BASE = `${BASE_API_URL}/order`;
+const PRODUCTS_BASE = `${BASE_API_URL}/products`;
+const SIZES_BASE = `${BASE_API_URL}/sizes`;
 
-  histories: `${BASE_API_URL}/histories`,
-  historyById: (id: string) => `${BASE_API_URL}/histories/${id}`,
-
-  allProducts: `${BASE_API_URL}/products`,
-  allGroupedProducts: `${BASE_API_URL}/products/grouped`,
-  productsByCategory: (categoryId: number) =>
-    `${BASE_API_URL}/products/by-category/${categoryId}`,
-  productsByHistory: (historyId: string) =>
-    `${BASE_API_URL}/products/by-history/${historyId}`,
-  product: (categorySlug: string, productSlug: string) =>
-    `${BASE_API_URL}/products/${categorySlug}/${productSlug}`,
-  similarProducts: (historyId: number, productId: number) =>
-    `${BASE_API_URL}/products/similar-products?historyId=${historyId}&productId=${productId}`,
-
-  addToCart: `${BASE_API_URL}/cart/add`,
-  clearCart: `${BASE_API_URL}/cart/clear`,
-  decreaseCart: `${BASE_API_URL}/cart/decrease`,
-  cartProduct: (productId: number) =>
-    `${BASE_API_URL}/cart/product/${productId}`,
-  removeFromCart: `${BASE_API_URL}/cart/remove`,
-  userToken: `${BASE_API_URL}/cart/token`,
-  updateCartPrice: `${BASE_API_URL}/cart/update-price`,
-
-  adminProductsSummary: `${BASE_API_URL}/admin/products`,
-  adminProductSizes: `${BASE_API_URL}/admin/product-sizes`,
-  adminProductSizeAdd: `${BASE_API_URL}/admin/product-sizes/add`,
-  adminProductUpdateDescription: `${BASE_API_URL}/admin/products/update-description`,
-  sizesByCategory: (categoryName: string) =>
-    `${BASE_API_URL}/sizes/${categoryName}`,
-  sizes: `${BASE_API_URL}/sizes`,
-};
+export const API = {
+  admin: {
+    getProductSummary: `${ADMIN_BASE}/products`,
+    updateProductSize: `${ADMIN_BASE}/product-sizes/update`,
+    addProductSize: `${ADMIN_BASE}/product-sizes/add`,
+    updateDescription: `${ADMIN_BASE}/products/update-description`,
+  },
+  cart: {
+    add: `${CART_BASE}/add`,
+    clear: `${CART_BASE}/clear`,
+    decrease: `${CART_BASE}/decrease`,
+    getProduct: (productId: number) =>
+      `${CART_BASE}/product/${productId}` as const,
+    remove: `${CART_BASE}/remove`,
+    getToken: `${CART_BASE}/token`,
+    updatePrice: `${CART_BASE}/update-price`,
+  },
+  categories: {
+    getCategories: `${CATEGORIES_BASE}`,
+    getCategoriesWithProducts: `${CATEGORIES_BASE}/with-products`,
+    getCategoryBySlug: (slug: string) => `${CATEGORIES_BASE}/${slug}` as const,
+  },
+  histories: {
+    getHistories: `${HISTORIES_BASE}`,
+    getHistoryById: (id: string) => `${HISTORIES_BASE}/${id}` as const,
+  },
+  checkout: {
+    callback: `${CHECKOUT_BASE}/callback`,
+    getDeliveryPrice: `${CHECKOUT_BASE}/get-delivery-price`,
+  },
+  order: {
+    create: `${ORDER_BASE}/create`,
+  },
+  products: {
+    getProducts: `${PRODUCTS_BASE}`,
+    getGroupedProducts: `${PRODUCTS_BASE}/grouped`,
+    getProductsByCategory: (categoryId: number) =>
+      `${PRODUCTS_BASE}/by-category/${categoryId}` as const,
+    getProductsByHistory: (historyId: string) =>
+      `${PRODUCTS_BASE}/by-history/${historyId}` as const,
+    getProduct: (categorySlug: string, productSlug: string) =>
+      `${PRODUCTS_BASE}/${categorySlug}/${productSlug}` as const,
+    getSimilarProducts: (historyId: number, productId: number): string =>
+      withQuery(`${PRODUCTS_BASE}/similar-products`, { historyId, productId }),
+  },
+  sizes: {
+    getSizesByCategory: (categoryName: string): string =>
+      `${SIZES_BASE}/${categoryName}`,
+    getSizes: `${SIZES_BASE}`,
+  },
+} as const;

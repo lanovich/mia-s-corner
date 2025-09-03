@@ -1,17 +1,17 @@
-import { API_ROUTES, apiFetch } from "@/shared/api";
+import { API, apiFetch } from "@/shared/api";
 import { FinalResult } from "../model";
 import { Size, SizeDetails } from "@/entities/product/model";
 
 export const adminApi = {
-  fetchSummary: () => apiFetch<FinalResult>(API_ROUTES.adminProductsSummary),
+  fetchSummary: () => apiFetch<FinalResult>(API.admin.getProductSummary),
 
-  fetchSizes: () => apiFetch<Size[]>(API_ROUTES.sizes),
+  fetchSizes: () => apiFetch<Size[]>(API.sizes.getSizes),
 
-  fetchSizesByCategoryName: (categorySlug: string) =>
-    apiFetch<Size[]>(API_ROUTES.sizesByCategory(categorySlug)),
+  fetchSizesByCategoryName: (categoryName: string) =>
+    apiFetch<Size[]>(API.sizes.getSizesByCategory(categoryName)),
 
   updateProductSize: (payload: SizeDetails) =>
-    apiFetch(API_ROUTES.adminProductSizes, {
+    apiFetch(API.admin.updateProductSize, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -21,14 +21,14 @@ export const adminApi = {
     productId: number;
     description: string;
   }) =>
-    apiFetch(API_ROUTES.adminProductUpdateDescription, {
+    apiFetch(API.admin.updateDescription, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     }),
 
   addProductSize: (payload: { productId: number; sizeId: number | string }) =>
-    apiFetch(API_ROUTES.adminProductSizeAdd, {
+    apiFetch(API.admin.addProductSize, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
