@@ -21,7 +21,7 @@ export const cartApi = {
     }),
 
   decreaseQuantity: (productId: number, sizeId: number, token: string) =>
-    apiFetch<CartItem[]>(API.cart.decrease, {
+    apiFetch<Promise<{ message: string }>>(API.cart.decrease, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
