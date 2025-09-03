@@ -19,18 +19,12 @@ export const cartService = {
     return cartApi.getProductById(productId, token);
   },
 
-  async addToCart(
-    productId: number,
-    sizeId: number
-  ): Promise<{ newItem: CartItem }> {
+  async addToCart(productId: number, sizeId: number) {
     const token = await this.getUserToken();
     return cartApi.addToCart(productId, sizeId, token);
   },
 
-  async decreaseQuantity(
-    productId: number,
-    sizeId: number
-  ): Promise<CartItem[]> {
+  async decreaseQuantity(productId: number, sizeId: number) {
     const token = await this.getUserToken();
     return cartApi.decreaseQuantity(productId, sizeId, token);
   },
