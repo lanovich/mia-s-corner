@@ -1,7 +1,6 @@
 import { MetadataRoute } from "next";
 import { Category } from "@/entities/category/model";
 import { HistoryData } from "@/entities/history/model";
-import { productsApi } from "@/entities/product/api";
 import {
   getAllProducts,
   getCategories,
