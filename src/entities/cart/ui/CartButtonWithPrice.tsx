@@ -2,40 +2,31 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/shared/shadcn-ui";
-import { ShoppingBag } from "lucide-react";
+import { Hexagon, ShoppingBag } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { motion, useMotionValue } from "framer-motion";
 import { cn } from "@/shared/lib";
+import { useScrambledPrice } from "../lib/useScrambledPrice";
 
 interface Props {
   className?: string;
 }
 
 export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
-  const { cart, fullPrice } = useCartStore();
-  const [scrambledPrice, setScrambledPrice] = useState(String(fullPrice));
-
-  const priceMotion = useMotionValue(fullPrice);
+  const {
+    cart,
+    fullPrice,
+    isLoading: isCartModifying,
+    itemsCount,
+  } = useCartStore();
+  const scrambledPrice = useScrambledPrice(fullPrice);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    priceMotion.set(fullPrice);
-    let iterations = 0;
-    const scrambleInterval = setInterval(() => {
-      const randomNum = Math.floor(
-        Math.random() * 10 ** String(fullPrice).length
-      );
-      setScrambledPrice(randomNum.toString());
-      iterations++;
-
-      if (iterations > 5) {
-        clearInterval(scrambleInterval);
-        setScrambledPrice(String(fullPrice));
-      }
-    }, 50);
-
-    return () => clearInterval(scrambleInterval);
-  }, [fullPrice]);
+    const timer = setTimeout(() => setIsLoading(false), 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -48,9 +39,13 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
                 className
               )}
             >
-              <motion.p className="flex items-center justify-center">
-                {scrambledPrice} ₽
-              </motion.p>
+              {isLoading || isCartModifying ? (
+                <Hexagon className="animate-spin" />
+              ) : (
+                <motion.p className="flex items-center justify-center">
+                  {scrambledPrice} ₽
+                </motion.p>
+              )}
 
               <ShoppingBag />
 
@@ -62,7 +57,11 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
                   transition={{ type: "spring", stiffness: 260, damping: 20 }}
                   className="absolute -top-2 -right-2 w-5 h-5 bg-green-500 text-white text-xs flex items-center justify-center rounded-full"
                 >
-                  {cart.length}
+                  {isLoading || isCartModifying ? (
+                    <Hexagon className="animate-spin w-1 h-1" />
+                  ) : (
+                    <>{itemsCount}</>
+                  )}
                 </motion.div>
               )}
             </Button>

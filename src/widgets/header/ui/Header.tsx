@@ -25,6 +25,7 @@ export const Header: React.FC<Props> = async ({
             alt="logo"
             fill
             sizes="96px"
+            priority
             className="pointer-events-none select-none object-contain"
           />
         </Link>

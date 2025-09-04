@@ -13,10 +13,10 @@ import { enqueue } from "./cartQueue";
 interface CartStore {
   cart: CartItem[];
   productTotalAmount: number;
+  itemsCount: number;
   fullPrice: number;
   error: string | null;
   isLoading: boolean;
-  updateCart: (cart: CartItem[]) => void;
   modifyItemQuantity: (
     productId: number,
     sizeId: number,
@@ -32,13 +32,10 @@ export const useCartStore = create<CartStore>()(
       cart: [],
       productTotalAmount: 0,
       fullPrice: 0,
+      itemsCount: 0,
       isLoading: false,
       isProductLoading: {},
       error: null,
-
-      updateCart: (cart) => {
-        set({ cart, ...calculateTotals(cart) });
-      },
 
       modifyItemQuantity: async (productId, sizeId, delta) => {
         const key = "cart";
@@ -80,7 +77,11 @@ export const useCartStore = create<CartStore>()(
           const newCart = get().cart.filter(
             (item) => item.product.id !== productId || item.size_id !== sizeId
           );
-          set({ cart: newCart, ...calculateTotals(newCart), isLoading: false });
+          set({
+            cart: newCart,
+            ...calculateTotals(newCart),
+            isLoading: false,
+          });
           await cartService.removeFromCart(productId, sizeId);
           debouncedUpdateCartFullPrice(get().fullPrice);
         } catch (error) {
@@ -94,8 +95,7 @@ export const useCartStore = create<CartStore>()(
         try {
           set({
             cart: [],
-            productTotalAmount: 0,
-            fullPrice: 0,
+            ...calculateTotals([]),
             isLoading: false,
           });
           await cartService.clearCart();
