@@ -3,9 +3,9 @@
 import { toast } from "sonner";
 import { cn } from "@/shared/lib";
 import { useCartStore } from "@/entities/cart/model/useCartStore";
-import { MouseEvent, useCallback, useState, ChangeEvent } from "react";
-import { Hexagon, Minus, Plus, ShoppingCart } from "lucide-react";
-import { QuantityButton } from "@/shared/ui";
+import { MouseEvent, useState, ChangeEvent } from "react";
+import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { LoadingIndicator, QuantityButton } from "@/shared/ui";
 import { ProductSize } from "@/entities/product/model";
 
 interface Props {
@@ -59,7 +59,7 @@ export const AddToCartButton: React.FC<Props> = ({
         { position: "top-center" }
       );
     } catch (error) {
-      console.error(error)
+      console.error(error);
       toast.error("Ошибка при изменении количества товара!", {
         position: "top-center",
       });
@@ -150,7 +150,7 @@ export const AddToCartButton: React.FC<Props> = ({
         }
         icon={
           isLoading ? (
-            <Hexagon className="animate-spin" />
+            <LoadingIndicator isLoading={isLoading} />
           ) : (
             <>
               <span className="hidden sm:inline">{children}</span>

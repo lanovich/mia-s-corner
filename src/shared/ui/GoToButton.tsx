@@ -4,7 +4,7 @@ import { cn } from "@/shared/lib";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Hexagon } from "lucide-react";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 interface Props {
   href: string;
@@ -59,7 +59,7 @@ export const GoToButton: React.FC<Props> = ({
           className
         )}
       >
-        {isLoading ? <Hexagon className="animate-spin" /> : label}
+        {isLoading ? <LoadingIndicator isLoading={isLoading} /> : label}
       </Link>
     </div>
   );
