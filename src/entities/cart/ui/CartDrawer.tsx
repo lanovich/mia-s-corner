@@ -29,7 +29,8 @@ interface Props {
 }
 
 export const CartDrawer: React.FC<Props> = ({ children }) => {
-  const { cart, fullPrice, productTotalAmount, clearCart } = useCartStore();
+  const { cart, fullPrice, productTotalAmount, clearCart, itemsCount } =
+    useCartStore();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -45,17 +46,16 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
   };
 
   const formatCartItemsText = (count: number) => {
-    if (count === 1) return `${count} наименование`;
-    if (count >= 2 && count <= 4) return `${count} наименования`;
-    return `${count} наименований`;
+    if (count === 1) return `${count} продукт`;
+    if (count >= 2 && count <= 4) return `${count} продукта`;
+    return `${count} продуктов`;
   };
 
   const content = (
     <>
       <SheetHeader className="border-b pb-2">
         <SheetTitle>
-          В корзине{" "}
-          <span className="font-bold">{formatCartItemsText(cart.length)}</span>
+          В корзине <span className="font-bold">{formatCartItemsText(itemsCount)}</span>
         </SheetTitle>
         <SheetDescription className="text-sm text-gray-500">
           Проверьте список товаров перед оформлением заказа.

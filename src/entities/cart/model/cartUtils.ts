@@ -3,7 +3,10 @@ import { findSelectedSize } from "@/shared/lib";
 import { calcFullPrice } from "@/shared/lib/calcFullPrice";
 import { cartService } from "./cartService";
 
-export const calculateTotals = (cart: CartItem[]) => {
+export const calculateTotals = (cart: CartItem[] | []) => {
+  if (!cart) return { productTotalAmount: 0, fullPrice: 0, itemsCount: 0 };
+
+  const itemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const productTotalAmount = cart.reduce(
     (acc, item) =>
       acc +
@@ -12,7 +15,7 @@ export const calculateTotals = (cart: CartItem[]) => {
     0
   );
   const fullPrice = calcFullPrice(productTotalAmount).finalAmount;
-  return { productTotalAmount, fullPrice };
+  return { productTotalAmount, fullPrice, itemsCount };
 };
 
 export const findCartItemIndex = (
