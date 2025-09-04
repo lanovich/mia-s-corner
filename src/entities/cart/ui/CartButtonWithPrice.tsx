@@ -38,13 +38,13 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
           <div className={"flex items-center gap-2 h-full"}>
             <Button
               className={cn(
-                "relative flex items-center gap-2 px-4 py-2 w-24",
+                "relative flex items-center space-between gap-2 px-4 py-2 w-24",
                 className
               )}
             >
-              <LoadingIndicator isLoading={isBusy} size={16} />
+              <LoadingIndicator isLoading={isBusy} size={16} className="min-w-12" />
               {!isBusy && (
-                <motion.p className="flex items-center justify-center">
+                <motion.p className="flex items-center justify-center min-w-12">
                   {scrambledPrice} ₽
                 </motion.p>
               )}

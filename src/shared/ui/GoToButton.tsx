@@ -1,10 +1,10 @@
 "use client";
 
 import { cn } from "@/shared/lib";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LoadingIndicator } from "./LoadingIndicator";
+import { CustomLink } from "./CustomLink";
 
 interface Props {
   href: string;
@@ -48,7 +48,7 @@ export const GoToButton: React.FC<Props> = ({
 
   return (
     <div className="flex">
-      <Link
+      <CustomLink
         href={href}
         onClick={handleInternalClick}
         className={cn(
@@ -60,7 +60,7 @@ export const GoToButton: React.FC<Props> = ({
         )}
       >
         {isLoading ? <LoadingIndicator isLoading={isLoading} /> : label}
-      </Link>
+      </CustomLink>
     </div>
   );
 };

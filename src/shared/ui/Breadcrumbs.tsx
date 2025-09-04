@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Container } from "@/shared/ui";
+import { Container, CustomLink } from "@/shared/ui";
 import { cn } from "@/shared/lib";
 
 interface Props {
@@ -36,12 +35,12 @@ export const Breadcrumbs: React.FC<Props> = ({
             {breadcrumbs.map((crumb, index) => (
               <li key={`full-${index}`} className="flex items-center">
                 {index !== breadcrumbs.length - 1 ? (
-                  <Link
+                  <CustomLink
                     href={crumb.href}
                     className="hover:underline whitespace-nowrap"
                   >
                     {crumb.name}
-                  </Link>
+                  </CustomLink>
                 ) : (
                   <span className="text-black line-clamp-1">{crumb.name}</span>
                 )}
@@ -56,21 +55,21 @@ export const Breadcrumbs: React.FC<Props> = ({
           <div className="flex md:hidden items-center">
             {breadcrumbs.length > 3 ? (
               <>
-                <Link
+                <CustomLink
                   href={breadcrumbs[0].href}
                   className="hover:underline whitespace-nowrap"
                 >
                   {breadcrumbs[0].name}
-                </Link>
+                </CustomLink>
                 <span className="mx-2">/</span>
                 <span>...</span>
                 <span className="mx-2">/</span>
-                <Link
+                <CustomLink
                   href={breadcrumbs[breadcrumbs.length - 2].href}
                   className="hover:underline whitespace-nowrap"
                 >
                   {breadcrumbs[breadcrumbs.length - 2].name}
-                </Link>
+                </CustomLink>
                 <span className="mx-2">/</span>
                 <span className="text-black line-clamp-1">
                   {breadcrumbs[breadcrumbs.length - 1].name}
@@ -81,12 +80,12 @@ export const Breadcrumbs: React.FC<Props> = ({
               breadcrumbs.map((crumb, index) => (
                 <li key={`mobile-${index}`} className="flex items-center">
                   {index !== breadcrumbs.length - 1 ? (
-                    <Link
+                    <CustomLink
                       href={crumb.href}
                       className="hover:underline whitespace-nowrap"
                     >
                       {crumb.name}
-                    </Link>
+                    </CustomLink>
                   ) : (
                     <span className="text-black line-clamp-1">
                       {crumb.name}

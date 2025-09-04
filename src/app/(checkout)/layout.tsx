@@ -30,7 +30,11 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <Toaster />
+        <Toaster
+          closeButton
+          mobileOffset={54}
+          swipeDirections={["left", "right", "top"]}
+        />
       </body>
     </html>
   );

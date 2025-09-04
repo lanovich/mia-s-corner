@@ -1,8 +1,9 @@
-import { cn } from "@/shared/lib";
+"use client";
+
+import { cn, useSticky } from "@/shared/lib";
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { Navigation, Container } from "@/shared/ui";
+import { Navigation, Container, CustomLink } from "@/shared/ui";
 import { BurgerMenu } from "./";
 import { CartButtonWithPrice } from "@/entities/cart/ui";
 
@@ -11,15 +12,14 @@ interface Props {
   hideCartButton?: boolean;
 }
 
-export const Header: React.FC<Props> = async ({
-  hideCartButton,
-  className,
-}) => {
+export const Header: React.FC<Props> = ({ hideCartButton, className }) => {
+  const { ref, isSticky, isMobile } = useSticky();
+
   return (
-    <header className={cn("mx-4 xl:mx-0", className)}>
-      <Container className="flex justify-between items-center py-4 bg-gray70 h-20">
+    <header className={cn("mx-4 xl:mx-0", className)} ref={ref}>
+      <Container className="flex justify-between items-center bg-gray70 h-20">
         {/* Логотип сайта */}
-        <Link href="/" className="relative w-24 h-full select-none">
+        <CustomLink href="/" className="relative w-24 h-full select-none">
           <Image
             src="/logo.svg"
             alt="logo"
@@ -28,7 +28,7 @@ export const Header: React.FC<Props> = async ({
             priority
             className="pointer-events-none select-none object-contain"
           />
-        </Link>
+        </CustomLink>
 
         {/* Корзина и навигация */}
         <div className="flex justify-between items-center gap-5">

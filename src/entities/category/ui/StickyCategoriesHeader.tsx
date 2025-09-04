@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Container } from "@/shared/ui";
 import { CartButtonWithPrice } from "@/entities/cart/ui";
 import { useEffect, useState, useRef } from "react";
-import { cn } from "@/shared/lib";
+import { cn, useSticky } from "@/shared/lib";
 import { Category } from "@/entities/category/model";
 import { CategoriesList } from "./CategoriesList";
 
@@ -19,30 +19,7 @@ export const StickyCategoriesHeader: React.FC<StickyHeaderProps> = ({
   categories,
   currentCategorySlug,
 }) => {
-  const [isSticky, setIsSticky] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const stickyRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    const handleScroll = () => {
-      if (!stickyRef.current) return;
-      const { top } = stickyRef.current.getBoundingClientRect();
-      setIsSticky(top <= 0);
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const { ref: stickyRef, isSticky, isMobile } = useSticky();
 
   return (
     <div

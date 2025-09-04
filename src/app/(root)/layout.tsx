@@ -119,7 +119,7 @@ export default function RootLayout({
           <CookieBanner />
         </main>
         <Footer />
-        <Toaster />
+        <Toaster duration={1500} mobileOffset={54} swipeDirections={["left", "right", "top"]} />
       </body>
     </html>
   );

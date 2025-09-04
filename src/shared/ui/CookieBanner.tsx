@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { CustomLink } from "./CustomLink";
 
 export const CookieBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -26,9 +26,9 @@ export const CookieBanner = () => {
         Мы используем <strong>обязательные</strong> cookies для работы корзины.
         При оформлении заказа мы обрабатываем ваши email, телефон и адрес для
         выполнения заказа. Подробнее в{" "}
-        <Link href="/privacy" className="text-blue-600 hover:underline">
+        <CustomLink href="/privacy" className="text-blue-600 hover:underline">
           Политике конфиденциальности
-        </Link>
+        </CustomLink>
         .
       </p>
       <div className="flex justify-end gap-2">

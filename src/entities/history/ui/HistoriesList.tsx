@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { HistoryData } from "@/entities/history/model";
 import { LINKS } from "@/shared/model";
+import { CustomLink } from "@/shared/ui";
 
 interface HistoriesListProps {
   histories: HistoryData[];
@@ -14,7 +14,7 @@ export const HistoriesList: React.FC<HistoriesListProps> = ({
   return (
     <div className="flex gap-4">
       {histories.map((history) => (
-        <Link
+        <CustomLink
           key={history.id}
           href={`${LINKS.CATALOG}/${LINKS.HISTORIES}/${history.id}`}
           className={`px-4 py-2 rounded-full transition text-nowrap ${
@@ -24,7 +24,7 @@ export const HistoriesList: React.FC<HistoriesListProps> = ({
           }`}
         >
           {history.title}
-        </Link>
+        </CustomLink>
       ))}
     </div>
   );
