@@ -1,5 +1,16 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/shared/api/supabase/server";
+import { getProductSummary } from "@/shared/api/queries";
+
+export async function GET() {
+  try {
+    const summary = await getProductSummary();
+    return NextResponse.json(summary, { status: 200 });
+  } catch (error) {
+    console.error("Ошибка GET /products:", error);
+    return NextResponse.json({ error: "Ошибка загрузки" }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {

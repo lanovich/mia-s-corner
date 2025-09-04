@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "../globals.css";
-import { Footer, Header } from "@/components/shared";
+import { Footer } from "@/widgets/footer/ui";
+import { Header } from "@/widgets/header/ui";
 import { Toaster } from "sonner";
 import { metadata as rootMetadata } from "@/app/(root)/layout";
 
@@ -23,13 +24,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} antialiased`}>
+      <body className={`antialiased`}>
         <main className="min-h-screen">
           <Header />
           {children}
         </main>
         <Footer />
-        <Toaster />
+        <Toaster
+          closeButton
+          mobileOffset={54}
+          swipeDirections={["left", "right", "top"]}
+        />
       </body>
     </html>
   );

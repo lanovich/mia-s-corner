@@ -1,16 +1,15 @@
 import { Metadata } from "next";
-import { getProductWithHistory } from "@/lib/cache";
-import { ProductWithHistory } from "@/types";
+import { Breadcrumbs, Container } from "@/shared/ui";
+import { ProductWithHistory } from "@/entities/product/model";
 import {
-  Breadcrumbs,
-  ProductGallery,
-  BuySection,
   AboutProduct,
+  BuySection,
+  MobileSizeAndBuy,
+  ProductGallery,
   SimilarProducts,
-} from "@/components/ProductPage";
-import { MobileSizeAndBuy } from "@/components/ProductPage/MobileSizeAndBuy";
-import { Container } from "@/components/shared";
-import { CATEGORY_SLUG_MAP } from "@/constants/categorySlugMap";
+} from "@/entities/product/ui";
+import { productsApi } from "@/entities/product/api";
+import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
@@ -18,14 +17,15 @@ export async function generateMetadata(props: {
   params: ProductParams;
 }): Promise<Metadata> {
   const params = await props.params;
-  const product = await getProductWithHistory(
+  const product = await productsApi.fetchProduct(
     params.categorySlug,
     params.productSlug
   );
 
   if (!product) {
     return {
-      title: "Mia's Corner | Ароматические свечи, диффузоры, саше ручной работы в СПб",
+      title:
+        "Mia's Corner | Ароматические свечи, диффузоры, саше ручной работы в СПб",
       description: "Ароматическая продукция ручной работы",
     };
   }
@@ -100,7 +100,7 @@ function generateProductKeywords(product: ProductWithHistory): string[] {
 
 export default async function ProductPage(props: { params: ProductParams }) {
   const params = await props.params;
-  const product = await getProductWithHistory(
+  const product = await productsApi.fetchProduct(
     params.categorySlug,
     params.productSlug
   );
@@ -119,7 +119,10 @@ export default async function ProductPage(props: { params: ProductParams }) {
   return (
     <>
       <Breadcrumbs
-        categorySlug={params.categorySlug}
+        categoryInfo={{
+          slug: params.categorySlug,
+          name: product.category_name || product.category_slug,
+        }}
         productTitle={product.title}
       />
       <Container className="max-w-[1380px] px-5">

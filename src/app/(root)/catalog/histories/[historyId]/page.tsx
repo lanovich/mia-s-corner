@@ -1,8 +1,7 @@
-import { Histories } from "@/components/historiesPage/Histories";
-import { Episodes } from "@/components/historiesPage/Episodes";
-import { getProductsByHistory, getHistories } from "@/lib/cache";
-import { Container } from "@/components/shared";
-import { Breadcrumbs } from "@/components/ProductPage";
+import { historiesApi } from "@/entities/history/api";
+import { Episodes, Histories } from "@/entities/history/ui";
+import { productsApi } from "@/entities/product/api";
+import { Breadcrumbs, Container } from "@/shared/ui";
 import { Metadata } from "next";
 
 type HistoryParams = Promise<{ historyId: string }>;
@@ -11,10 +10,10 @@ export async function generateMetadata(props: {
   params: HistoryParams;
 }): Promise<Metadata> {
   const params = await props.params;
-  const historyId = Number(params.historyId);
-  const histories = await getHistories();
-  const currentHistory = histories.find((h) => h.id === historyId);
-  const products = await getProductsByHistory(historyId);
+  const historyId = params.historyId;
+  const histories = await historiesApi.fetchHistories();
+  const currentHistory = histories.find((h) => h.id === Number(historyId));
+  const products = await productsApi.fetchProductsByHistory(historyId);
 
   if (!currentHistory) {
     return {
@@ -40,14 +39,27 @@ export async function generateMetadata(props: {
 
 export default async function HistoriesPage(props: { params: HistoryParams }) {
   const params = await props.params;
-  const historyId = Number(params.historyId);
-  const histories = await getHistories();
-  const products = await getProductsByHistory(historyId);
+  const historyId = params.historyId;
+  const histories = await historiesApi.fetchHistories();
+  const products = await productsApi.fetchProductsByHistory(historyId);
+  const currentHistory = histories.find(
+    (history) => history.id === Number(historyId)
+  );
+
+  console.log(histories);
 
   return (
     <>
-      <Breadcrumbs historyId={historyId} />
-      <Histories histories={histories} currentHistoryId={historyId} />
+      <Breadcrumbs
+        historyInfo={{
+          name: currentHistory?.title || historyId,
+          id: historyId,
+        }}
+      />
+      <Histories
+        histories={histories}
+        currentHistoryId={currentHistory?.id || 1}
+      />
       <Container className="mb-10">
         <Episodes products={products} className="mt-5" />
       </Container>

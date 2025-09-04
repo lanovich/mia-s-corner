@@ -3,9 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/shadcn-ui/button";
 import { motion } from "framer-motion";
-import { Container } from "@/components/shared";
+import { Container } from "@/shared/ui";
 import {
   OrderSummary,
   ContactInfo,
@@ -13,16 +12,20 @@ import {
   TotalAmount,
   PaymentMethods,
   OrderWishes,
-} from "@/components/checkout";
+  DeliveryMethods,
+  SelfPickup,
+  PostalDelivery,
+} from "@/entities/order/ui";
 import { FormProvider, useForm } from "react-hook-form";
-import { CheckoutFormValues, schema } from "@/constants/checkoutFormSchema";
-import { createOrder } from "@/app/actions";
+import {
+  CheckoutFormValues,
+  schema,
+} from "@/entities/order/model/checkoutFormSchema";
 import { toast } from "sonner";
-import { useCartStore } from "@/store/useCartStore";
-import { SelfPickup } from "@/components/checkout/SelfPickup";
-import { DeliveryMethods } from "@/components/checkout/DeliveryMethods";
-import { useDeliveryStore } from "@/store/useDeliveryStore";
-import { PostalDelivery } from "@/components/checkout/PostalDelivery";
+import { useCartStore } from "@/entities/cart/model/useCartStore";
+import { useDeliveryStore } from "@/entities/yandexDelivery/model/useDeliveryStore";
+import { Button } from "@/shared/shadcn-ui";
+import { orderApi } from "@/entities/order/api";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -30,7 +33,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<"transfer" | "cash">(
     "transfer"
   );
-  const { loading, fullPrice, clearCart } = useCartStore();
+  const { isLoading, fullPrice, clearCart } = useCartStore();
   const { selectedDeliveryMethod } = useDeliveryStore();
   const { deliveryPrice, setDeliveryPrice } = useDeliveryStore();
 
@@ -69,13 +72,19 @@ export default function CheckoutPage() {
       }
 
       setSubmitting(true);
-      const paymentUrl = await createOrder(data, deliveryPrice);
 
-      if (paymentUrl.error || !paymentUrl) {
-        throw new Error("Не удалось получить платежную ссылку");
+      const { paymentUrl, success, error } = await orderApi.createOrder(
+        data,
+        deliveryPrice
+      );
+
+      if (!success || !paymentUrl) {
+        toast.error("Не удалось получить платежную ссылку");
+        throw new Error(error || "Не удалось получить платежную ссылку");
       }
 
       console.log("Платежная ссылка получена:", paymentUrl);
+      router.push(paymentUrl);
 
       await clearCart();
       setDeliveryPrice(0);
@@ -153,12 +162,12 @@ export default function CheckoutPage() {
 
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
-              loading={loading}
+              loading={isLoading}
               className="w-full bg-black text-white py-3 rounded-lg"
               type="submit"
               form="orderForm"
               disabled={
-                loading ||
+                isLoading ||
                 (selectedDeliveryMethod === "fastDelivery" &&
                   deliveryPrice === 0) ||
                 fullPrice === 0

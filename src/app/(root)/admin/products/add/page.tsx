@@ -4,17 +4,20 @@ import { useState, useEffect } from "react";
 import slugify from "slugify";
 import axios from "axios";
 import { toast } from "sonner";
-import { Input, Button, Textarea } from "@/components/shadcn-ui";
+import { Input, Button, Textarea } from "@/shared/shadcn-ui";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/shadcn-ui/select";
-import { getCategories, getSizesByCategory } from "@/lib";
-import { ChapterHeading, Container } from "@/components/shared";
-import { GoToButton } from "@/components/shop/ui";
+} from "@/shared/shadcn-ui/select";
+import { ChapterHeading, Container } from "@/shared/ui";
+import { GoToButton } from "@/shared/ui";
+import { Category } from "@/entities/category/model";
+import { Size } from "@/entities/product/model";
+import { categoriesApi } from "@/entities/category/api";
+import { adminApi } from "@/features/admin-control/api";
 
 export default function AddProduct() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -37,7 +40,7 @@ export default function AddProduct() {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const data = await getCategories();
+        const data = await categoriesApi.fetchCategories();
         setCategories(data);
       } catch (error) {
         toast.error("Не удалось загрузить категории");
@@ -58,7 +61,7 @@ export default function AddProduct() {
           (c) => c.id.toString() === formData.category_id
         );
         if (category) {
-          const sizesData = await getSizesByCategory(category.name);
+          const sizesData = await adminApi.fetchSizesByCategoryName(category.name);
           setSizes(sizesData);
         }
       } catch (error) {

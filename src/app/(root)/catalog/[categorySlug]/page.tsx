@@ -1,7 +1,8 @@
 import { Metadata } from "next";
-import { getCategories } from "@/lib/cache";
-import { CatalogProductsLoader, Categories } from "@/components/catalog";
-import { Container } from "@/components/shared";
+import { Container } from "@/shared/ui";
+import { Categories } from "@/entities/category/ui";
+import { CatalogProductsLoader } from "@/widgets/catalog/ui";
+import { categoriesApi } from "@/entities/category/api";
 
 type Params = Promise<{ categorySlug: string }>;
 
@@ -9,7 +10,7 @@ export async function generateMetadata(props: {
   params: Params;
 }): Promise<Metadata> {
   const params = await props.params;
-  const categories = await getCategories();
+  const categories = await categoriesApi.fetchCategories();
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];
 
@@ -70,7 +71,7 @@ export async function generateMetadata(props: {
 
 export default async function CatalogPage(props: { params: Params }) {
   const params = await props.params;
-  const categories = await getCategories();
+  const categories = await categoriesApi.fetchCategories();
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];
 
@@ -78,7 +79,10 @@ export default async function CatalogPage(props: { params: Params }) {
     <>
       <Categories
         categories={categories}
-        currentCategorySlug={currentCategory.slug}
+        categoryInfo={{
+          slug: currentCategory.slug,
+          name: currentCategory.name,
+        }}
       />
       <Container>
         <CatalogProductsLoader categoryId={currentCategory.id} />

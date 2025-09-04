@@ -1,11 +1,11 @@
-import { getCategories, getHistories } from "@/lib/cache";
-import { Container } from "@/components/shared";
-import { Breadcrumbs } from "@/components/ProductPage";
-import { CatalogCard } from "@/components/shared";
-import { LINKS } from "@/constants";
-
+import { Breadcrumbs, Container } from "@/shared/ui";
+import { CatalogCard } from "@/shared/ui";
 import { Metadata } from "next";
 import { metadata as rootMetadata } from "@/app/(root)/layout";
+import { categoriesApi } from "@/entities/category/api";
+import { historiesApi } from "@/entities/history/api";
+import { LINKS } from "@/shared/model";
+import { getCategories, getHistories } from "@/shared/api/queries";
 
 export const metadata: Metadata = {
   ...rootMetadata,
