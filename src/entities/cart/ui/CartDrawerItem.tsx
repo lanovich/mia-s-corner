@@ -27,9 +27,9 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
           <Image
             src={product.images?.[0]?.url || "/fallback-image.jpg"}
             alt={product.title}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-md"
+            fill
+            sizes="160px"
+            className="object-cover rounded-md"
           />
         </div>
 
@@ -70,14 +70,22 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
               type="decrease"
               quantity={quantity}
               onDecrease={() =>
-                modifyItemQuantity(selectedSize.product_id, selectedSize.size_id, -1)
+                modifyItemQuantity(
+                  selectedSize.product_id,
+                  selectedSize.size_id,
+                  -1
+                )
               }
             />
             <ChangeQuantityButton
               type="increase"
               quantity={quantity}
               onIncrease={() =>
-                modifyItemQuantity(selectedSize.product_id, selectedSize.size_id, 1)
+                modifyItemQuantity(
+                  selectedSize.product_id,
+                  selectedSize.size_id,
+                  1
+                )
               }
             />
           </div>

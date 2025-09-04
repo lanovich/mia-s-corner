@@ -31,6 +31,7 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
             <Image
               src={imageUrl}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover hover:sepia md:hover:sepia-0 duration-300 rounded-t-lg"
               alt={product.title}
             />

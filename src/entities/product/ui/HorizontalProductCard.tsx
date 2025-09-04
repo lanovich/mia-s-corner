@@ -25,8 +25,8 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
         <div className="relative h-full w-40 flex-shrink-0 overflow-hidden">
           <Image
             src={product.images[0].url}
-            width={160}
-            height={160}
+            fill
+            sizes="160px"
             className="h-full w-full object-cover rounded-l-xl"
             alt={product.title}
           />
