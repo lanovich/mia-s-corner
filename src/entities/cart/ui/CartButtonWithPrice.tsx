@@ -2,12 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/shared/shadcn-ui";
-import { Hexagon, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { CartDrawer } from "./CartDrawer";
 import { useCartStore } from "@/entities/cart/model/useCartStore";
-import { motion, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/shared/lib";
 import { useScrambledPrice } from "../lib/useScrambledPrice";
+import { LoadingIndicator } from "@/shared/ui";
 
 interface Props {
   className?: string;
@@ -22,6 +23,8 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
   } = useCartStore();
   const scrambledPrice = useScrambledPrice(fullPrice);
   const [isLoading, setIsLoading] = useState(true);
+
+  const isBusy = isLoading || isCartModifying;
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 0);
@@ -39,9 +42,8 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
                 className
               )}
             >
-              {isLoading || isCartModifying ? (
-                <Hexagon className="animate-spin" />
-              ) : (
+              <LoadingIndicator isLoading={isBusy} size={16} />
+              {!isBusy && (
                 <motion.p className="flex items-center justify-center">
                   {scrambledPrice} ₽
                 </motion.p>
@@ -57,11 +59,8 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
                   transition={{ type: "spring", stiffness: 260, damping: 20 }}
                   className="absolute -top-2 -right-2 w-5 h-5 bg-green-500 text-white text-xs flex items-center justify-center rounded-full"
                 >
-                  {isLoading || isCartModifying ? (
-                    <Hexagon className="animate-spin w-1 h-1" />
-                  ) : (
-                    <>{itemsCount}</>
-                  )}
+                  <LoadingIndicator isLoading={isBusy} size={12} />
+                  {!isBusy && <>{itemsCount}</>}
                 </motion.div>
               )}
             </Button>
