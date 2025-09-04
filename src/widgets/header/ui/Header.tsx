@@ -1,6 +1,4 @@
-"use client";
-
-import { cn, useSticky } from "@/shared/lib";
+import { cn } from "@/shared/lib";
 import React from "react";
 import Image from "next/image";
 import { Navigation, Container, CustomLink } from "@/shared/ui";
@@ -13,10 +11,9 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ hideCartButton, className }) => {
-  const { ref, isSticky, isMobile } = useSticky();
 
   return (
-    <header className={cn("mx-4 xl:mx-0", className)} ref={ref}>
+    <header className={cn("mx-4 xl:mx-0", className)}>
       <Container className="flex justify-between items-center bg-gray70 h-20">
         {/* Логотип сайта */}
         <CustomLink href="/" className="relative w-24 h-full select-none">
