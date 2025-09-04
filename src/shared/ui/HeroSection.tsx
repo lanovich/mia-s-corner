@@ -69,14 +69,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {title}
         </h2>
         {smallImage && (
-          <div className="relative z-10 mt-8 w-full">
+          <div className="relative z-10 mt-8 w-[200px] h-[160px] mx-auto">
             <Image
               src={smallImage}
               alt="Small Image"
-              width={200}
-              height={200}
-              className="mx-auto rounded-xl shadow-xl transition-transform duration-300 hover:scale-105"
-              priority
+              fill
+              sizes="200px"
+              className="rounded-xl shadow-xl transition-transform duration-300 hover:scale-105 object-cover"
             />
           </div>
         )}

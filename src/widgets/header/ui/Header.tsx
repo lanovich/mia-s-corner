@@ -19,14 +19,13 @@ export const Header: React.FC<Props> = async ({
     <header className={cn("mx-4 xl:mx-0", className)}>
       <Container className="flex justify-between items-center py-4 bg-gray70 h-20">
         {/* Логотип сайта */}
-        <Link href={"/"} className="select-none w-24 h-full">
+        <Link href="/" className="relative w-24 h-full select-none">
           <Image
-            className="pointer-events-none select-none object-contain w-24 h-[100%]"
-            style={{ width: "auto", height: "auto" }}
             src="/logo.svg"
             alt="logo"
-            width={96}
-            height={96}
+            fill
+            sizes="96px"
+            className="pointer-events-none select-none object-contain"
           />
         </Link>
 
