@@ -111,7 +111,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${roboto.variable} antialiased`}>
+      <body className={`antialiased`}>
         <main className="min-h-screen">
           <Header />
           {children}
@@ -119,7 +119,11 @@ export default function RootLayout({
           <CookieBanner />
         </main>
         <Footer />
-        <Toaster duration={1500} mobileOffset={54} swipeDirections={["left", "right", "top"]} />
+        <Toaster
+          duration={1500}
+          mobileOffset={54}
+          swipeDirections={["left", "right", "top"]}
+        />
       </body>
     </html>
   );
