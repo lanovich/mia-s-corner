@@ -17,5 +17,4 @@ export { ClearButton } from "./ClearButton";
 export { FormTextarea } from "./FormTextarea";
 export { Breadcrumbs } from "./Breadcrumbs";
 export { QuantityButton } from "./QuantityButton";
-export { LoadingLink } from "./LoadingLink";
 export { LoadingIndicator } from "./LoadingIndicator";

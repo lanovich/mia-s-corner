@@ -1,20 +1,24 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { ShoppingBag } from "lucide-react";
 import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { motion } from "framer-motion";
 import { cn } from "@/shared/lib";
 import { useParams } from "next/navigation";
 import { CartDrawer } from ".";
+import { LoadingIndicator } from "@/shared/ui";
 
 interface Props {
   className?: string;
 }
 
 export const MobileCartButton: React.FC<Props> = ({ className }) => {
-  const { cart } = useCartStore();
+  const { cart, itemsCount, isLoading: isCartModifying } = useCartStore();
+  const [isLoading, setIsLoading] = useState();
   const params = useParams();
+
+  const isBusy = isLoading || isCartModifying;
 
   const isProductPage = params?.slug && params.slug.includes("product");
 
@@ -34,7 +38,8 @@ export const MobileCartButton: React.FC<Props> = ({ className }) => {
         )}
       >
         <div className="relative">
-          <ShoppingBag size={22} />
+          <LoadingIndicator isLoading={isBusy} size={22} />
+          {!isBusy && <ShoppingBag size={22} />}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -42,7 +47,8 @@ export const MobileCartButton: React.FC<Props> = ({ className }) => {
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
             className="absolute -top-3 -right-3 w-4 h-4 bg-green-500 text-white text-xs flex items-center justify-center rounded-full"
           >
-            {cart.length}
+            <LoadingIndicator isLoading={isBusy} size={12} />
+            {!isBusy && <>{itemsCount}</>}
           </motion.div>
         </div>
       </motion.div>

@@ -1,6 +1,6 @@
 import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
 import { LINKS } from "@/shared/model";
-import Link from "next/link";
+import { CustomLink } from "@/shared/ui";
 
 interface ProductCardProps {
   product: {
@@ -13,7 +13,7 @@ interface ProductCardProps {
 
 export const EpisodeProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <Link
+    <CustomLink
       href={`${LINKS.CATALOG}/${product.category_slug}/${LINKS.PRODUCT}/${product.slug}`}
       className="block w-full h-[150px] relative overflow-hidden rounded-lg group"
     >
@@ -36,6 +36,6 @@ export const EpisodeProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {CATEGORY_SLUG_MAP[product.category_slug] || product.category_slug}
         </h3>
       </div>
-    </Link>
+    </CustomLink>
   );
 };

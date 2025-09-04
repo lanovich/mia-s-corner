@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 import { LINKS } from "@/shared/model";
 import { cn } from "@/shared/lib";
 import { Product } from "@/entities/product/model";
 import { AddToCartButton } from "@/features/modify-cart-quantity/ui";
+import { CustomLink } from "@/shared/ui";
 
 interface Props {
   product: Product;
@@ -15,7 +15,7 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
   );
 
   return (
-    <Link
+    <CustomLink
       href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
       className="group block"
     >
@@ -71,6 +71,6 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
           Эпизод {product.episode_number}
         </div>
       </div>
-    </Link>
+    </CustomLink>
   );
 };

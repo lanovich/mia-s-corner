@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { AddToCartButton } from "@/features/modify-cart-quantity/ui";
-import Link from "next/link";
 import { LINKS } from "@/shared/model";
 import { cn } from "@/shared/lib";
 import { Product } from "@/entities/product/model";
+import { CustomLink } from "@/shared/ui";
 
 interface Props {
   product: Product;
@@ -21,9 +21,8 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
         <div className="z-40 absolute -top-2 -left-1 bg-black/70 text-white text-sm px-2 py-1 rounded-full shadow-md overflow-visible">
           Эпизод {product.episode_number}
         </div>
-
         {/* Product Image с обернутой ссылкой */}
-        <Link
+        <CustomLink
           href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
           className="block"
         >
@@ -36,14 +35,9 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               alt={product.title}
             />
           </div>
-        </Link>
 
-        {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
-        <div className="p-2 bg-slate-50 shadow-md rounded-b-lg">
-          <Link
-            href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
-            className="block"
-          >
+          {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
+          <div className="p-2 bg-slate-50 shadow-md rounded-b-lg">
             <div>
               <span className="text-sm line-clamp-1">{product.compound}</span>
               <p className="text-xs text-black/50 line-clamp-1">
@@ -68,14 +62,14 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                 {defaultSize?.size?.size} {product.measure}
               </span>
             </div>
-          </Link>
-          <AddToCartButton
-            selectedSize={defaultSize || null}
-            className="w-full"
-          >
-            Добавить в корзину
-          </AddToCartButton>
-        </div>
+            <AddToCartButton
+              selectedSize={defaultSize || null}
+              className="w-full"
+            >
+              Добавить в корзину
+            </AddToCartButton>
+          </div>
+        </CustomLink>
       </div>
     </div>
   );

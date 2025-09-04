@@ -47,14 +47,14 @@ export default function Home() {
         />
       </ImageCarousel>
 
-      <СhapterContainer>
-        <ChapterHeading>О нас</ChapterHeading>
-        <AboutSection />
-      </СhapterContainer>
-
       <СhapterContainer className="mb-16">
         <ChapterHeading>Наши продукты</ChapterHeading>
         <Shop />
+      </СhapterContainer>
+
+      <СhapterContainer>
+        <ChapterHeading>О нас</ChapterHeading>
+        <AboutSection />
       </СhapterContainer>
     </>
   );

@@ -1,4 +1,4 @@
-import { LoadingLink } from ".";
+import { CustomLink } from ".";
 
 interface CardProps {
   slug: string;
@@ -16,7 +16,7 @@ export function CatalogCard({
   href,
 }: CardProps) {
   return (
-    <LoadingLink
+    <CustomLink
       key={slug}
       href={href}
       className="block w-full h-[300px] relative overflow-hidden rounded-lg group"
@@ -37,6 +37,6 @@ export function CatalogCard({
         <h2 className="text-2xl font-bold mb-2">{title}</h2>
         {description && <p className="text-sm line-clamp-2">{description}</p>}
       </div>
-    </LoadingLink>
+    </CustomLink>
   );
 }
