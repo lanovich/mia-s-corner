@@ -1,14 +1,16 @@
+"use client";
 import { Button } from "@/shared/shadcn-ui";
 import { Minus, Plus } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { LoadingIndicator } from "@/shared/ui";
 
 interface Props {
   className?: string;
   type: "increase" | "decrease";
   quantity: number;
   maxQuantity?: number;
-  onIncrease?: () => void;
-  onDecrease?: () => void;
+  onIncrease?: () => Promise<void> | void;
+  onDecrease?: () => Promise<void> | void;
 }
 
 export const ChangeQuantityButton: React.FC<Props> = ({
@@ -19,21 +21,36 @@ export const ChangeQuantityButton: React.FC<Props> = ({
   onIncrease,
   onDecrease,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const isDisabled =
     (type === "decrease" && quantity === 1) ||
-    (type === "increase" && quantity === maxQuantity);
+    (type === "increase" && quantity === maxQuantity) ||
+    isLoading;
 
-  const handleClick = () => {
-    if (type === "increase" && onIncrease && quantity < maxQuantity) {
-      onIncrease();
-    } else if (type === "decrease" && onDecrease && quantity > 1) {
-      onDecrease();
+  const handleClick = async () => {
+    setIsLoading(true);
+
+    try {
+      if (type === "increase" && onIncrease && quantity < maxQuantity) {
+        await onIncrease();
+      } else if (type === "decrease" && onDecrease && quantity > 1) {
+        await onDecrease();
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Button onClick={handleClick} disabled={isDisabled} className={className}>
-      {type === "increase" ? <Plus /> : <Minus />}
+      {isLoading ? (
+        <LoadingIndicator isLoading={true} size={16} />
+      ) : type === "increase" ? (
+        <Plus />
+      ) : (
+        <Minus />
+      )}
     </Button>
   );
 };
