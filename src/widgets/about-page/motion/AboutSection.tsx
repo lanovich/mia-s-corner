@@ -2,9 +2,9 @@
 
 import { motion, useInView, stagger, useAnimate } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { MotionImage } from "./";
-import { LINKS } from "@/shared/model";
+import { MotionImage } from "./MotionImage";
 import { GoToButton } from "@/shared/ui";
+import { LINKS } from "@/shared/model";
 
 export const AboutSection = () => {
   const [scope, animate] = useAnimate();

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { LoadingIndicator } from "./LoadingIndicator";
 import { CustomLink } from "./CustomLink";
+import Link from "next/link";
 
 interface Props {
   href: string;
@@ -48,7 +49,7 @@ export const GoToButton: React.FC<Props> = ({
 
   return (
     <div className="flex">
-      <CustomLink
+      <Link
         href={href}
         onClick={handleInternalClick}
         className={cn(
@@ -60,7 +61,7 @@ export const GoToButton: React.FC<Props> = ({
         )}
       >
         {isLoading ? <LoadingIndicator isLoading={isLoading} /> : label}
-      </CustomLink>
+      </Link>
     </div>
   );
 };

@@ -1,12 +1,13 @@
 "use client";
 
 import { toast } from "sonner";
-import { cn } from "@/shared/lib";
-import { useCartStore } from "@/entities/cart/model/useCartStore";
-import { MouseEvent, useState, ChangeEvent } from "react";
-import { Minus, Plus, ShoppingCart } from "lucide-react";
-import { LoadingIndicator, QuantityButton } from "@/shared/ui";
+import { MouseEvent, useCallback, useState, ChangeEvent } from "react";
+import { Hexagon, Minus, Plus, ShoppingCart } from "lucide-react";
+import throttle from "lodash.throttle";
 import { ProductSize } from "@/entities/product/model";
+import { useCartStore } from "@/entities/cart/model";
+import { QuantityButton } from "@/shared/ui";
+import { cn } from "@/shared/lib";
 
 interface Props {
   selectedSize: ProductSize | null;
@@ -20,9 +21,8 @@ export const AddToCartButton: React.FC<Props> = ({
   children,
 }) => {
   const { modifyItemQuantity, cart } = useCartStore();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [inputValue, setInputValue] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const existingCartItem = cart.find(
     (cartItem) =>
@@ -30,43 +30,39 @@ export const AddToCartButton: React.FC<Props> = ({
       cartItem.size_id === selectedSize?.size_id
   );
 
-  const displayQuantity =
-    inputValue !== null ? inputValue : existingCartItem?.quantity ?? 0;
+  const handleModifyQuantity = useCallback(
+    throttle(async (event: MouseEvent<HTMLButtonElement>, delta: number) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-  const handleModifyQuantity = async (
-    event: MouseEvent<HTMLButtonElement>,
-    delta: number
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
+      if (!selectedSize) {
+        return toast.error("Выберите размер перед добавлением в корзину!", {
+          position: "top-center",
+        });
+      }
 
-    if (!selectedSize) {
-      return toast.error("Выберите размер перед добавлением в корзину!", {
-        position: "top-center",
-      });
-    }
-
-    setIsLoading(true);
-
-    try {
-      await modifyItemQuantity(
-        selectedSize.product_id,
-        selectedSize.size_id,
-        delta
-      );
-      toast.success(
-        delta > 0 ? "Товар добавлен в корзину" : "Товар удален из корзины",
-        { position: "top-center" }
-      );
-    } catch (error) {
-      console.error(error);
-      toast.error("Ошибка при изменении количества товара!", {
-        position: "top-center",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      try {
+        setLoading(true);
+        await modifyItemQuantity(
+          selectedSize.product_id,
+          selectedSize.size_id,
+          delta
+        );
+        if (delta > 0) {
+          toast.success("Товар добавлен в корзину", { position: "top-center" });
+        } else {
+          toast.success("Товар удален из корзины", { position: "top-center" });
+        }
+      } catch (error) {
+        toast.error("Ошибка изменения количества товара!", {
+          position: "top-center",
+        });
+      } finally {
+        setLoading(false);
+      }
+    }, 0),
+    [modifyItemQuantity, selectedSize]
+  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -74,18 +70,19 @@ export const AddToCartButton: React.FC<Props> = ({
     const value = e.target.value;
 
     if (value === "" || /^\d+$/.test(value)) {
-      setInputValue(value === "" ? null : value);
+      setInputValue(value === "" ? "0" : value);
     }
   };
 
   const handleInputBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     if (!selectedSize || !existingCartItem) return;
 
-    const newQuantity = parseInt(inputValue ?? "") || 0;
+    const newQuantity = parseInt(inputValue) || 0;
     const delta = newQuantity - existingCartItem.quantity;
 
     if (delta !== 0) {
       try {
+        setLoading(true);
         await modifyItemQuantity(
           selectedSize.product_id,
           selectedSize.size_id,
@@ -96,9 +93,11 @@ export const AddToCartButton: React.FC<Props> = ({
         toast.error("Ошибка изменения количества товара!", {
           position: "top-center",
         });
+      } finally {
+        setLoading(false);
       }
     }
-    setInputValue(null);
+    setInputValue("");
   };
 
   return existingCartItem ? (
@@ -106,18 +105,18 @@ export const AddToCartButton: React.FC<Props> = ({
       className={cn(
         "flex items-center rounded-lg border border-black text-lg font-semibold px-2 py-1 sm:px-3 sm:py-2 min-h-[40px] sm:min-h-[50px] w-full",
         className,
-        isLoading ? "opacity-50" : ""
+        loading ? "opacity-50" : ""
       )}
     >
       <QuantityButton
         onClick={(event) => handleModifyQuantity(event, -1)}
         icon={<Minus className="w-4 h-4 sm:w-5 sm:h-5" />}
-        loading={isLoading}
+        loading={loading}
         className={"rounded-l-md"}
       />
       <input
         type="text"
-        value={displayQuantity}
+        value={inputValue || existingCartItem.quantity}
         onChange={handleInputChange}
         onBlur={handleInputBlur}
         onKeyDown={(e) => {
@@ -126,12 +125,12 @@ export const AddToCartButton: React.FC<Props> = ({
           }
         }}
         className="whitespace-nowrap border-x mx-1 border-black w-1/3 px-2 sm:px-4 text-center overflow-hidden bg-transparent focus:outline-none"
-        disabled={isLoading}
+        disabled={loading}
       />
       <QuantityButton
         onClick={(event) => handleModifyQuantity(event, 1)}
         icon={<Plus className="w-4 h-4 sm:w-5 sm:h-5" />}
-        loading={isLoading}
+        loading={loading}
         className={"rounded-r-md"}
       />
     </div>
@@ -140,7 +139,7 @@ export const AddToCartButton: React.FC<Props> = ({
       className={cn(
         "flex items-center rounded-lg text-lg font-semibold min-h-[40px] sm:min-h-[50px] w-full border-none",
         className,
-        isLoading ? "opacity-50" : ""
+        loading ? "opacity-50" : ""
       )}
     >
       <QuantityButton
@@ -149,8 +148,8 @@ export const AddToCartButton: React.FC<Props> = ({
           "flex items-center justify-center rounded-lg border border-black px-2 py-1 sm:px-3 sm:py-2 text-black transition hover:bg-black hover:text-white min-h-[40px] sm:min-h-[50px] w-full"
         }
         icon={
-          isLoading ? (
-            <LoadingIndicator isLoading={isLoading} />
+          loading ? (
+            <Hexagon className="animate-spin" />
           ) : (
             <>
               <span className="hidden sm:inline">{children}</span>
@@ -158,7 +157,7 @@ export const AddToCartButton: React.FC<Props> = ({
             </>
           )
         }
-        loading={isLoading}
+        loading={loading}
       />
     </div>
   );

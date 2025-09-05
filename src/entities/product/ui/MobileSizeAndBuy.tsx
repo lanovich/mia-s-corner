@@ -1,9 +1,6 @@
 "use client";
 
-import { cn } from "@/shared/lib";
 import React from "react";
-import { AddToCartButton } from "@/features/modify-cart-quantity/ui";
-import { Button } from "@/shared/shadcn-ui";
 import { Heart } from "lucide-react";
 import {
   Dialog,
@@ -15,8 +12,10 @@ import {
   DialogDescription,
 } from "@/shared/shadcn-ui/dialog";
 import { toast } from "sonner";
-import { useSelectedSizeStore } from "@/entities/product/model/useSelectedSizeStore";
-import { ProductSize } from "@/entities/product/model";
+import { ProductSize, useSelectedSizeStore } from "../model";
+import { AddToCartButton } from "@/features/modify-cart-quantity/ui";
+import { Button } from "@/shared/shadcn-ui";
+import { cn } from "@/shared/lib";
 
 interface Props {
   className?: string;
