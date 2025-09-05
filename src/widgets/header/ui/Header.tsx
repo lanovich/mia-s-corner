@@ -11,19 +11,15 @@ interface Props {
 }
 
 export const Header: React.FC<Props> = ({ hideCartButton, className }) => {
-
   return (
     <header className={cn("mx-4 xl:mx-0", className)}>
       <Container className="flex justify-between items-center bg-gray70 h-20">
         {/* Логотип сайта */}
         <CustomLink href="/" className="relative w-24 h-full select-none">
-          <Image
+          <img
             src="/logo.svg"
             alt="logo"
-            fill
-            sizes="96px"
-            priority
-            className="pointer-events-none select-none object-contain"
+            className="w-24 h-full object-contain select-none pointer-events-none"
           />
         </CustomLink>
 

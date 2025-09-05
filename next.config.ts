@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  swcMinify: false,
   images: {
-    remotePatterns: [{ hostname: "bnwhijouenwykeezlhxx.supabase.co" }, {hostname: "www.mias-corner.ru"}],
+    remotePatterns: [
+      { hostname: "bnwhijouenwykeezlhxx.supabase.co" },
+      { hostname: "www.mias-corner.ru" },
+    ],
+    formats: ["image/avif", "image/webp"],
   },
   async headers() {
     return [

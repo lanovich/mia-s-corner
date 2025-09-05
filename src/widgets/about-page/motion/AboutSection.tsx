@@ -78,11 +78,11 @@ export const AboutSection = () => {
         >
           <div className="block md:hidden">
             {/* Мобильная версия */}
-            <MotionImage imageUrl="/image.webp" />
+            <MotionImage imageUrl="/image.png" />
           </div>
           <div className="hidden md:block">
             {/* Десктопная версия */}
-            <MotionImage imageUrl="/image.webp" />
+            <MotionImage imageUrl="/image.png" />
           </div>
         </motion.div>
 

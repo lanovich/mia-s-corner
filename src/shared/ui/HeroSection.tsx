@@ -50,7 +50,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <div
       className={cn(
-        "relative flex h-[80vh] flex-col overflow-hidden px-8 md:px-16 lg:px-24 bg-slate-100",
+        "relative flex h-[80dvh] flex-col overflow-hidden px-8 md:px-16 lg:px-24 bg-slate-100",
         textXPositionClasses[textXPosition],
         textYPositionClasses[textYPosition],
         className

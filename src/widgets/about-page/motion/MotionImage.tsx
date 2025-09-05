@@ -30,7 +30,7 @@ export const MotionImage = ({
   return (
     <div
       ref={containerRef}
-      className="relative h-[70vh] w-full overflow-hidden"
+      className="relative h-[70dvh] w-full overflow-hidden"
     >
       <div
         ref={windowRef}

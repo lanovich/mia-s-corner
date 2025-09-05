@@ -27,6 +27,7 @@ export const CustomLink: React.FC<Props> = ({
 
   const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     if (onClick) onClick(e);
+
     if (isActive || isPending) {
       e.preventDefault();
       return;
@@ -41,12 +42,12 @@ export const CustomLink: React.FC<Props> = ({
       href={href}
       className={cn(
         customBorder ? "custom-border pl-0.5" : "",
-        isActive ? "pointer-events-none" : "",
         isPending ? "opacity-70 pointer-events-none" : "",
         className
       )}
+      aria-current={isActive ? "page" : undefined}
+      aria-disabled={isPending}
       onClick={handleClick}
-      aria-disabled={isActive || isPending}
     >
       {children}
     </Link>
