@@ -8,11 +8,17 @@ export async function apiFetch<T = any>(
 
   const isServer = typeof window === "undefined";
 
-  const baseUrl = isServer
-    ? process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-    : "";
+  let fullUrl: string;
 
-  const fullUrl = url.startsWith("http") ? url : baseUrl + url;
+  if (url.startsWith("http")) {
+    fullUrl = url;
+  } else if (isServer) {
+    const host = process.env.NEXT_PUBLIC_SITE_URL;
+    if (!host) throw new Error("NEXT_PUBLIC_SITE_URL is not defined on server");
+    fullUrl = host + url;
+  } else {
+    fullUrl = url;
+  }
 
   const res = await fetch(fullUrl, {
     ...init,
