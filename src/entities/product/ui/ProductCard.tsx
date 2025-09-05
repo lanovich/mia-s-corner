@@ -35,9 +35,13 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
               alt={product.title}
             />
           </div>
+        </CustomLink>
 
-          {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
-          <div className="p-2 bg-slate-50 shadow-md rounded-b-lg">
+        {/* Нижняя секция: Название, аромат, цена, размер, добавить в корзину */}
+        <div className="p-2 bg-slate-50 shadow-md rounded-b-lg">
+          <CustomLink
+            href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
+          >
             <div>
               <span className="text-sm line-clamp-1">{product.compound}</span>
               <p className="text-xs text-black/50 line-clamp-1">
@@ -62,14 +66,14 @@ export const ProductCard: React.FC<Props> = ({ product }) => {
                 {defaultSize?.size?.size} {product.measure}
               </span>
             </div>
-            <AddToCartButton
-              selectedSize={defaultSize || null}
-              className="w-full"
-            >
-              Добавить в корзину
-            </AddToCartButton>
-          </div>
-        </CustomLink>
+          </CustomLink>
+          <AddToCartButton
+            selectedSize={defaultSize || null}
+            className="w-full"
+          >
+            Добавить в корзину
+          </AddToCartButton>
+        </div>
       </div>
     </div>
   );
