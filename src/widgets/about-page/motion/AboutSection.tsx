@@ -36,7 +36,7 @@ export const AboutSection = () => {
         >
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
-            className="text-block text-2xl md:text-3xl font-bold z-10"
+            className="text-block text-2xl md:text-2xl font-bold z-10"
           >
             Каждый аромат — часть истории.
           </motion.h2>

@@ -20,7 +20,7 @@ export const EpisodeProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Фоновое изображение */}
       {product.images[0] && (
         <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-[102%]"
           style={{
             backgroundImage: `url(${product.images[0].url})`,
           }}

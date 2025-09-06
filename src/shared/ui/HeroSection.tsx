@@ -65,7 +65,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     >
       {/* Текст */}
       <div className="relative z-10 max-w-2xl text-center">
-        <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-gray-800">
+        <h2 className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold leading-tight text-gray-800">
           {title}
         </h2>
         {smallImage && (

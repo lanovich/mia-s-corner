@@ -72,7 +72,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
       {/* Кнопка выбора размера */}
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline" className="border-2 border-black">
+          <Button variant="outline" className="border border-black">
             {selectedSize ? `${selectedSize.size.size} мл` : "Выбрать размер"}
           </Button>
         </DialogTrigger>

@@ -36,7 +36,7 @@ export const SimilarProducts: React.FC<Props> = async ({
 
   return (
     <div className={className}>
-      <h2 className="text-3xl font-semibold mb-4 pb-2 border-b-2">
+      <h2 className="text-2xl font-semibold mb-4 pb-2 border-b-2">
         Товары из той же истории
       </h2>
 

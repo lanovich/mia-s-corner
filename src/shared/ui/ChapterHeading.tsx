@@ -10,7 +10,7 @@ export const ChapterHeading: React.FC<Props> = ({ className, children }) => {
   return (
     <h1
       className={cn(
-        ["text-4xl mt-6 font-bold flex items-center justify-center"],
+        ["text-3xl mt-3 font-bold flex items-center justify-center"],
         className
       )}
     >

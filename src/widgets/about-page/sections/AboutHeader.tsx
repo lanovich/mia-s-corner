@@ -11,7 +11,7 @@ const itemVariants = {
 export const AboutHeader = () => {
   return (
     <motion.h1
-      className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8"
+      className="text-3xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-8"
       variants={itemVariants}
       initial="hidden"
       animate="visible"

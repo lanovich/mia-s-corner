@@ -14,7 +14,7 @@ export const Histories: React.FC<HistoriesProps> = ({
   return (
     <>
       <div className="mx-auto">
-        <ChapterHeading className="my-3">Истории</ChapterHeading>
+        <ChapterHeading className="my-1">Истории</ChapterHeading>
       </div>
       <StickyHistoriesHeader
         histories={histories}

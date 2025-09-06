@@ -51,7 +51,7 @@ export function ContactPageClient() {
         transition={{ duration: 0.8 }}
         className="flex flex-col items-center space-y-12"
       >
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center">
+        <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold text-gray-900 text-center">
           Свяжитесь с нами
         </h1>
 

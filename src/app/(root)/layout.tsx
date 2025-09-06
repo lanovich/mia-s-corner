@@ -111,7 +111,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`antialiased`}>
+      <body>
         <main className="min-h-screen">
           <Header />
           {children}

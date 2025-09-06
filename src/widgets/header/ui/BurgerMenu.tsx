@@ -32,7 +32,7 @@ export const BurgerMenu: React.FC<Props> = ({ className }) => {
           <SheetTitle className="text-2xl font-semibold">Меню</SheetTitle>
         </SheetHeader>
         <Navigation
-          className="flex flex-col gap-4 text-3xl mt-4"
+          className="flex flex-col gap-4 text-2xl mt-4"
           onLinkClick={toggleMenu}
         />
         <CartButtonWithPrice className="w-full" />

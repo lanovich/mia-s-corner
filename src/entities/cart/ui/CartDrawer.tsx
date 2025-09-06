@@ -63,7 +63,7 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
       </SheetHeader>
 
       {/* Список товаров */}
-      <div className="flex-1 overflow-y-auto space-y-4">
+      <div className="flex-1 mt-2 overflow-y-auto space-y-4">
         {cart.map((cartItem: CartItem, index) => (
           <CartDrawerItem key={index} cartItem={cartItem} />
         ))}

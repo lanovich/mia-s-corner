@@ -47,7 +47,7 @@ export default function Home() {
         />
       </ImageCarousel>
 
-      <СhapterContainer className="mb-16">
+      <СhapterContainer className="mb-12 max-w-none">
         <ChapterHeading>Наши продукты</ChapterHeading>
         <Shop />
       </СhapterContainer>

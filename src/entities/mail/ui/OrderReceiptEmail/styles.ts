@@ -59,7 +59,7 @@ export const styles = {
     color: "#444",
   },
   totalPrice: {
-    textAlign: "right" as const,
+    textAlign: "center" as const,
     fontSize: "18px",
     fontWeight: "bold",
     marginTop: "20px",
