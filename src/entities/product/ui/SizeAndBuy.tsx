@@ -57,7 +57,7 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
       {/* Цена */}
       <div className="flex items-center gap-2">
         <span
-          className={`mt-3 text-4xl ${
+          className={`mt-3 text-3xl ${
             selectedSize?.oldPrice ? "text-red-500" : "text-black"
           }`}
         >
@@ -75,9 +75,9 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
       <div className="flex items-center gap-4 mr-10 md:min-w-80">
         <AddToCartButton
           selectedSize={selectedSize}
-          className="flex flex-1 border-2"
+          className="flex flex-1"
         >
-          <p className="text-lg font-semibold">Добавить в корзину</p>
+          <p className="text-lg">Добавить в корзину</p>
         </AddToCartButton>
 
         <button onClick={handleAddToFavorite}>

@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, A11y } from "swiper/modules";
-import "swiper/swiper-bundle.css";
+import { useEffect, useCallback, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { ProductCategories } from "./ProductCategories";
 import { GoToButton } from "@/shared/ui";
 import { CategoryWithProducts } from "@/entities/category/model";
@@ -15,40 +13,66 @@ interface Props {
 }
 
 export function ShopCarousel({ categoriesWithProducts }: Props) {
-  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: false,
+    containScroll: "trimSnaps",
+    slidesToScroll: 1,
+    align: "start",
+    dragFree: false
+  });
   const [current, setCurrent] = useState(0);
 
+  // Обновление текущего индекса при свайпе
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCurrent(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  // Клик из ProductCategories
   const handleCategoryClick = (index: number) => {
-    if (swiperInstance) swiperInstance.slideTo(index);
+    emblaApi?.scrollTo(index);
   };
 
   return (
-    <div className="max-w-[1380px] m-auto w-full">
+    <>
       <ProductCategories
         categories={categoriesWithProducts}
         current={current}
         handleCategoryClick={handleCategoryClick}
       />
-      <Swiper
-        modules={[Navigation, A11y]}
-        spaceBetween={50}
-        slidesPerView={1}
-        onSwiper={(swiper) => setSwiperInstance(swiper)}
-        onSlideChange={(swiper) => setCurrent(swiper.activeIndex)}
-      >
-        {categoriesWithProducts.map(
-          ({ id, name, slug, products }: CategoryWithProducts) => (
-            <SwiperSlide key={id}>
-              <ProductGroupList products={products} />
-              <GoToButton
-                href={`${LINKS.CATALOG}/${slug}`}
-                label={`Открыть ${name.toLowerCase()} в каталоге`}
-                className="mx-auto select-none"
-              />
-            </SwiperSlide>
-          )
-        )}
-      </Swiper>
-    </div>
+
+      <div className="max-w-[1380px] m-auto w-full">
+        {/* Embla viewport */}
+        <div className="overflow-hidden" ref={emblaRef}>
+          {/* Embla container */}
+          <div className="flex">
+            {categoriesWithProducts.map(
+              ({ id, name, slug, products }: CategoryWithProducts, index) => (
+                // Каждый слайд занимает 100% ширины viewport
+                <div key={id} className="flex-[0_0_100%]">
+                  <ProductGroupList products={products} />
+                  <GoToButton
+                    href={`${LINKS.CATALOG}/${slug}`}
+                    label={`Открыть ${name.toLowerCase()} в каталоге`}
+                    className="mx-auto select-none"
+                  />
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

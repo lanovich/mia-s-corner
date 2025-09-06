@@ -20,7 +20,7 @@ export const AboutQuestions = () => {
   return (
     <motion.div className="space-y-6" variants={containerVariants}>
       <motion.h2
-        className="text-2xl md:text-3xl font-bold text-gray-900 mb-4"
+        className="text-2xl md:text-2xl font-bold text-gray-900 mb-4"
         variants={itemVariants}
       >
         Что вы представляете, когда слышите про аромат "Чёрная малина и ваниль"?

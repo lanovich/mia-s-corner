@@ -20,7 +20,7 @@ export const HorizontalProductCard: React.FC<Props> = ({ product }) => {
       className="group block"
     >
       {/* Родительский контейнер */}
-      <div className="relative shadow-lg border flex h-40 w-full rounded-xl transition-transform duration-300 hover:scale-105">
+      <div className="relative shadow-lg border flex h-40 w-full rounded-xl transition-transform duration-300 hover:scale-[102%]">
         {/* Product Image */}
         <div className="relative h-full w-40 flex-shrink-0 overflow-hidden">
           <Image

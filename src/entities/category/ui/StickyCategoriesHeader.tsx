@@ -25,7 +25,7 @@ export const StickyCategoriesHeader: React.FC<StickyHeaderProps> = ({
     <div
       ref={stickyRef}
       className={cn(
-        "sticky top-0 z-50 border-b py-3 overflow-x-auto bg-white px-4 transition-all w-full",
+        "sticky top-0 z-50 border-b py-2 overflow-x-auto bg-white px-4 transition-all w-full",
         isSticky ? "bg-white/60 backdrop-blur-md" : "bg-white",
         className
       )}

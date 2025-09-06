@@ -44,7 +44,7 @@ export const CartButtonWithPrice: React.FC<Props> = ({ className }) => {
             >
               <LoadingIndicator isLoading={isBusy} size={16} className="min-w-12" />
               {!isBusy && (
-                <motion.p className="flex items-center justify-center min-w-12">
+                <motion.p className="flex items-center justify-center min-w-12 font-normal">
                   {scrambledPrice} ₽
                 </motion.p>
               )}

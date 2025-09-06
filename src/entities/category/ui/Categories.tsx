@@ -20,7 +20,7 @@ export const Categories: React.FC<CategoriesProps> = ({
         }}
       />
       <div className="mx-auto">
-        <ChapterHeading className="my-3">Каталог</ChapterHeading>
+        <ChapterHeading className="my-1">Каталог</ChapterHeading>
       </div>
       <StickyCategoriesHeader
         categories={categories}
