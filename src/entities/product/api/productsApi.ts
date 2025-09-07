@@ -34,4 +34,9 @@ export const productsApi = {
     apiFetch<Product[]>(API.products.getSimilarProducts(historyId, productId), {
       revalidate: 60,
     }),
+
+  searchProduct: (query: string, category?: string) =>
+    apiFetch<Product[]>(API.products.searchProduct(query, category), {
+      revalidate: 60,
+    }),
 };

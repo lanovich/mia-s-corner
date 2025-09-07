@@ -55,6 +55,8 @@ export const API = {
       `${PRODUCTS_BASE}/${categorySlug}/${productSlug}` as const,
     getSimilarProducts: (historyId: number, productId: number): string =>
       withQuery(`${PRODUCTS_BASE}/similar-products`, { historyId, productId }),
+    searchProduct: (query: string, category?: string): string =>
+      withQuery(`${PRODUCTS_BASE}/search`, { query, category }),
   },
   sizes: {
     getSizesByCategory: (categoryName: string): string =>
