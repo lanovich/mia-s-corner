@@ -6,11 +6,12 @@ import React from "react";
 import { cn, usePendingNavigation } from "@/shared/lib";
 
 interface Props {
-  href: string;
+  href?: string;
   children: React.ReactNode;
   className?: string;
   customBorder?: boolean;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  skipNavigation?: boolean;
 }
 
 export const CustomLink: React.FC<Props> = ({
@@ -19,26 +20,29 @@ export const CustomLink: React.FC<Props> = ({
   customBorder,
   onClick,
   className,
+  skipNavigation = false,
 }) => {
   const pathname = usePathname();
   const isActive = pathname === href;
-
   const { isPending, navigate } = usePendingNavigation();
 
   const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-    if (onClick) onClick(e);
+    onClick?.(e);
+
+    if (skipNavigation) return;
+
     if (isActive || isPending) {
       e.preventDefault();
       return;
     }
 
     e.preventDefault();
-    navigate(href);
+    navigate(href!);
   };
 
   return (
     <Link
-      href={href}
+      href={href || "#"}
       className={cn(
         customBorder ? "custom-border pl-0.5" : "",
         isActive ? "pointer-events-none" : "",
