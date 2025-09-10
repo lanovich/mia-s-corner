@@ -6,6 +6,7 @@ import { useDropDownNavigation } from "@/shared/model";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -29,6 +30,7 @@ export const BurgerMenu: React.FC<Props> = ({ className }) => {
 
       <SheetContent side="top" className="flex flex-col px-6 py-4">
         <SheetHeader>
+          <SheetDescription />
           <SheetTitle className="text-2xl font-semibold">Меню</SheetTitle>
         </SheetHeader>
         <Navigation
