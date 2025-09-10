@@ -1,3 +1,5 @@
+"use client";
+import { useRouter } from "next/navigation";
 import { CustomLink } from "./CustomLink";
 import { LINKS } from "@/shared/model";
 
@@ -7,6 +9,19 @@ interface Props {
 }
 
 export const Navigation = ({ className, onLinkClick }: Props) => {
+  const router = useRouter();
+
+  const onClickRandom: React.MouseEventHandler<HTMLAnchorElement> = async (
+    e
+  ) => {
+    e.preventDefault();
+    onLinkClick?.();
+
+    const res = await fetch("/api/products/random-product");
+    const redirectUrl = res.url;
+    router.push(redirectUrl);
+  };
+
   return (
     <div className={className}>
       <CustomLink href={`${LINKS.CATALOG}`} onClick={onLinkClick} customBorder>
@@ -29,11 +44,7 @@ export const Navigation = ({ className, onLinkClick }: Props) => {
       <CustomLink href={`/${LINKS.ABOUT}`} onClick={onLinkClick} customBorder>
         О нас
       </CustomLink>
-      <CustomLink
-        href="/api/products/random-product"
-        onClick={onLinkClick}
-        customBorder
-      >
+      <CustomLink skipNavigation onClick={onClickRandom} customBorder>
         Случайный товар
       </CustomLink>
     </div>
