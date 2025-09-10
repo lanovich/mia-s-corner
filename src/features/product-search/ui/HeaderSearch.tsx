@@ -4,13 +4,20 @@ import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/shared/lib";
 import { useRouter } from "next/navigation";
 import { LINKS } from "@/shared/model";
-import { useClickOutside, useProductSearch } from "../lib";
+import {
+  useClickOutside,
+  useProductSearch,
+} from "@/features/product-search/lib";
 import { Product } from "@/entities/product/model";
-import { SearchDropdown, SearchInput } from ".";
+import { SearchDropdown, SearchInput } from "@/widgets/header/ui";
 
-export const HeaderSearch: React.FC<{ className?: string }> = ({
-  className,
-}) => {
+interface Props {
+  className?: string;
+  autoFocus?: boolean;
+  onClose?: () => void;
+}
+
+export const HeaderSearch = ({ className, autoFocus, onClose }: Props) => {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string | undefined>("all");
@@ -20,7 +27,9 @@ export const HeaderSearch: React.FC<{ className?: string }> = ({
 
   console.log(query);
 
-  useClickOutside(containerRef, () => setIsDropdownOpen(false));
+  useClickOutside(containerRef, () => {
+    setIsDropdownOpen(false);
+  });
 
   useEffect(() => {
     setIsDropdownOpen(query.trim().length > 0);
@@ -37,15 +46,19 @@ export const HeaderSearch: React.FC<{ className?: string }> = ({
     );
     setQuery("");
     setCategory("all");
+    onClose ? onClose() : null;
     setIsDropdownOpen(false);
   };
 
   return (
     <div
       ref={containerRef}
-      className={cn("relative flex flex-col items-center", className)}
+      className={cn("relative flex flex-col items-center w-full", className)}
     >
       <SearchInput
+        autoFocus={autoFocus}
+        onFocus={() => setIsDropdownOpen(true)}
+        className="w-full"
         query={query}
         setQuery={setQuery}
         category={category}

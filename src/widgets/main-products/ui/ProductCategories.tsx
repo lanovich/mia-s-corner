@@ -24,7 +24,7 @@ export const ProductCategories: React.FC<Props> = ({
     <div
       ref={stickyRef}
       className={cn(
-        "px-5 inline-flex gap-7 overflow-x-auto whitespace-nowrap mx-auto w-full sticky top-0 z-50 h-1/6 bg-white snap-x snap-mandatory flex-nowrap scroll-px-4 justify-start  md:justify-center md:ml-0",
+        "px-5 inline-flex gap-7 overflow-x-auto whitespace-nowrap mx-auto w-full sticky top-0 z-40 h-1/6 bg-white snap-x snap-mandatory flex-nowrap scroll-px-4 justify-start  md:justify-center md:ml-0",
         isSticky ? "bg-white/60 backdrop-blur-md" : "bg-white",
         className
       )}

@@ -18,11 +18,15 @@ interface Props {
   category: string | undefined;
   setCategory: (c: string) => void;
   className?: string;
+  onFocus: () => void;
+  autoFocus?: boolean;
 }
 
 export const SearchInput: React.FC<Props> = ({
   query,
+  onFocus,
   setQuery,
+  autoFocus,
   category,
   setCategory,
   className,
@@ -32,16 +36,18 @@ export const SearchInput: React.FC<Props> = ({
   };
 
   return (
-    <div className={cn("flex gap-1 items-center", className)}>
+    <div className={cn("flex gap-1 items-center w-full", className)}>
       <Input
+        autoFocus={autoFocus}
+        onFocus={onFocus}
         placeholder="Поиск товаров..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-[340px] focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 "
+        className="w-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2 "
       />
 
       <Select value={category ?? "all"} onValueChange={handleValueChange}>
-        <SelectTrigger className="w-[130px] bg-black text-white focus:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <SelectTrigger className="w-1/2 bg-black text-white focus:ring-0 focus-visible:ring-ring focus-visible:ring-offset-2">
           <SelectValue placeholder="по всем" />
         </SelectTrigger>
         <SelectContent className="bg-black text-white">
