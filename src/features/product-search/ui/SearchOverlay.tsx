@@ -34,10 +34,10 @@ export const SearchOverlay = ({ className }: Props) => {
           <div className="fixed inset-0 z-40 bg-black/50 flex justify-center items-start p-4">
             <div
               ref={containerRef}
-              className="w-full max-w-2xl bg-white rounded-lg shadow-lg relative"
+              className="w-full max-w-2xl bg-white rounded-md shadow-lg relative"
             >
               <HeaderSearch
-                className="p-2"
+                className="p-1.5"
                 autoFocus
                 onClose={() => setIsOpen(false)}
               />
