@@ -114,8 +114,11 @@ export function useCartQuantity(selectedSize: ProductSize | null) {
   );
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+<<<<<<< HEAD
     e.preventDefault();
     e.stopPropagation();
+=======
+>>>>>>> 1f68040 (feat(cart): moved all cart handlers to a hook and fixed input behavior)
     const v = e.target.value;
     if (v === "") {
       setInputValue("");
@@ -124,6 +127,7 @@ export function useCartQuantity(selectedSize: ProductSize | null) {
     }
   }, []);
 
+<<<<<<< HEAD
   const handleInputBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       e.stopPropagation();
@@ -133,6 +137,13 @@ export function useCartQuantity(selectedSize: ProductSize | null) {
     },
     [inputValue, cartItem, updateQuantity]
   );
+=======
+  const handleInputBlur = useCallback(() => {
+    if (inputValue === null || !cartItem) return;
+    const newQuantity = inputValue === "" ? 0 : parseInt(inputValue, 10);
+    updateQuantity(newQuantity);
+  }, [inputValue, cartItem, updateQuantity]);
+>>>>>>> 1f68040 (feat(cart): moved all cart handlers to a hook and fixed input behavior)
 
   return {
     cartItem,
