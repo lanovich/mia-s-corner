@@ -10,24 +10,34 @@ export const cartApi = {
       headers: { Authorization: `Bearer ${token}` },
     }),
 
-  addToCart: (productId: number, sizeId: number, token: string) =>
+  addToCart: (
+    productId: number,
+    sizeId: number,
+    delta: number,
+    token: string
+  ) =>
     apiFetch<{ newItem: CartItem }>(API.cart.add, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ productId, sizeId }),
+      body: JSON.stringify({ productId, sizeId, delta }),
     }),
 
-  decreaseQuantity: (productId: number, sizeId: number, token: string) =>
+  decreaseQuantity: (
+    productId: number,
+    sizeId: number,
+    delta: number,
+    token: string
+  ) =>
     apiFetch<Promise<{ message: string }>>(API.cart.decrease, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ productId, sizeId }),
+      body: JSON.stringify({ productId, sizeId, delta }),
     }),
 
   removeFromCart: (productId: number, sizeId: number, token: string) =>

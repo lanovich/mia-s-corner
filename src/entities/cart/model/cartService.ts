@@ -19,14 +19,14 @@ export const cartService = {
     return cartApi.getProductById(productId, token);
   },
 
-  async addToCart(productId: number, sizeId: number) {
+  async addToCart(productId: number, sizeId: number, delta: number) {
     const token = await this.getUserToken();
-    return cartApi.addToCart(productId, sizeId, token);
+    return cartApi.addToCart(productId, sizeId, delta, token);
   },
 
-  async decreaseQuantity(productId: number, sizeId: number) {
+  async decreaseQuantity(productId: number, sizeId: number, delta: number) {
     const token = await this.getUserToken();
-    return cartApi.decreaseQuantity(productId, sizeId, token);
+    return cartApi.decreaseQuantity(productId, sizeId, delta, token);
   },
 
   async removeFromCart(productId: number, sizeId: number) {
