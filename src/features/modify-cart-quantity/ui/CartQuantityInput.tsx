@@ -38,7 +38,8 @@ export const CartQuantityInput: React.FC<CartQuantityInputProps> = ({
         className="rounded-l-sm"
       />
       <input
-        type="text"
+        type="numeric"
+        max={20}
         value={displayValue}
         onChange={onInputChange}
         onBlur={onInputBlur}
@@ -51,10 +52,10 @@ export const CartQuantityInput: React.FC<CartQuantityInputProps> = ({
         disabled={isLoading}
       />
       <QuantityButton
+        className={cn("rounded-r-sm", quantity === 20 ? "pointer-events-none text-gray-300" : "")}
         onClick={onInc}
         icon={<Plus className="w-4 h-4 sm:w-5 sm:h-5" />}
         loading={isLoading}
-        className="rounded-r-sm"
       />
     </div>
   );
