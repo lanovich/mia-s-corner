@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Token not found" }, { status: 401 });
   }
 
-  const { productId, sizeId } = await req.json();
+  const { productId, sizeId, delta } = await req.json();
 
   const { data: cart, error: cartError } = await supabase
     .from("cart")
@@ -33,12 +33,29 @@ export async function POST(req: Request) {
 
   if (itemError || !cartItem) {
     return NextResponse.json(
-      { error: "Товар не найден в корзине" },
+      { error: "Товар не найден в корзине", itemError },
       { status: 404 }
     );
   }
 
-  if (cartItem.quantity <= 1) {
+  const newQuantity = cartItem.quantity + delta;
+
+  if (newQuantity > 0) {
+    const { error: updateError } = await supabase
+      .from("cartItem")
+      .update({ quantity: newQuantity })
+      .eq("id", cartItem.id);
+
+    if (updateError) {
+      console.error("Ошибка при обновлении количества:", updateError.message);
+      return NextResponse.json({ error: updateError.message }, { status: 500 });
+    }
+
+    return NextResponse.json({
+      message: "Количество обновлено",
+      quantity: newQuantity,
+    });
+  } else {
     const { error: deleteError } = await supabase
       .from("cartItem")
       .delete()
@@ -49,18 +66,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: deleteError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ message: "Товар удалён" });
-  } else {
-    const { error: updateError } = await supabase
-      .from("cartItem")
-      .update({ quantity: cartItem.quantity - 1 })
-      .eq("id", cartItem.id);
-
-    if (updateError) {
-      console.error("Ошибка при обновлении количества:", updateError.message);
-      return NextResponse.json({ error: updateError.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ message: "Количество уменьшено" });
+    return NextResponse.json({ message: "Товар удалён", quantity: 0 });
   }
 }

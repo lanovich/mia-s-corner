@@ -59,10 +59,10 @@ export const modifyQuantityAPI = async (
   delta: number
 ): Promise<CartItem | undefined> => {
   if (delta > 0) {
-    const { newItem } = await cartService.addToCart(productId, sizeId);
+    const { newItem } = await cartService.addToCart(productId, sizeId, delta);
     return newItem;
   } else {
-    await cartService.decreaseQuantity(productId, sizeId);
+    await cartService.decreaseQuantity(productId, sizeId, delta);
     return undefined;
   }
 };
