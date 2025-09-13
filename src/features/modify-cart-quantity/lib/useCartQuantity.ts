@@ -114,6 +114,8 @@ export function useCartQuantity(selectedSize: ProductSize | null) {
   );
 
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     const v = e.target.value;
     if (v === "") {
       setInputValue("");
@@ -122,11 +124,15 @@ export function useCartQuantity(selectedSize: ProductSize | null) {
     }
   }, []);
 
-  const handleInputBlur = useCallback(() => {
-    if (inputValue === null || !cartItem) return;
-    const newQuantity = inputValue === "" ? 0 : parseInt(inputValue, 10);
-    updateQuantity(newQuantity);
-  }, [inputValue, cartItem, updateQuantity]);
+  const handleInputBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      e.stopPropagation();
+      if (inputValue === null || !cartItem) return;
+      const newQuantity = inputValue === "" ? 0 : parseInt(inputValue, 10);
+      updateQuantity(newQuantity);
+    },
+    [inputValue, cartItem, updateQuantity]
+  );
 
   return {
     cartItem,
