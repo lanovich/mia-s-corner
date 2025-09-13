@@ -41,7 +41,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 w-full bg-white shadow-md p-4 flex items-center justify-between gap-4 z-50 text-nowrap",
+        "fixed bottom-0 left-0 w-full bg-white shadow-md p-4 flex items-center justify-between gap-2 z-40 text-nowrap",
         className
       )}
     >
