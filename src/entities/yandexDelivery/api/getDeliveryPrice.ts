@@ -1,7 +1,6 @@
 import { YandexDeliveryResponseType } from "@/entities/yandexDelivery/model";
 import axios from "axios";
 
-
 interface params {
   city: string;
   street: string;
@@ -16,7 +15,7 @@ export const getDeliveryPrice = async (
 ): Promise<YandexDeliveryResponseType | null> => {
   try {
     const { data }: { data: YandexDeliveryResponseType } = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout/get-delivery-price`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/checkout/get-delivery-price/door`,
       {
         route_points: [
           {

@@ -45,7 +45,7 @@ export const DeliveryMethods: React.FC<Props> = ({ className }) => {
         <RadioButton
           value="postalDelivery"
           checked={selectedDeliveryMethod === "postalDelivery"}
-          onChange={() => handleToggleDeliveryPrice("postalDelivery", 179)}
+          onChange={() => handleToggleDeliveryPrice("postalDelivery", 0)}
           label="Пункт выдачи Яндекс Маркет — от 1 до 7 дней"
           price="179 ₽"
         />
