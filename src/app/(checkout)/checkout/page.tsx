@@ -170,6 +170,8 @@ export default function CheckoutPage() {
                 isLoading ||
                 (selectedDeliveryMethod === "fastDelivery" &&
                   deliveryPrice === 0) ||
+                (selectedDeliveryMethod === "postalDelivery" &&
+                  deliveryPrice === 0) ||
                 fullPrice === 0
               }
             >

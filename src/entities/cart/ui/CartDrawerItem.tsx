@@ -5,6 +5,8 @@ import { Trash2 } from "lucide-react";
 import { useCartStore } from "@/entities/cart/model/useCartStore";
 import { CartItem } from "@/entities/cart/model";
 import { ChangeQuantityButton } from "./ChangeQuantityButton";
+import { LINKS } from "@/shared/model";
+import { CustomLink } from "@/shared/ui";
 
 interface Props {
   cartItem: CartItem;
@@ -23,15 +25,19 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
       {/* Верхний блок: Изображение + Информация + Удаление */}
       <div className="flex items-center gap-4">
         {/* Изображение товара */}
-        <div className="relative w-20 h-20 flex-shrink-0">
-          <Image
-            src={product.images?.[0]?.url || "/fallback-image.jpg"}
-            alt={product.title}
-            fill
-            sizes="160px"
-            className="object-cover rounded-md"
-          />
-        </div>
+        <CustomLink
+          href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
+        >
+          <div className="relative w-20 h-20 flex-shrink-0">
+            <Image
+              src={product.images?.[0]?.url || "/fallback-image.jpg"}
+              alt={product.title}
+              fill
+              sizes="160px"
+              className="object-cover rounded-md"
+            />
+          </div>
+        </CustomLink>
 
         {/* Информация о товаре */}
         <div className="flex-1">
