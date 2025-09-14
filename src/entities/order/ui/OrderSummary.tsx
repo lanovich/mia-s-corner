@@ -4,6 +4,8 @@ import { Skeleton } from "@/shared/shadcn-ui";
 import Image from "next/image";
 import React from "react";
 import { findSelectedSize } from "@/shared/lib";
+import { CustomLink } from "@/shared/ui";
+import { LINKS } from "@/shared/model";
 
 interface Props {
   className?: string;
@@ -33,14 +35,19 @@ export const OrderSummary: React.FC<Props> = ({ className }) => {
                 key={`${product.id}-${size_id}`}
                 className="border-gray-300"
               >
-                <CardContent className="flex items-center justify-between gap-4 py-3">
-                  <Image
-                    src={product.images[0].url}
-                    width={40}
-                    height={40}
-                    alt={product.title}
-                    className="rounded-lg object-cover min-w-10 h-10"
-                  />
+                <CardContent className="flex items-center justify-between gap-2 py-2">
+                  <CustomLink
+                    href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
+                  >
+                    <Image
+                      src={product.images[0].url}
+                      width={60}
+                      height={60}
+                      alt={product.title}
+                      className="rounded-sm object-cover"
+                    />
+                  </CustomLink>
+
                   <div className="flex-1">
                     <p className="font-medium">{product.title}</p>
                     <p className="text-xs text-gray-400">
@@ -52,7 +59,7 @@ export const OrderSummary: React.FC<Props> = ({ className }) => {
                       {price} ₽ × {quantity}
                     </p>
                   </div>
-                  <span className="font-medium whitespace-nowrap">
+                  <span className="font-medium whitespace-nowrap mr-2">
                     {price * quantity} ₽
                   </span>
                 </CardContent>
