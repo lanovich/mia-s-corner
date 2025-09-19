@@ -52,6 +52,7 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
 
   const handleGetDeliveryPrice = async () => {
     if (!selectedGeo?.geo_id) return;
+    // TODO: испраавить запрос
     const deliveryData = await getPostalDeliveryPrice({
       city: cityInput,
       street: street,
@@ -70,6 +71,7 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
         "Мы не смогли вас найти 😓, проверьте данные и повторите попытку",
         { position: "top-center" }
       );
+      // TODO: устанавливаем в 0
       setDeliveryPrice(100);
     }
   };
