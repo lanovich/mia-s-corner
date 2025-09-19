@@ -48,7 +48,8 @@ export const FormInput: React.FC<Props> = ({
     debouncedSetValue(value);
   };
 
-  const onClearClick = () => {
+  const onClearClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setValue(name, "");
   };
 
@@ -73,6 +74,15 @@ export const FormInput: React.FC<Props> = ({
                 ? "border-red-500 focus:ring-red-500"
                 : "border-gray-300"
             )}
+            onKeyDown={
+              props.onKeyDown
+                ? props.onKeyDown
+                : (e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                    }
+                  }
+            }
             disabled={disabled}
           />
         )}
