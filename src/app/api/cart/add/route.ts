@@ -18,12 +18,32 @@ export async function POST(req: Request) {
       .eq("token", token)
       .maybeSingle();
 
-    if (cartError || !cart) {
-      console.error("Cart not found:", cartError?.message);
-      return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+    if (cartError) {
+      console.error("Ошибка поиска корзины:", cartError.message);
+      return NextResponse.json({ error: "DB error" }, { status: 500 });
     }
 
-    const cartId = cart.id;
+    let cartId: number;
+
+    if (!cart) {
+      const { data: newCart, error: createError } = await supabase
+        .from("cart")
+        .insert({ token })
+        .select("id")
+        .single();
+
+      if (createError || !newCart) {
+        console.error("Ошибка при создании корзины:", createError?.message);
+        return NextResponse.json(
+          { error: "Cart create failed" },
+          { status: 500 }
+        );
+      }
+
+      cartId = newCart.id;
+    } else {
+      cartId = cart.id;
+    }
 
     const { data: cartItem, error: itemError } = await supabase
       .from("cartItem")

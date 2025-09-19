@@ -106,6 +106,22 @@ export const useCartStore = create<CartStore>()(
         }
       },
     }),
-    { name: "cart-storage" }
+    {
+      name: "cart-storage",
+      version: 2,
+      migrate: (persistedState: any, version) => {
+        if (version < 2) {
+          return {
+            cart: [],
+            productTotalAmount: 0,
+            fullPrice: 0,
+            itemsCount: 0,
+            isLoading: false,
+            error: null,
+          };
+        }
+        return persistedState as CartStore;
+      },
+    }
   )
 );
