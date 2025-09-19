@@ -87,12 +87,12 @@ export default function CheckoutPage() {
       }
 
       console.log("Платежная ссылка получена:", paymentUrl);
-      router.push(paymentUrl);
 
       await clearCart();
-      setDeliveryPrice(0);
 
       router.push(paymentUrl);
+
+      setDeliveryPrice(0);
     } catch (error) {
       console.error("Ошибка при создании заказа", error);
       toast.error("Не удалось создать заказ!", {

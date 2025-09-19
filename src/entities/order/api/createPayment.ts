@@ -75,20 +75,6 @@ export async function createPayment(details: PaymentParams) {
       });
     }
 
-    const calculatedAmount = receiptItems.reduce(
-      (sum, item) => sum + parseFloat(item.amount.value),
-      0
-    );
-
-    if (Math.abs(calculatedAmount - details.amount) > 0.01) {
-      console.error("Items breakdown:", receiptItems);
-      throw new Error(
-        `Amount validation failed. Calculated: ${calculatedAmount.toFixed(
-          2
-        )}, Received: ${details.amount.toFixed(2)}`
-      );
-    }
-
     const payload = {
       amount: {
         value: details.amount.toFixed(2),

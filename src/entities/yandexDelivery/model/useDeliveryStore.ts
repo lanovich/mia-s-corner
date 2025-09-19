@@ -22,7 +22,7 @@ interface DeliveryStore {
 
 export const useDeliveryStore = create<DeliveryStore>((set) => ({
   selectedDeliveryMethod: "selfPickup",
-  openSubmit: false,
+  openSubmit: true,
   deliveryPrice: 0,
 
   pickupPoints: [],
