@@ -10,7 +10,7 @@ export function initYMap(
 ) {
   if (!container || pickupPoints.length === 0) return;
 
-  const map = createMap(container, mapInstanceRef);
+  const map = createMap(container, mapInstanceRef,);
   map.geoObjects.removeAll();
 
   const clusterer = createClusterer();

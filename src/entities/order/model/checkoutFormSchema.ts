@@ -22,7 +22,7 @@ export const deliverySchema = z.object({
     .regex(/^(\+?\d{1,3})?\d{10}$/, "Некорректный номер"),
 
   // Адрес для Яндекс доставки курьером
-  city: z.string().min(1, "Введите город"),
+  city: z.string().min(1, "Введите населённый пункт"),
   street: z.string().min(1, "Введите улицу"),
   building: z.string().min(1, "Введите номер здания"),
   porch: z.string().min(1, "Введите подъезд"),
@@ -45,7 +45,7 @@ export const postalSchema = z.object({
     .regex(/^(\+?\d{1,3})?\d{10}$/, "Некорректный номер"),
 
   // Адрес для доставки в пункт выдачи
-  city: z.string().min(1, "Введите город"),
+  city: z.string().min(1, "Введите населённый пункт"),
   street: z.string().min(1, "Введите улицу"),
   building: z.string().min(1, "Введите номер здания"),
 

@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { Container } from "@/shared/ui";
 import {
   OrderSummary,
@@ -34,8 +33,12 @@ export default function CheckoutPage() {
     "transfer"
   );
   const { isLoading, fullPrice, clearCart } = useCartStore();
-  const { selectedDeliveryMethod } = useDeliveryStore();
-  const { deliveryPrice, setDeliveryPrice } = useDeliveryStore();
+  const {
+    deliveryPrice,
+    setDeliveryPrice,
+    openSubmit,
+    selectedDeliveryMethod,
+  } = useDeliveryStore();
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(schema),
@@ -103,7 +106,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <Container className="min-h-screen max-w-5xl bg-white text-black py-8 px-4 overflow-visible">
+    <Container className="min-h-screxen max-w-5xl bg-white text-black py-8 px-4 overflow-visible">
       <div className="mx-auto flex flex-col md:flex-row gap-10">
         <div className="md:w-3/5 space-y-6">
           <FormProvider {...form}>
@@ -160,24 +163,22 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+          <div>
             <Button
               loading={isLoading}
-              className="w-full bg-black text-white py-3 rounded-lg"
+              className="w-full bg-black text-white rounded-lg transition-all duration-150 hover:scale-105 active:scale-95"
               type="submit"
               form="orderForm"
-              disabled={
-                isLoading ||
-                (selectedDeliveryMethod === "fastDelivery" &&
-                  deliveryPrice === 0) ||
-                (selectedDeliveryMethod === "postalDelivery" &&
-                  deliveryPrice === 0) ||
-                fullPrice === 0
-              }
+              disabled={!openSubmit}
             >
               {submitting ? "Оформление..." : "Подтвердить заказ"}
             </Button>
-          </motion.div>
+            {selectedDeliveryMethod === "postalDelivery" && !openSubmit && (
+              <p className="text-xs text-red-600 mt-1 ml-2">
+                Выберите пункт выдачи, чтобы подтвердить заказ
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </Container>

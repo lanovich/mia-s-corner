@@ -3,7 +3,6 @@ import {
   DeliveryMethod,
   useDeliveryStore,
 } from "@/entities/yandexDelivery/model/useDeliveryStore";
-import React from "react";
 import { RadioButton } from "@/shared/ui";
 
 interface Props {
@@ -13,12 +12,12 @@ interface Props {
 export const DeliveryMethods: React.FC<Props> = ({ className }) => {
   const {
     selectedDeliveryMethod,
-    setselectedDeliveryMethod,
+    setSelectedDeliveryMethod,
     setDeliveryPrice,
   } = useDeliveryStore();
 
   const handleToggleDeliveryPrice = (method: DeliveryMethod, price: number) => {
-    setselectedDeliveryMethod(method);
+    setSelectedDeliveryMethod(method);
     setDeliveryPrice(price);
   };
 
@@ -45,7 +44,7 @@ export const DeliveryMethods: React.FC<Props> = ({ className }) => {
         <RadioButton
           value="postalDelivery"
           checked={selectedDeliveryMethod === "postalDelivery"}
-          onChange={() => handleToggleDeliveryPrice("postalDelivery", 0)}
+          onChange={() => handleToggleDeliveryPrice("postalDelivery", 179)}
           label="Пункт выдачи Яндекс Маркет — от 1 до 7 дней"
           price="179 ₽"
         />

@@ -13,7 +13,8 @@ interface Props {
 }
 
 export const DeliveryForm: React.FC<Props> = ({ className }) => {
-  const { setDeliveryPrice, deliveryPrice } = useDeliveryStore();
+  const { setDeliveryPrice, deliveryPrice, setOpenSubmit, openSubmit } =
+    useDeliveryStore();
   const { watch } = useFormContext();
 
   const city = watch("city");
@@ -24,17 +25,14 @@ export const DeliveryForm: React.FC<Props> = ({ className }) => {
   const sflat = watch("sflat");
 
   const isAllFieldsFilled = useMemo(() => {
-    return city && street && building && porch && sfloor && sflat;
+    return city && street && building;
   }, [city, street, building, porch, sfloor, sflat]);
 
   const handleGetDeliveryPrice = async () => {
     const deliveryData = await getDeliveryPrice({
-      city: city,
-      street: street,
-      building: building,
-      porch: porch,
-      sfloor: sfloor,
-      sflat: sflat,
+      city,
+      street,
+      building,
     });
 
     if (deliveryData) {
@@ -43,16 +41,20 @@ export const DeliveryForm: React.FC<Props> = ({ className }) => {
         position: "top-center",
       });
       setDeliveryPrice(deliveryPrice);
+
+      setOpenSubmit(true);
     } else {
       toast.error(
         "Мы не смогли вас найти 😓, проверьте данные и повторите попытку",
         { position: "top-center" }
       );
+      setOpenSubmit(false);
     }
   };
 
   const handleResetAddress = () => {
     setDeliveryPrice(0);
+    setOpenSubmit(false);
     toast.info("Адрес сброшен. Вы можете ввести новый адрес.", {
       position: "top-center",
     });
@@ -67,50 +69,26 @@ export const DeliveryForm: React.FC<Props> = ({ className }) => {
           placeholder="Город (СПб и ЛО)"
           name="city"
           defaultValue=""
-          disabled={!!deliveryPrice}
+          disabled={openSubmit}
         />
 
         {/* Улица */}
-        <FormInput
-          placeholder="Улица"
-          name="street"
-          disabled={!!deliveryPrice}
-        />
+        <FormInput placeholder="Улица" name="street" disabled={openSubmit} />
 
         {/* Номер здания */}
-        <FormInput
-          placeholder="Дом"
-          name="building"
-          disabled={!!deliveryPrice}
-        />
+        <FormInput placeholder="Дом" name="building" disabled={openSubmit} />
 
         {/* Подъезд, этаж, квартира */}
         <div className="grid grid-cols-3 gap-4">
-          <FormInput
-            placeholder="Подъезд"
-            name="porch"
-            type="number"
-            disabled={!!deliveryPrice}
-          />
-          <FormInput
-            placeholder="Этаж"
-            name="sfloor"
-            type="number"
-            disabled={!!deliveryPrice}
-          />
-          <FormInput
-            placeholder="Квартира"
-            name="sflat"
-            type="number"
-            disabled={!!deliveryPrice}
-          />
+          <FormInput placeholder="Подъезд" name="porch" type="number" />
+          <FormInput placeholder="Этаж" name="sfloor" type="number" />
+          <FormInput placeholder="Квартира" name="sflat" type="number" />
         </div>
 
         {/* Комментарий */}
         <FormTextarea
           placeholder="Комментарий для курьера (если у Вас частный дом, то укажите это здесь)"
           name="comment"
-          disabled={!!deliveryPrice}
         />
 
         {/* Кнопка */}

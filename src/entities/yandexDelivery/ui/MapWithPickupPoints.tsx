@@ -2,9 +2,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { initYMap } from "../lib";
 import { getPickupPoints } from "../api";
-import { PickupPoint } from "../model";
+import { PickupPoint, useDeliveryStore } from "../model";
 import { useFormContext } from "react-hook-form";
 import { LoadingIndicator } from "@/shared/ui";
+import { toast } from "sonner";
 
 interface Props {
   geoId?: number;
@@ -12,10 +13,19 @@ interface Props {
 
 export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
   const { setValue } = useFormContext();
+  const { watch } = useFormContext();
+  const city = watch("city");
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
-  const [pickupPoints, setPickupPoints] = useState<PickupPoint[]>([]);
-  const [selectedPoint, setSelectedPoint] = useState<PickupPoint | null>(null);
+  const {
+    setPickupPoints,
+    clearPickupPoints,
+    pickupPoints,
+    setOpenSubmit,
+    selectedPoint,
+    setSelectedPoint,
+  } = useDeliveryStore();
+
   const [loading, setLoading] = useState(false);
   const [empty, setEmpty] = useState(false);
 
@@ -24,12 +34,19 @@ export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
   const fetchedRef = useRef<Record<number, boolean>>({});
 
   useEffect(() => {
-    if (!geoId) return;
-    if (cacheRef.current[geoId]) {
-      setPickupPoints(cacheRef.current[geoId]);
-      setEmpty(cacheRef.current[geoId].length === 0);
+    if (!geoId) {
+      clearPickupPoints();
       return;
     }
+
+    if (cacheRef.current[geoId]) {
+      const cached = cacheRef.current[geoId];
+      setPickupPoints(cached);
+      setPickupPoints(cached);
+      setEmpty(cached.length === 0);
+      return;
+    }
+
     if (fetchedRef.current[geoId]) return;
 
     const fetchPoints = async () => {
@@ -40,7 +57,8 @@ export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
         const points = await getPickupPoints(geoId);
         cacheRef.current[geoId] = points;
         setPickupPoints(points);
-        if (!points || points.length === 0) setEmpty(true);
+        setPickupPoints(points);
+        setEmpty(!points || points.length === 0);
       } catch {
         setEmpty(true);
       } finally {
@@ -55,16 +73,20 @@ export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
     setSelectedPoint(point);
     setValue("street", point.address?.street || "");
     setValue("building", point.address?.house || "");
+
+    setOpenSubmit(true);
+    toast.success("Пункт выдачи выбран ✅", { position: "top-center" });
   };
 
   useEffect(() => {
     if (!mapRef.current || pickupPoints.length === 0) return;
+
     initYMap(
       mapRef.current,
       pickupPoints,
       handleSelect,
       mapInstance,
-      selectedPoint?.id,
+      selectedPoint?.id
     );
   }, [pickupPoints, selectedPoint]);
 
@@ -81,7 +103,7 @@ export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
       }}
       ref={mapRef}
     >
-      {(loading || empty) && (
+      {(loading || empty || !city) && (
         <div
           style={{
             position: "absolute",
@@ -93,14 +115,13 @@ export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            zIndex: 10,
             flexDirection: "column",
             textAlign: "center",
             padding: "16px",
           }}
         >
           {loading && <LoadingIndicator isLoading />}
-          {empty && !loading && (
+          {empty && !loading && city && (
             <p style={{ color: "#333", fontSize: "14px" }}>
               К сожалению, в этом городе нет пунктов выдачи Яндекс Маркет :(
             </p>
