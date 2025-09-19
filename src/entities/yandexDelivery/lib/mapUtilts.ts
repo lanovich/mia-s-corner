@@ -8,9 +8,10 @@ export function createMap(
     mapInstanceRef!.current = new ymaps.Map(container, {
       center: [0, 0],
       zoom: 11,
-      controls: [],
+      controls: ["zoomControl", "fullscreenControl"],
     });
   }
+
   return mapInstanceRef!.current;
 }
 
@@ -32,7 +33,7 @@ export function createClusterer() {
 export function createPlacemark(
   point: PickupPoint,
   onSelect?: (point: PickupPoint) => void,
-  isSelected = false,
+  isSelected = false
 ) {
   const size = isSelected ? [48, 48] : [32, 32];
   const offset = isSelected ? [-24, -48] : [-16, -32];
@@ -53,7 +54,7 @@ export function createPlacemark(
     [point.latitude, point.longitude],
     {
       balloonContentHeader:
-        `${point.address?.locality}, ${point.address?.street} ${point.address?.house}` ||
+        `${point.address?.region}, ${point.address?.street} ${point.address?.house}` ||
         point.name,
       balloonContentBody: `<button id="select-${point.id}" style="${btnStyles}">${btnText}</button>`,
     },

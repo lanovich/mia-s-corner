@@ -5,9 +5,6 @@ interface params {
   city: string;
   street: string;
   building: string;
-  porch: string;
-  sfloor: string;
-  sflat: string;
 }
 
 export const getDeliveryPrice = async (
@@ -24,9 +21,6 @@ export const getDeliveryPrice = async (
             city: "Кудрово",
             street: "Пражская",
             building: "12",
-            porch: "1",
-            sflat: "6",
-            sfloor: "64",
           },
           {
             country: "Россия",
@@ -34,9 +28,6 @@ export const getDeliveryPrice = async (
             city: details.city,
             street: details.street,
             building: details.building,
-            porch: details.porch,
-            sflat: details.sflat,
-            sfloor: details.sfloor,
           },
         ],
         items: [

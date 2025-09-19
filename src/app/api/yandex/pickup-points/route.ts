@@ -44,7 +44,6 @@ export async function GET(req: NextRequest) {
     }
 
     const pickupPoints = data.points.map((station: any) => ({
-      ...station,
       id: station.id,
       name: station.name,
       latitude: station.position.latitude,

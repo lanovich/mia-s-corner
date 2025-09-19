@@ -18,6 +18,13 @@ import { useClickOutside } from "@/features/product-search/lib";
 import { useDeliveryStore } from "@/entities/yandexDelivery/model";
 import { Button } from "@/shared/shadcn-ui";
 import { toast } from "sonner";
+import {
+  findPickupMatch,
+  hasAddressMatch,
+  normalizeAddress,
+  normalizeHouse,
+  validateSelectedPoint,
+} from "@/entities/yandexDelivery/lib";
 
 interface GeoPoint {
   geo_id: number;
@@ -30,12 +37,6 @@ interface Props {
 
 export const PostalDelivery: React.FC<Props> = ({ className }) => {
   const { watch, setValue } = useFormContext();
-  const { setDeliveryPrice, deliveryPrice } = useDeliveryStore();
-
-  const cityInput = watch("city");
-  const street = watch("street");
-  const building = watch("building");
-
   const [options, setOptions] = useState<GeoPoint[]>([]);
   const [selectedGeo, setSelectedGeo] = useState<GeoPoint | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -43,45 +44,41 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { setOpenSubmit, pickupPoints, selectedPoint, setSelectedPoint } =
+    useDeliveryStore();
+
+  const cityInput = watch("city");
+  const street = watch("street");
+  const building = watch("building");
+
+  useEffect(() => {
+    if (!cityInput || !street || !building) {
+      setOpenSubmit(false);
+      return;
+    }
+
+    if (selectedPoint) {
+      if (validateSelectedPoint(selectedPoint, cityInput, street, building)) {
+        setOpenSubmit(true);
+        return;
+      } else {
+        setSelectedPoint(null);
+        setOpenSubmit(false);
+        return;
+      }
+    }
+
+    const match = findPickupMatch(pickupPoints, cityInput, street, building);
+
+    if (match) {
+      setSelectedPoint(match);
+      setOpenSubmit(true);
+    } else {
+      setOpenSubmit(false);
+    }
+  }, [cityInput, street, building, pickupPoints, selectedPoint]);
 
   useClickOutside(dropdownRef, () => setOpen(false));
-
-  const isAllFieldsFilled = useMemo(() => {
-    return cityInput && street && building;
-  }, [cityInput, street, building]);
-
-  const handleGetDeliveryPrice = async () => {
-    if (!selectedGeo?.geo_id) return;
-    // TODO: испраавить запрос
-    const deliveryData = await getPostalDeliveryPrice({
-      city: cityInput,
-      street: street,
-      building: building,
-      destinationId: selectedGeo?.geo_id,
-    });
-
-    if (deliveryData) {
-      const deliveryPrice = Number(deliveryData.pricing_total);
-      toast.success(`Стоимость доставки до вас: ${deliveryPrice} ₽`, {
-        position: "top-center",
-      });
-      setDeliveryPrice(deliveryPrice);
-    } else {
-      toast.error(
-        "Мы не смогли вас найти 😓, проверьте данные и повторите попытку",
-        { position: "top-center" }
-      );
-      // TODO: устанавливаем в 0
-      setDeliveryPrice(100);
-    }
-  };
-
-  const handleResetAddress = () => {
-    setDeliveryPrice(0);
-    toast.info("Адрес сброшен. Вы можете ввести новый адрес.", {
-      position: "top-center",
-    });
-  };
 
   useEffect(() => {
     if (!cityInput) {
@@ -137,18 +134,23 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
     setValue("city", geo.address);
     setOptions([]);
     setOpen(false);
-    if (!selectedGeo?.geo_id) return;
+    if (!geo.geo_id) return;
   };
 
   return (
     <div className={cn("mb-4", className)}>
       <h2 className="text-lg font-semibold pb-3">Адрес пункта выдачи</h2>
-      <div className="space-y-2 relative" ref={dropdownRef}>
+      <div className="space-y-2 relative">
         <FormInput
-          placeholder="Город"
+          placeholder="Наслённый пункт"
           name="city"
-          autoComplete="off"
-          disabled={!!deliveryPrice}
+          autoComplete="none"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && options.length > 0) {
+              e.preventDefault();
+              handleSelect(options[0]);
+            }
+          }}
         />
 
         <p className="text-xs text-gray-700 mt-1 ml-2">
@@ -158,7 +160,7 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
         {error && <p className="text-xs text-red-600 mt-1 ml-2">{error}</p>}
 
         {open && (
-          <Command className="absolute z-10 mt-1 max-h-30 w-full border rounded-md bg-white shadow-md">
+          <Command className="absolute z-10 mt-1 max-h-30 h-fit w-full rounded-lg bg-black text-white shadow-md">
             <CommandList>
               {loading && (
                 <div className="flex items-center justify-center py-16">
@@ -167,9 +169,9 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
               )}
 
               {!loading && options.length > 0 && (
-                <CommandGroup>
+                <CommandGroup className="bg-black">
                   {options.map((geo) => (
-                    <CommandItem
+                    <CommandItem className="bg-black text-white rounded-sm"
                       key={geo.geo_id + geo.address}
                       value={geo.address}
                       onSelect={() => handleSelect(geo)}
@@ -183,37 +185,11 @@ export const PostalDelivery: React.FC<Props> = ({ className }) => {
           </Command>
         )}
 
-        {selectedGeo && <MapWithPickupPoints geoId={selectedGeo.geo_id} />}
+        {selectedGeo && <MapWithPickupPoints geoId={selectedGeo?.geo_id} />}
 
-        <FormInput
-          placeholder="Улица"
-          name="street"
-          disabled={!!deliveryPrice}
-        />
+        <FormInput placeholder="Улица" name="street" />
 
-        <FormInput
-          placeholder="Дом"
-          name="building"
-          disabled={!!deliveryPrice}
-        />
-        {deliveryPrice ? (
-          <Button
-            className="rounded-lg"
-            type="button"
-            onClick={handleResetAddress}
-          >
-            Изменить адрес
-          </Button>
-        ) : (
-          <Button
-            className="rounded-lg"
-            type="button"
-            onClick={handleGetDeliveryPrice}
-            disabled={!isAllFieldsFilled}
-          >
-            Рассчитать стоимость доставки
-          </Button>
-        )}
+        <FormInput placeholder="Дом" name="building" />
       </div>
     </div>
   );
