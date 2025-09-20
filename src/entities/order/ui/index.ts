@@ -10,3 +10,4 @@ export { TotalAmountLoader } from "./TotalAmountLoader";
 export { DeliveryMethods } from "./DeliveryMethods";
 export { SelfPickup } from "./SelfPickup";
 export { PostalDelivery } from "./PostalDelivery";
+export { PhoneInput } from "./PhoneInput";

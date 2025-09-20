@@ -4,7 +4,7 @@ import { OrderItemCard } from "./OrderItemCard";
 import { OrderItem } from "@/entities/order/model";
 
 export interface EmailTemplateProps {
-  orderId: number;
+  orderId: string;
   deliveryPrice: number;
   fullPrice: number;
   paymentUrl: string;
@@ -22,7 +22,7 @@ export const OrderReceiptEmail: React.FC<EmailTemplateProps> = ({
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Ваш заказ #{orderId}</h1>
+      <h1 style={styles.title}>Ваш заказ #{String(orderId).slice(0,6)}</h1>
       <p style={styles.description}>
         Спасибо, что выбрали нас! 🕯️ Мы очень рады вашему заказу. Для оплаты
         перейдите{" "}

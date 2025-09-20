@@ -5,8 +5,8 @@ import {
   СhapterContainer,
   HeroSection,
 } from "@/shared/ui";
-import { AboutSection } from "@/widgets/about-page/motion";
 import { Shop } from "@/widgets/main-products/ui";
+import { AboutSection } from "@/widgets/about-page/motion";
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
           textXPosition={"center"}
           textYPosition={"center"}
           description="Звёздный маскарад, вишнёвые воспоминания и миг, когда весь мир замер — лишь чтобы их сердца снова встретились"
-          buttonText="Перейти к истории"
+          buttonText="Перейти к историям"
           buttonPosition="center"
           smallImage="https://www.mias-corner.ru/history_1.jpg"
           buttonUrl={`${LINKS.CATALOG}/${LINKS.HISTORIES}/1`}

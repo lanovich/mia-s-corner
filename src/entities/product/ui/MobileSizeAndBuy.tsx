@@ -41,7 +41,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 w-full bg-white shadow-md p-4 flex items-center justify-between gap-2 z-40 text-nowrap",
+        "fixed bottom-0 left-0 w-full bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.2)] p-4 flex items-center justify-between gap-2 z-40 text-nowrap",
         className
       )}
     >
@@ -73,7 +73,9 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline" className="border border-black">
-            {selectedSize ? `${selectedSize.size.size} мл` : "Выбрать размер"}
+            {selectedSize
+              ? `${selectedSize.size.size} ${measure}`
+              : "Выбрать размер"}
           </Button>
         </DialogTrigger>
         <DialogContent className="p-4">

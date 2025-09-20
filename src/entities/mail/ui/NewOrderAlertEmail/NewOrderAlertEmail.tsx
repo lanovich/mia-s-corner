@@ -40,7 +40,7 @@ export const NewOrderAlertEmail: React.FC<NewOrderAlertEmailProps> = ({
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Новый заказ #{orderId}</h1>
+      <h1 style={styles.title}>Новый заказ #{String(orderId).slice(0,6)}</h1>
       <p style={styles.description}>
         Поступил новый заказ, который требует обработки. Ниже приведены детали
         заказа:

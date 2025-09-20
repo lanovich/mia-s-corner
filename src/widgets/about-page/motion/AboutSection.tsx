@@ -6,7 +6,7 @@ import { MotionImage } from "./";
 import { LINKS } from "@/shared/model";
 import { GoToButton } from "@/shared/ui";
 
-export const AboutSection = () => {
+const AboutSection = () => {
   const [scope, animate] = useAnimate();
   const textRef = useRef(null);
   const imageContainerRef = useRef(null);
@@ -26,6 +26,8 @@ export const AboutSection = () => {
       );
     }
   }, [isTextInView, animate]);
+
+  console.log("AboutSection loaded");
 
   return (
     <section ref={scope} className="w-full mb-16">
@@ -95,3 +97,5 @@ export const AboutSection = () => {
     </section>
   );
 };
+
+export default AboutSection;

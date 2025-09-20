@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
-  const { setValue } = useFormContext();
+  const { setValue, clearErrors } = useFormContext();
   const { watch } = useFormContext();
   const city = watch("city");
   const mapRef = useRef<HTMLDivElement>(null);
@@ -71,8 +71,10 @@ export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
 
   const handleSelect = (point: PickupPoint) => {
     setSelectedPoint(point);
-    setValue("street", point.address?.street || "");
-    setValue("building", point.address?.house || "");
+    setValue("street", point.address?.street || "", { shouldValidate: true });
+    clearErrors("street");
+    setValue("building", point.address?.house || "", { shouldValidate: true });
+    clearErrors("building");
 
     setOpenSubmit(true);
     toast.success("Пункт выдачи выбран ✅", { position: "top-center" });
