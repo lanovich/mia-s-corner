@@ -22,7 +22,6 @@ export function ShopCarousel({ categoriesWithProducts }: Props) {
   });
   const [current, setCurrent] = useState(0);
 
-  // Обновление текущего индекса при свайпе
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setCurrent(emblaApi.selectedScrollSnap());
@@ -39,7 +38,6 @@ export function ShopCarousel({ categoriesWithProducts }: Props) {
     };
   }, [emblaApi, onSelect]);
 
-  // Клик из ProductCategories
   const handleCategoryClick = (index: number) => {
     emblaApi?.scrollTo(index);
   };
@@ -53,13 +51,10 @@ export function ShopCarousel({ categoriesWithProducts }: Props) {
       />
 
       <div className="max-w-[1380px] m-auto w-full">
-        {/* Embla viewport */}
         <div className="overflow-hidden" ref={emblaRef}>
-          {/* Embla container */}
           <div className="flex">
             {categoriesWithProducts.map(
               ({ id, name, slug, products }: CategoryWithProducts, index) => (
-                // Каждый слайд занимает 100% ширины viewport
                 <div key={id} className="flex-[0_0_100%]">
                   <ProductGroupList products={products} />
                   <GoToButton

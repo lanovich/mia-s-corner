@@ -1,5 +1,6 @@
 "use client";
 import { FormInput } from "@/shared/ui";
+import { PhoneInput } from "./PhoneInput";
 
 interface Props {
   className?: string;
@@ -12,7 +13,7 @@ export const ContactInfo: React.FC<Props> = ({ className }) => (
     </h2>
     <div className="mt-3 space-y-2">
       <FormInput placeholder="Ваше имя" name="name" />
-      <FormInput placeholder="Телефон" type="tel" name="phone" />
+      <PhoneInput placeholder="+7 (999) 999-99-99" type="tel" name="phone" autoComplete="tel"/>
       <FormInput placeholder="E-mail" type="email" name="email" />
     </div>
   </div>

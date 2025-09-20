@@ -32,12 +32,12 @@ export const MobileCartButton: React.FC<Props> = ({ className }) => {
         exit={{ opacity: 0, scale: 0 }}
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
         className={cn(
-          "fixed right-3 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-black text-white shadow-lg cursor-pointer md:hidden",
+          "fixed right-3 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-gray-900 text-white shadow-lg shadow-black/50 cursor-pointer md:hidden",
           isProductPage ? "bottom-28" : "bottom-16",
           className
         )}
       >
-        <div className="relative">
+        <div className="relative shadow-md">
           <LoadingIndicator isLoading={isBusy} size={22} />
           {!isBusy && <ShoppingBag size={22} />}
           <motion.div

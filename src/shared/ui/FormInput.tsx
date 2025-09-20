@@ -54,7 +54,7 @@ export const FormInput: React.FC<Props> = ({
   };
 
   return (
-    <div className={cn("flex flex-col gap-2", className)}>
+    <div className={cn("flex flex-col gap-1", className)}>
       {label && <label className="text-xs mb-1">{label}</label>}
       <div className="relative">
         {CustomInput ? (

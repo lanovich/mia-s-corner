@@ -50,22 +50,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <div
       className={cn(
-        "relative flex h-[80vh] flex-col overflow-hidden px-8 md:px-16 lg:px-24 bg-slate-100",
+        "relative flex min-h-[80vh] flex-col overflow-hidden px-8 md:px-16 lg:px-24 bg-slate-100",
         textXPositionClasses[textXPosition],
         textYPositionClasses[textYPosition],
         className
       )}
-      style={{
-        backgroundImage: backgroundImage
-          ? `url(${backgroundImage})`
-          : undefined,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
     >
+      {backgroundImage && (
+        <Image
+          src={backgroundImage}
+          alt="Background"
+          fill
+          priority
+          className="object-cover -z-10"
+        />
+      )}
       {/* Текст */}
       <div className="relative z-10 max-w-2xl text-center">
-        <h2 className="text-2xl sm:text-2xl md:text-2xl lg:text-3xl font-bold leading-tight text-gray-800">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-800">
           {title}
         </h2>
         {smallImage && (
@@ -75,6 +77,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               alt="Small Image"
               fill
               sizes="200px"
+              loading="lazy"
               className="rounded-xl shadow-xl transition-transform duration-300 hover:scale-105 object-cover"
             />
           </div>

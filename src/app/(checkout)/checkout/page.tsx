@@ -178,6 +178,11 @@ export default function CheckoutPage() {
                 Выберите пункт выдачи, чтобы подтвердить заказ
               </p>
             )}
+            {selectedDeliveryMethod === "fastDelivery" && !openSubmit && (
+              <p className="text-xs text-red-600 mt-1 ml-2">
+                Нажмите кнопку "Рассчитать стоимость доставки"
+              </p>
+            )}
           </div>
         </div>
       </div>
