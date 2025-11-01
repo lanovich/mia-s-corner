@@ -1,0 +1,16 @@
+.git
+.next/
+.vscode
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+Dockerfile
+docker-compose.yml
+README.md
+.DS_Store
