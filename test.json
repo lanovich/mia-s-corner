@@ -1,0 +1,81 @@
+{
+  "title": "Каждое слово будто оживляло забытые мечты",
+  "slug": "kazhdoe-slovo-budto-ozhivlyalo-zabytye-mechty",
+  "description": "Свеча с ароматом сахара, ягод и ванили...",
+  "category": "Аромадиффузор",
+  "episode": {
+    "id": 1,
+    "number": 5.1,
+    "title": "Каждое слово будто оживляло забытые мечты",
+    "description": "...",
+    "imageUrl": "5.1.webp"
+  },
+  "scent": {
+    "id": 1,
+    "name": "Розовые кристаллы сахара",
+    "scentPyramid": {
+      "top": ["малина", "клубника", "черная смородина"],
+      "heart": ["фрезия", "сахар"],
+      "base": ["легкий мускус", "ваниль", "бобы тонка"]
+    },
+    "description": "очень вкусный аромат"
+  },
+  "sizes": [
+    {
+      "id": 101,
+      "volume": { "amount": 45, "unit": "мл" },
+      "stock": 10,
+      "images": ["5.1.webp", "5.2.webp"],
+      "props": {
+        "timeOfExploitation": 10,
+        "dimensions": { "x": 50, "y": 55, "z": 45 },
+        "weight": 120
+      }
+    },
+    {
+      "id": 102,
+      "volume": { "amount": 100, "unit": "мл" },
+      "stock": 5,
+      "images": ["5.1.webp", "5.2.webp"],
+      "props": {
+        "timeOfExploitation": 30,
+        "dimensions": { "x": 110, "y": 155, "z": 145 },
+        "weight": 120
+      }
+    }
+  ]
+}
+
+{
+  "title": "Магия зимней ночи — limited edition",
+  "slug": "magia-zimnej-nochi-limited",
+  "description": "Особая свеча с ароматом кедра и апельсина. Создает уют и праздничное настроение.",
+  "category": "Аромадиффузор",
+  "storyText": "Лимитированный текст",
+  "isLimited": true,
+  "episode": null,
+  "scent": {
+    "id": 99,
+    "name": "Зимняя сказка",
+    "scentPyramid": {
+      "top": ["апельсин", "корица"],
+      "heart": ["кедр", "ваниль"],
+      "base": ["амбра", "сандал"]
+    },
+    "description": "теплый и пряный зимний аромат"
+  },
+  "sizes": [
+    {
+      "id": 201,
+      "volume": { "amount": 100, "unit": "мл" },
+      "stock": 20,
+      "images": ["limited_100.webp"],
+      "props": {
+        "timeOfExploitation": 25,
+        "dimensions": { "x": 100, "y": 100, "z": 120 },
+        "weight": 150
+      }
+    }
+  ]
+}
+

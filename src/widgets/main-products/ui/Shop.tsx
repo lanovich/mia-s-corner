@@ -1,8 +1,7 @@
 import { ShopCarousel } from "./ShopCarousel";
-import { getCategoriesWithProducts } from "@/shared/api/queries";
 
 export async function Shop() {
-  const categoriesWithProducts = await getCategoriesWithProducts();
+  const categoriesWithProducts = [];
 
   return <ShopCarousel categoriesWithProducts={categoriesWithProducts} />;
 }

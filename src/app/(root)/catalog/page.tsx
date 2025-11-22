@@ -2,8 +2,6 @@ import { Breadcrumbs, Container } from "@/shared/ui";
 import { CatalogCard } from "@/shared/ui";
 import { Metadata } from "next";
 import { metadata as rootMetadata } from "@/app/(root)/layout";
-import { categoriesApi } from "@/entities/category/api";
-import { historiesApi } from "@/entities/history/api";
 import { LINKS } from "@/shared/model";
 import { getCategories, getHistories } from "@/shared/api/queries";
 
@@ -48,6 +46,8 @@ export const metadata: Metadata = {
 export default async function CatalogPage() {
   const categories = await getCategories();
   const histories = await getHistories();
+
+  console.log(categories);
 
   return (
     <>
