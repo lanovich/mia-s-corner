@@ -72,7 +72,7 @@ export const Footer = () => {
           <div className="py-4 border-t border-gray-800">
             <ul className="flex flex-wrap justify-center gap-4 text-xs text-gray-400">
               <li className="flex items-center">
-                <span className="font-medium mr-1">ИП:</span>
+                <span className="font-medium mr-1">СЗ:</span>
                 <span>Добромыслова Мария Алексеевна</span>
               </li>
               <li className="flex justify-between">
