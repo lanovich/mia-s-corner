@@ -75,13 +75,9 @@ export const Footer = () => {
                 <span className="font-medium mr-1">ИП:</span>
                 <span>Добромыслова Мария Алексеевна</span>
               </li>
-              <li className="flex items-center">
-                <span className="font-medium mr-1">ИНН:</span>
-                <span>352841176253</span>
-              </li>
-              <li className="flex items-center">
-                <span className="font-medium mr-1">ОГРНИП:</span>
-                <span>324350000060030</span>
+              <li className="flex justify-between">
+                <span className="font-medium mr-1">ИНН: </span>
+                <span>35284116253</span>
               </li>
             </ul>
           </div>
