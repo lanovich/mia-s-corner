@@ -1,37 +1,52 @@
 import Cookies from "js-cookie";
 import { cartApi } from "../api";
-import { CartItem } from "@/entities/cart/model";
+import { CartItem } from "./types";
 
 export const cartService = {
   async getUserToken() {
-    const cookieToken = Cookies.get("user_token");
+    let token = Cookies.get("user_token");
 
-    if (cookieToken) {
-      return cookieToken;
+    if (!token) {
+      const tokenData = await cartApi.fetchUserToken();
+
+      if (!tokenData || !tokenData.token) {
+        throw new Error("Failed to fetch user token");
+      }
+
+      token = tokenData.token;
+
+      Cookies.set("user_token", token, { expires: 30 });
     }
 
-    const tokenData = await cartApi.fetchUserToken();
-    return tokenData.token;
+    return token;
+  },
+  async getProductById(productSizeId: number) {
+    const token = await this.getUserToken();
+    return cartApi.getItemByProductSizeId(productSizeId, token);
   },
 
-  async getProductById(productId: number) {
+  async addToCart(
+    productSizeId: number,
+    delta: number
+  ): Promise<CartItem | undefined> {
     const token = await this.getUserToken();
-    return cartApi.getProductById(productId, token);
+    const response = await cartApi.addToCart(productSizeId, delta, token);
+
+    if (!response || !response.newItem) {
+      return undefined;
+    }
+
+    return response.newItem;
   },
 
-  async addToCart(productId: number, sizeId: number, delta: number) {
+  async decreaseQuantity(productSizeId: number, delta: number) {
     const token = await this.getUserToken();
-    return cartApi.addToCart(productId, sizeId, delta, token);
+    return cartApi.decreaseQuantity(productSizeId, delta, token);
   },
 
-  async decreaseQuantity(productId: number, sizeId: number, delta: number) {
+  async removeFromCart(productSizeId: number) {
     const token = await this.getUserToken();
-    return cartApi.decreaseQuantity(productId, sizeId, delta, token);
-  },
-
-  async removeFromCart(productId: number, sizeId: number) {
-    const token = await this.getUserToken();
-    return cartApi.removeFromCart(productId, sizeId, token);
+    return cartApi.removeFromCart(productSizeId, token);
   },
 
   async clearCart() {

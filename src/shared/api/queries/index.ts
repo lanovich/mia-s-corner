@@ -1,3 +1,4 @@
-export * from "./categories";
-export * from "./histories";
-export * from "./products";
+export * from "./categoryWithShortProducts";
+export * from "./productsByFilter";
+export * from "./baseProductWithDetails";
+export * from "./categoryWithFullProducts";

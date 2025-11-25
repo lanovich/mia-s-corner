@@ -1,9 +1,22 @@
 import { NextResponse } from "next/server";
-import { getCategoriesWithProducts } from "@/shared/api/queries";
+import { prisma } from "@/shared/api/prisma";
 
 export async function GET() {
   try {
-    const categories = await getCategoriesWithProducts();
+    const categories = await prisma.category.findMany({
+      include: {
+        products: {
+          include: {
+            sizes: {
+              include: {
+                size: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { id: "asc" },
+    });
 
     return NextResponse.json(categories, {
       headers: {
@@ -11,6 +24,7 @@ export async function GET() {
       },
     });
   } catch (error: any) {
+    console.error("Ошибка при загрузке категорий с продуктами:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

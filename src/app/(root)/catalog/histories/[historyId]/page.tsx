@@ -13,7 +13,6 @@ export async function generateMetadata(props: {
   const historyId = params.historyId;
   const histories = await historiesApi.fetchHistories();
   const currentHistory = histories.find((h) => h.id === Number(historyId));
-  const products = await productsApi.fetchProductsByHistory(historyId);
 
   if (!currentHistory) {
     return {
@@ -25,10 +24,7 @@ export async function generateMetadata(props: {
 
   return {
     title: `${currentHistory.title} | Mia's Corner | История ароматов`,
-    description: `Купить свечи в СПб с историями, наша ароматическая продукция разделена на истории со своими эпизодами. Найдите свою уникальную историю. ${currentHistory.description.slice(
-      0,
-      160
-    )}... в этой истории сейчас ${products.length} продуктов.`,
+    description: `Купить свечи в СПб с историями, наша ароматическая продукция разделена на истории со своими эпизодами. Найдите свою уникальную историю.`,
     keywords: [
       `${currentHistory.title.toLowerCase()} купить`,
       `ароматическая история ${currentHistory.order}`,
@@ -45,8 +41,6 @@ export default async function HistoriesPage(props: { params: HistoryParams }) {
   const currentHistory = histories.find(
     (history) => history.id === Number(historyId)
   );
-
-  console.log(histories);
 
   return (
     <>

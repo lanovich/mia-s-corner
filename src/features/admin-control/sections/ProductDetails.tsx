@@ -1,8 +1,9 @@
 "use client";
 
 import { Save, Book, Plus } from "lucide-react";
-import React, { useState, useEffect } from "react";
-import { InputField, PlaceholderForm, Section } from "../ui";
+import React, { useState, useEffect, useMemo } from "react";
+import { InputField, Section } from "../ui";
+import { Button, Checkbox, Label } from "@/shared/shadcn-ui";
 import {
   Select,
   SelectContent,
@@ -10,395 +11,241 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/shadcn-ui/select";
+import { Product, ProductSize, Size } from "@/entities/product/model";
+import { PriceInputs, DimensionInputs, ParamsInputs } from ".";
 import { toast } from "sonner";
-import { CategoryProduct } from "@/entities/category/model";
-import { SizeDetails } from "@/entities/product/model";
-import { Button, Checkbox, Label } from "@/shared/shadcn-ui";
-import { useConfirm } from "../lib";
-import { DimensionInputs, ParamsInputs, PriceInputs } from ".";
-import { adminApi } from "../api";
-import { apiFetch } from "@/shared/api";
 
 interface ProductDetailsProps {
   className?: string;
-  productDataInSelectedCategory?: CategoryProduct | null;
+  selectedProductData?: Product | null;
   onProductUpdated?: () => Promise<void>;
 }
 
 export const ProductDetails: React.FC<ProductDetailsProps> = ({
   className,
-  productDataInSelectedCategory,
+  selectedProductData,
   onProductUpdated,
 }) => {
-  const [selectedSizeId, setSelectedSizeId] = useState<number>(0);
-  const [currentSizeDetails, setCurrentSizeDetails] =
-    useState<SizeDetails | null>(null);
-  const [originalSizeDetails, setOriginalSizeDetails] =
-    useState<SizeDetails | null>(null);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [changedFields, setChangedFields] = useState<Record<string, boolean>>(
-    {}
-  );
-  const [availableSizes, setAvailableSizes] = useState<any[]>([]);
-  const [selectedNewSize, setSelectedNewSize] = useState<string>("");
-  const [isAddingSize, setIsAddingSize] = useState(false);
-  const { confirm, confirmState } = useConfirm();
-  const [originalDescription, setOriginalDescription] = useState("");
-  const [description, setDescription] = useState("");
-
-  useEffect(() => {
-    const fetchSizes = async () => {
-      const sizes = await adminApi.fetchSizes();
-      setAvailableSizes(sizes);
-    };
-    fetchSizes();
-  }, []);
-
-  useEffect(() => {
-    if (!productDataInSelectedCategory) return;
-
-    const size = productDataInSelectedCategory.product.sizes.find(
-      (s) => s.id === selectedSizeId
-    );
-
-    setCurrentSizeDetails(size || null);
-    setOriginalSizeDetails(size || null);
-    setHasChanges(false);
-    setChangedFields({});
-  }, [selectedSizeId, productDataInSelectedCategory]);
-
-  useEffect(() => {
-    if (!currentSizeDetails || !originalSizeDetails) return;
-
-    const changes: Record<string, boolean> = {};
-    let anyChange = false;
-
-    (Object.keys(currentSizeDetails) as Array<keyof SizeDetails>).forEach(
-      (key) => {
-        if (
-          JSON.stringify(currentSizeDetails[key]) !==
-          JSON.stringify(originalSizeDetails[key])
-        ) {
-          changes[key] = true;
-          anyChange = true;
-        }
-      }
-    );
-
-    // Проверка изменения описания
-    if (description !== originalDescription) {
-      anyChange = true;
-    }
-
-    setChangedFields(changes);
-    setHasChanges(anyChange);
-  }, [
-    currentSizeDetails,
-    originalSizeDetails,
-    description,
-    originalDescription,
-  ]);
-
-  useEffect(() => {
-    if (productDataInSelectedCategory) {
-      const desc =
-        productDataInSelectedCategory.product.product_description || "";
-      setOriginalDescription(desc);
-      setDescription(desc);
-    }
-  }, [productDataInSelectedCategory]);
-
-  const filteredSizes = availableSizes.filter((size: any) => {
-    const isSameCategory =
-      size.category_name ===
-      productDataInSelectedCategory?.product.category.name;
-    const isNotAdded = !productDataInSelectedCategory?.product.sizes.some(
-      (s) => s.id === size.id
-    );
-    return isSameCategory && isNotAdded;
+  const [productState, setProductState] = useState({
+    title: "",
+    description: "",
+    storyText: "",
+    isLimited: false,
   });
 
-  const handleAddSize = async () => {
-    if (!productDataInSelectedCategory || !selectedNewSize) return;
+  const [selectedSizeId, setSelectedSizeId] = useState<number | null>(null);
+  const [sizeState, setSizeState] = useState<Record<number, ProductSize>>({});
 
-    setIsAddingSize(true);
-    const toastId = toast.loading("Добавление размера...");
+  useEffect(() => {
+    if (!selectedProductData) return;
 
-    try {
-      await adminApi.addProductSize({
-        productId: productDataInSelectedCategory.product.id,
-        sizeId: Number(selectedNewSize),
-      });
+    setProductState({
+      title: selectedProductData.title || "",
+      description: selectedProductData.description || "",
+      storyText: selectedProductData.storyText || "",
+      isLimited: selectedProductData.isLimited,
+    });
 
-      toast.success("Размер успешно добавлен", { id: toastId });
+    const sizesMap: Record<number, ProductSize> = {};
+    selectedProductData.sizes.forEach((s) => {
+      sizesMap[s.id] = { ...s };
+    });
+    setSizeState(sizesMap);
 
-      if (onProductUpdated) {
-        await onProductUpdated();
-      }
+    setSelectedSizeId(selectedProductData.sizes[0]?.id || null);
+  }, [selectedProductData]);
 
-      setSelectedNewSize("");
-    } catch (error) {
-      toast.error("Ошибка при добавлении размера", { id: toastId });
-      console.error("Ошибка при добавлении размера:", error);
-    } finally {
-      setIsAddingSize(false);
-    }
+  if (!selectedProductData) {
+    return <div className={className}>Выберите продукт для редактирования</div>;
+  }
+
+  const selectedSize = selectedSizeId ? sizeState[selectedSizeId] : null;
+
+  const handleProductChange = (
+    field: keyof typeof productState,
+    value: any
+  ) => {
+    setProductState((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleInputChange = (field: keyof SizeDetails, value: any) => {
-    if (!currentSizeDetails) return;
-    setCurrentSizeDetails({ ...currentSizeDetails, [field]: value });
+  const handleSizeChange = (sizeId: number) => {
+    setSelectedSizeId(sizeId);
   };
+
+  const handleSizeFieldChange = (field: keyof ProductSize, value: any) => {
+    if (!selectedSizeId) return;
+    setSizeState((prev) => ({
+      ...prev,
+      [selectedSizeId]: {
+        ...prev[selectedSizeId],
+        [field]: value,
+      },
+    }));
+  };
+
+  const hasProductChanges = useMemo(() => {
+    return (
+      productState.title !== selectedProductData.title ||
+      productState.description !== selectedProductData.description ||
+      productState.storyText !== selectedProductData.storyText ||
+      productState.isLimited !== selectedProductData.isLimited
+    );
+  }, [productState, selectedProductData]);
+
+  const hasSizeChanges = useMemo(() => {
+    if (!selectedSizeId) return false;
+    const originalSize = selectedProductData.sizes.find(
+      (s) => s.id === selectedSizeId
+    );
+    if (!originalSize) return false;
+
+    return JSON.stringify(selectedSize) !== JSON.stringify(originalSize);
+  }, [selectedSize, selectedSizeId, selectedProductData]);
 
   const handleSaveChanges = async () => {
-    if (!currentSizeDetails || !productDataInSelectedCategory) return;
-
-    const toastId = toast.loading("Сохранение изменений...");
-
     try {
-      const sizeInfo = productDataInSelectedCategory.product.sizes.find(
-        (s) => s.id === selectedSizeId
-      );
-
-      const productId = productDataInSelectedCategory.product.id;
-
-      if (!sizeInfo) {
-        throw new Error("Не удалось найти информацию о размере");
-      }
-
-      await adminApi.updateProductSize({
-        id: sizeInfo.id,
-        productId,
-        price: currentSizeDetails.price,
-        oldPrice: currentSizeDetails.oldPrice,
-        isDefault: currentSizeDetails.isDefault,
-        quantity: currentSizeDetails.quantity,
-        size: currentSizeDetails.size,
-        timeOfExploitation: currentSizeDetails.timeOfExploitation,
-        dimensions: currentSizeDetails.dimensions,
-      });
-
-      if (description !== originalDescription) {
-        await adminApi.updateProductDescription({
-          productId: productDataInSelectedCategory.product.id,
-          description,
-        });
-        setOriginalDescription(description);
-      }
-
-      toast.success("Изменения успешно сохранены", { id: toastId });
-
-      setOriginalSizeDetails(currentSizeDetails);
-      setHasChanges(false);
-      setChangedFields({});
-
-      if (onProductUpdated) {
-        await onProductUpdated();
-      }
+      toast.success("Изменения успешно сохранены");
+      onProductUpdated?.();
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Ошибка при сохранении",
-        { id: toastId }
-      );
-      console.error("Ошибка при сохранении:", error);
+      toast.error("Ошибка при сохранении изменений");
     }
   };
 
   const handleDiscardChanges = () => {
-    if (!originalSizeDetails) return;
-    setCurrentSizeDetails(originalSizeDetails);
-    setDescription(originalDescription);
-    setHasChanges(false);
-    setChangedFields({});
-  };
+    if (!selectedProductData) return;
 
-  const handleSizeChange = async (newSizeId: number) => {
-    if (!hasChanges) {
-      setSelectedSizeId(newSizeId);
-      return;
-    }
-
-    const shouldSave = await confirm({
-      title: "Несохраненные изменения",
-      description:
-        "У вас есть несохраненные изменения. Сохранить перед переходом?",
-      cancelText: "Отменить",
-      confirmText: "Сохранить",
+    setProductState({
+      title: selectedProductData.title || "",
+      description: selectedProductData.description || "",
+      storyText: selectedProductData.storyText || "",
+      isLimited: selectedProductData.isLimited,
     });
 
-    if (shouldSave) await handleSaveChanges();
-    setSelectedSizeId(newSizeId);
+    const sizesMap: Record<number, ProductSize> = {};
+    selectedProductData.sizes.forEach((s) => {
+      sizesMap[s.id] = { ...s };
+    });
+    setSizeState(sizesMap);
   };
-
-  if (
-    !productDataInSelectedCategory ||
-    productDataInSelectedCategory.product.sizes.length === 0
-  ) {
-    return (
-      <div className={className}>
-        <p className="text-gray-500">Нет доступных размеров для этого товара</p>
-      </div>
-    );
-  }
 
   return (
     <div className={className}>
-      <Section
-        title={`Параметры для категории ${productDataInSelectedCategory.product.category.name}`}
-        className="my-2"
-      >
+      <Section title="Информация о продукте" className="mb-4">
         <InputField
-          label="Описание на странице товара"
-          value={description}
-          onChange={setDescription}
-          icon={<Book className="h-4 w-4" />}
-          rows={5}
-          multiline={true}
-          isChanged={description !== originalDescription}
+          label="Название"
+          value={productState.title}
+          onChange={(v) => handleProductChange("title", v)}
         />
-      </Section>
-
-      <Section title="Выбор размера" className="mb-2">
-        <div className="flex flex-wrap gap-2 my-2">
-          {productDataInSelectedCategory.product.sizes
-            .sort((a, b) => {
-              const sizeA = parseFloat(a.size || "0");
-              const sizeB = parseFloat(b.size || "0");
-              return sizeA - sizeB;
-            })
-            .map((size) => (
-              <Button
-                key={size.id}
-                onClick={() => handleSizeChange(size.id)}
-                className="p-2 border-2 gap-2 rounded-lg max-w-36 min-w-24 disabled:opacity-100"
-                variant={selectedSizeId === size.id ? "default" : "ghost"}
-                disabled={selectedSizeId === size.id}
-              >
-                {`${size.size} ${productDataInSelectedCategory.product.measure}` ||
-                  "Без размера"}{" "}
-                - {size.quantity} шт
-              </Button>
-            ))}
-
-          <div className="flex items-center gap-2 rounded-lg border">
-            <Select
-              value={selectedNewSize}
-              onValueChange={setSelectedNewSize}
-              disabled={isAddingSize || filteredSizes.length === 0}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Выберите размер" />
-              </SelectTrigger>
-              <SelectContent>
-                {filteredSizes.map((size: any) => (
-                  <SelectItem key={size.id} value={String(size.id)}>
-                    {`${size.category_name}: ${size.size} ${productDataInSelectedCategory.product.measure}`}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Button
-              onClick={handleAddSize}
-              disabled={!selectedNewSize || isAddingSize}
-              size="sm"
-              className="gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Добавить
-            </Button>
-          </div>
+        <InputField
+          label="Описание"
+          value={productState.description}
+          onChange={(v) => handleProductChange("description", v)}
+          multiline
+          rows={5}
+        />
+        <InputField
+          label="История"
+          value={productState.storyText}
+          onChange={(v) => handleProductChange("storyText", v)}
+          multiline
+          rows={3}
+        />
+        <div className="flex items-center gap-2 mt-2">
+          <Checkbox
+            id="is-limited"
+            checked={productState.isLimited}
+            onCheckedChange={(v) => handleProductChange("isLimited", v)}
+          />
+          <Label htmlFor="is-limited">Ограниченный выпуск</Label>
         </div>
       </Section>
 
-      {selectedSizeId !== 0 && currentSizeDetails ? (
-        <>
-          <div className="flex items-center justify-between p-4 bg-slate-100 rounded-lg mb-2">
-            <div className="flex items-center space-x-2">
+      <Section title="Размеры" className="mb-4">
+        <div className="flex flex-wrap gap-2">
+          {selectedProductData.sizes.map((size) => (
+            <Button
+              key={size.id}
+              variant={selectedSizeId === size.id ? "default" : "ghost"}
+              onClick={() => handleSizeChange(size.id)}
+            >
+              {`${size.volume.amount || ""} ${size.volume.unit || ""}`} -{" "}
+              {size.stock} шт
+            </Button>
+          ))}
+        </div>
+      </Section>
+
+      {selectedSize && (
+        <div className="space-y-4">
+          <Section title="Общие настройки размера">
+            <div className="flex items-center gap-2">
               <Checkbox
                 id="default-size"
-                checked={currentSizeDetails?.isDefault || false}
-                onCheckedChange={(checked) => {
-                  handleInputChange("isDefault", checked);
-                }}
+                checked={selectedSize.isDefault}
+                onCheckedChange={(v) => handleSizeFieldChange("isDefault", v)}
               />
-              <Label
-                htmlFor="default-size"
-                className="text-sm font-medium flex items-center gap-2"
-              >
-                Использовать по умолчанию
-              </Label>
+              <Label htmlFor="default-size">Использовать по умолчанию</Label>
             </div>
-          </div>
+          </Section>
 
-          <div className="space-y-2">
-            <Section title="Цены">
-              <PriceInputs
-                currentSizeDetails={currentSizeDetails}
-                handleInputChange={handleInputChange}
-                changedFields={changedFields}
-              />
-            </Section>
+          <Section title="Цены">
+            <PriceInputs
+              currentSizeDetails={selectedSize}
+              handleInputChange={(field, value) =>
+                handleSizeFieldChange(field, value)
+              }
+              changedFields={{
+                price:
+                  parseFloat(selectedSize.price as any) !==
+                  parseFloat(
+                    selectedProductData.sizes.find(
+                      (s) => s.id === selectedSize.id
+                    )?.price as any
+                  ),
+                oldPrice: !!(
+                  parseFloat((selectedSize.oldPrice as any) || 0) !==
+                    selectedProductData.sizes.find(
+                      (s) => s.id === selectedSize.id
+                    )?.oldPrice || 0
+                ),
+              }}
+            />
+          </Section>
 
-            <Section title="Параметры">
-              <ParamsInputs
-                changedFields={changedFields}
-                currentSizeDetails={currentSizeDetails}
-                productDataInSelectedCategory={productDataInSelectedCategory}
-                handleInputChange={handleInputChange}
-              />
-            </Section>
+          <Section title="Параметры">
+            <ParamsInputs
+              currentSizeDetails={selectedSize}
+              selectedProductData={selectedProductData}
+              handleInputChange={(field, value) =>
+                handleSizeFieldChange(field, value)
+              }
+            />
+          </Section>
 
-            <Section title="Габариты">
-              <DimensionInputs
-                dimensions={currentSizeDetails.dimensions}
-                onChange={(value) => handleInputChange("dimensions", value)}
-                isChanged={changedFields.dimensions}
-              />
-            </Section>
-
-            {hasChanges && (
-              <div className="sticky bottom-0 bg-white pt-4 border-t">
-                <Button onClick={handleSaveChanges} className="w-full gap-2">
-                  <Save className="h-4 w-4" />
-                  Сохранить изменения
-                </Button>
-              </div>
-            )}
-
-            {hasChanges && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleDiscardChanges}
-                className="text-red-500 hover:text-red-600"
-              >
-                Отменить изменения
-              </Button>
-            )}
-          </div>
-        </>
-      ) : (
-        <PlaceholderForm />
+          <Section title="Габариты">
+            <div></div>
+            {/* <DimensionInputs
+              dimensions={selectedSize.props}
+              onChange={(value) => handleSizeFieldChange("dimensions", value)}
+              isChanged={false}
+            /> */}
+          </Section>
+        </div>
       )}
 
-      {confirmState.isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg p-4 max-w-md w-full">
-            <h3 className="text-lg font-medium mb-2">{confirmState.title}</h3>
-            <p className="text-gray-600 mb-4">{confirmState.description}</p>
-            <div className="flex justify-end space-x-3">
-              <Button
-                variant="outline"
-                onClick={() => confirmState.onCancel?.()}
-              >
-                {confirmState.cancelText}
-              </Button>
-              <Button onClick={() => confirmState.onConfirm?.()}>
-                {confirmState.confirmText}
-              </Button>
-            </div>
-          </div>
+      {(hasProductChanges || hasSizeChanges) && (
+        <div className="sticky bottom-0 bg-white border-t p-4 flex flex-col gap-2">
+          <Button className="w-full gap-2" onClick={handleSaveChanges}>
+            <Save className="h-4 w-4" />
+            Сохранить изменения
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full text-red-500 hover:text-red-600"
+            onClick={handleDiscardChanges}
+          >
+            Отменить изменения
+          </Button>
         </div>
       )}
     </div>

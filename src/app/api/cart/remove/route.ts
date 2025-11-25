@@ -1,33 +1,46 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
 
 export async function POST(req: Request) {
-  const authHeader = req.headers.get("Authorization");
-  const token = authHeader?.split(" ")[1];
+  try {
+    const authHeader = req.headers.get("Authorization");
+    const token = authHeader?.split(" ")[1];
 
-  const { productId, sizeId } = await req.json();
+    if (!token) {
+      return NextResponse.json({ error: "Token not found" }, { status: 401 });
+    }
 
-  const { data: cart, error: cartError } = await supabase
-    .from("cart")
-    .select("id")
-    .eq("token", token)
-    .maybeSingle();
+    const { productSizeId } = await req.json();
+    const productSizeIdNum = Number(productSizeId);
 
-  if (cartError || !cart) {
-    return NextResponse.json({ error: "Корзина не найдена" }, { status: 404 });
+    if (isNaN(productSizeIdNum)) {
+      return NextResponse.json(
+        { error: "Некорректные данные" },
+        { status: 400 }
+      );
+    }
+
+    const cart = await prisma.cart.findUnique({
+      where: { token },
+    });
+
+    if (!cart) {
+      return NextResponse.json(
+        { error: "Корзина не найдена" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.cartItem.deleteMany({
+      where: {
+        cartId: cart.id,
+        productSizeId: productSizeIdNum,
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (err: any) {
+    console.error("Ошибка при удалении из корзины:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
-
-  const { error } = await supabase
-    .from("cartItem")
-    .delete()
-    .eq("cart_id", cart.id)
-    .eq("size_id", sizeId)
-    .eq("product_id", productId);
-
-  if (error) {
-    console.error("Ошибка при удалении из корзины:", error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ success: true });
 }

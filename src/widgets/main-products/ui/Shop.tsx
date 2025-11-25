@@ -1,7 +1,8 @@
+import { productsApi } from "@/entities/product/api";
 import { ShopCarousel } from "./ShopCarousel";
 
 export async function Shop() {
-  const categoriesWithProducts = [];
+  const groupedProducts = await productsApi.fetchAllGroupedProducts();
 
-  return <ShopCarousel categoriesWithProducts={categoriesWithProducts} />;
+  return <ShopCarousel groupedProducts={groupedProducts} />;
 }

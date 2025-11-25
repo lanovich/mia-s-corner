@@ -1,54 +1,49 @@
 import React from "react";
 import { InputField } from "../ui";
 import { cn } from "@/shared/lib";
-import { Box, Clock, Ruler } from "lucide-react";
-import { CategoryProduct } from "@/entities/category/model";
-import { SizeDetails } from "@/entities/product/model";
+import { Box, Clock } from "lucide-react";
+import { Product, ProductSize } from "@/entities/product/model";
 
 interface Props {
   className?: string;
-  changedFields: Record<string, boolean>;
-  currentSizeDetails: SizeDetails;
-  productDataInSelectedCategory: CategoryProduct;
-  handleInputChange: (field: keyof SizeDetails, value: any) => void;
+  currentSizeDetails: ProductSize;
+  selectedProductData: Product;
+  handleInputChange: (field: keyof ProductSize | "props", value: any) => void;
 }
 
 export const ParamsInputs: React.FC<Props> = ({
   className,
   handleInputChange,
-  changedFields,
   currentSizeDetails,
-  productDataInSelectedCategory,
 }) => {
+  const timeOfExploitation = currentSizeDetails.props?.timeOfExploitation || "";
+
+  const handleTimeChange = (value: string | number) => {
+    handleInputChange("props", {
+      ...currentSizeDetails.props,
+      timeOfExploitation: Number(value),
+    });
+  };
+
   return (
     <div className={cn("grid grid-cols-2 gap-4", className)}>
       <InputField
         label="Количество на складе"
-        value={String(currentSizeDetails.quantity)}
-        onChange={(value) => handleInputChange("quantity", value)}
+        value={String(currentSizeDetails.stock)}
+        onChange={(value) => handleInputChange("stock", Number(value))}
         icon={<Box className="h-4 w-4" />}
         unit="шт"
-        isChanged={changedFields.quantity}
-      />
-
-      <InputField
-        label="Размер | Объем | Количество в наборе"
-        value={currentSizeDetails.size}
-        onChange={(value) => handleInputChange("size", value)}
-        placeholder="Например: 40x60"
-        icon={<Ruler className="h-4 w-4" />}
-        unit={productDataInSelectedCategory.product.measure?.toString()}
-        isChanged={changedFields.size}
+        isChanged={false}
       />
 
       <InputField
         label="Срок службы"
-        value={currentSizeDetails.timeOfExploitation}
-        onChange={(value) => handleInputChange("timeOfExploitation", value)}
+        value={timeOfExploitation}
+        onChange={handleTimeChange}
         placeholder="Например: 5 лет"
         icon={<Clock className="h-4 w-4" />}
         unit="часов"
-        isChanged={changedFields.timeOfExploitation}
+        isChanged={false}
       />
     </div>
   );

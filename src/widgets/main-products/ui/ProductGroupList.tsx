@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { calcNumberOfProducts } from "../lib";
 import { ProductCard } from "@/entities/product/ui";
-import { Product } from "@/entities/product/model";
+import { ShortProduct } from "@/entities/product/model";
 
 interface Props {
-  products: Product[];
+  products: ShortProduct[];
 }
 
 export const ProductGroupList: React.FC<Props> = ({ products }) => {

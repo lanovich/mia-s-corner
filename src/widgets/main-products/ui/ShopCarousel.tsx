@@ -4,21 +4,21 @@ import { useEffect, useCallback, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ProductCategories } from "./ProductCategories";
 import { GoToButton } from "@/shared/ui";
-import { CategoryWithProducts } from "@/entities/category/model";
 import { ProductGroupList } from "./ProductGroupList";
 import { LINKS } from "@/shared/model";
+import { GroupedShortProducts } from "@/entities/product/model";
 
 interface Props {
-  categoriesWithProducts: CategoryWithProducts[];
+  groupedProducts: GroupedShortProducts[];
 }
 
-export function ShopCarousel({ categoriesWithProducts }: Props) {
+export function ShopCarousel({ groupedProducts }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     containScroll: "trimSnaps",
     slidesToScroll: 1,
     align: "start",
-    dragFree: false
+    dragFree: false,
   });
   const [current, setCurrent] = useState(0);
 
@@ -45,7 +45,7 @@ export function ShopCarousel({ categoriesWithProducts }: Props) {
   return (
     <>
       <ProductCategories
-        categories={categoriesWithProducts}
+        categories={groupedProducts.map((g) => g.categoryInfo)}
         current={current}
         handleCategoryClick={handleCategoryClick}
       />
@@ -53,18 +53,16 @@ export function ShopCarousel({ categoriesWithProducts }: Props) {
       <div className="max-w-[1380px] m-auto w-full">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
-            {categoriesWithProducts.map(
-              ({ id, name, slug, products }: CategoryWithProducts, index) => (
-                <div key={id} className="flex-[0_0_100%]">
-                  <ProductGroupList products={products} />
-                  <GoToButton
-                    href={`${LINKS.CATALOG}/${slug}`}
-                    label={`Открыть ${name.toLowerCase()} в каталоге`}
-                    className="mx-auto select-none"
-                  />
-                </div>
-              )
-            )}
+            {groupedProducts.map(({ categoryInfo, products }) => (
+              <div key={categoryInfo.id} className="flex-[0_0_100%]">
+                <ProductGroupList products={products} />
+                <GoToButton
+                  href={`${LINKS.CATALOG}/${categoryInfo?.slug}`}
+                  label={`Открыть ${categoryInfo.name.toLowerCase()} в каталоге`}
+                  className="mx-auto select-none"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

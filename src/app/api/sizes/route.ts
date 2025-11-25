@@ -1,16 +1,31 @@
-import { NextRequest } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { Size } from "@/entities/product/model";
+import { prisma } from "@/shared/api/prisma";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  const { data, error } = await supabase.from("sizes").select("*");
+export async function GET() {
+  try {
+    const sizes = await prisma.size.findMany();
 
-  if (error) {
+    const formatted: Size[] = sizes.map((s) => {
+      const result: Size = {
+        id: s.id,
+        categoryId: s.categoryId,
+        volume: {
+          amount: s.amount !== null ? Number(s.amount) : null,
+          unit: s.unit,
+        },
+        unit: s.unit,
+      };
+
+      return result;
+    });
+
+    return NextResponse.json(formatted, {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
     console.error("Ошибка загрузки размеров:", error);
-    return new Response(JSON.stringify([]), { status: 500 });
+    return NextResponse.json([], { status: 500 });
   }
-
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
 }

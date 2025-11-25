@@ -8,26 +8,24 @@ import { ProductSize } from "@/entities/product/model";
 
 interface Props {
   className?: string;
-  productCompound?: string;
-  productEpsiodeId?: number;
-  productEpisode?: string | null;
-  productTitle: string;
-  measure: string;
+  scent?: string;
+  episodeId?: number;
+  episodeText?: string | null;
+  title: string;
+  unit: string;
   sizes: ProductSize[];
 }
 
 export const BuySection: React.FC<Props> = ({
   className,
-  productCompound,
-  productEpsiodeId,
-  productEpisode,
-  measure,
-  productTitle,
+  scent,
+  episodeId,
+  episodeText,
+  title,
+  unit,
   sizes,
 }) => {
   const [expanded, setExpanded] = useState(true);
-
-  const formattedEpisode = productEpisode?.replace(/\n/g, "\n");
 
   return (
     <div
@@ -37,14 +35,14 @@ export const BuySection: React.FC<Props> = ({
       )}
     >
       <h1 className="text-2xl font-semibold border-b-2 pb-2 border-neutral-200">
-        {productTitle}
+        {title}
       </h1>
-      {productCompound && (
-        <p className="text-gray-500">Аромат: {productCompound}</p>
-      )}
-      {productEpisode && (
+
+      {scent && <p className="text-gray-500">Аромат: {scent}</p>}
+
+      {episodeText && (
         <>
-          <h2 className="text-xl font-semibold">Эпизод #{productEpsiodeId}</h2>
+          <h2 className="text-xl font-semibold">Эпизод #{episodeId}</h2>
           <div className="relative">
             <p
               className={cn(
@@ -53,7 +51,7 @@ export const BuySection: React.FC<Props> = ({
               )}
               onClick={() => setExpanded(!expanded)}
             >
-              {formattedEpisode}
+              {episodeText}
             </p>
             <span className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-inherit z-20">
               <button onClick={() => setExpanded(!expanded)}>
@@ -63,8 +61,9 @@ export const BuySection: React.FC<Props> = ({
           </div>
         </>
       )}
+
       <div className="hidden md:flex">
-        <SizeAndBuy sizes={sizes} measure={measure} />
+        <SizeAndBuy sizes={sizes} unit={unit} />
       </div>
     </div>
   );

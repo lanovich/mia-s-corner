@@ -1,24 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
+import { baseShortProductsQuery, ShortProductRaw } from "@/shared/api/queries";
+import {
+  mapRawToShortProduct,
+  normalizeProduct,
+} from "@/entities/product/model";
 
 export async function GET(req: NextRequest) {
-  const query = req.nextUrl.searchParams.get("query") || "";
-  const category = req.nextUrl.searchParams.get("category");
+  try {
+    const query = req.nextUrl.searchParams.get("query") || "";
+    const category = req.nextUrl.searchParams.get("category");
 
-  let builder = supabase
-    .from("products")
-    .select("id, title, compound, category_slug, slug, images")
-    .textSearch("search", query, { type: "websearch", config: "russian" });
+    const where: any = {
+      title: { contains: query, mode: "insensitive" },
+      ...(category ? { category: { slug: category } } : {}),
+    };
 
-  if (category) {
-    builder = builder.eq("category_slug", category);
+    const raw: ShortProductRaw[] = await prisma.product.findMany({
+      ...baseShortProductsQuery,
+      where,
+      take: 5,
+    });
+
+    const products = raw.map((p) => mapRawToShortProduct(p));
+
+    return NextResponse.json(products, { status: 200 });
+  } catch (error) {
+    console.error("Ошибка поиска продуктов:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Ошибка сервера" },
+      { status: 500 }
+    );
   }
-
-  const { data, error } = await builder.limit(5);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json(data, { status: 200 });
 }

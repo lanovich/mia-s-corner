@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { Product } from "@/entities/product/model";
+import { Product, ShortProduct } from "@/entities/product/model";
 import Image from "next/image";
 import { LoadingIndicator } from "@/shared/ui";
 
 interface Props {
-  products: Product[];
+  products: ShortProduct[];
   isFetching: boolean;
   error?: string | null;
-  onSelect: (product: Product) => void;
+  onSelect: (product: ShortProduct) => void;
   className?: string;
 }
 
@@ -33,7 +33,9 @@ export const SearchDropdown: React.FC<Props> = ({
       {error && <div className="p-7 text-sm text-red-500">{error}</div>}
 
       {!isFetching && !error && products.length === 0 && (
-        <div className="w-full flex justify-center items-center p-[30px] text-sm text-gray-500">Ничего не найдено</div>
+        <div className="w-full flex justify-center items-center p-[30px] text-sm text-gray-500">
+          Ничего не найдено
+        </div>
       )}
 
       {!isFetching &&
@@ -44,10 +46,10 @@ export const SearchDropdown: React.FC<Props> = ({
             className="flex gap-2 p-2 hover:bg-gray-100 cursor-pointer"
             onClick={() => onSelect(product)}
           >
-            {product.images?.[0] && (
+            {product?.size.image && (
               <div className="w-16 h-16 relative flex-shrink-0">
                 <Image
-                  src={product.images[0].url}
+                  src={product?.size?.image || "/Placeholder.jpg"}
                   alt={product.title}
                   fill
                   className="object-cover rounded"
@@ -57,14 +59,9 @@ export const SearchDropdown: React.FC<Props> = ({
 
             <div className="flex flex-col">
               <span className="font-medium">{product.title}</span>
-              {product.description && (
+              {product.scent?.name && (
                 <span className="text-sm text-gray-600">
-                  {product.description}
-                </span>
-              )}
-              {product.compound && (
-                <span className="text-xs text-gray-500">
-                  {product.compound}
+                  {product.scent?.name}
                 </span>
               )}
             </div>

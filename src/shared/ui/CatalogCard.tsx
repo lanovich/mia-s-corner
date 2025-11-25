@@ -1,10 +1,10 @@
 import { CustomLink } from ".";
 
 interface CardProps {
-  slug: string;
+  slug?: string | null;
   title: string;
-  image?: string;
-  description?: string;
+  image?: string | null;
+  description?: string | null;
   href: string;
 }
 
@@ -17,7 +17,7 @@ export function CatalogCard({
 }: CardProps) {
   return (
     <CustomLink
-      key={slug}
+      key={slug || title}
       href={href}
       className="block w-full h-[300px] relative overflow-hidden rounded-lg group"
     >

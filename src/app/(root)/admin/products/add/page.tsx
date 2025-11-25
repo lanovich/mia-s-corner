@@ -26,22 +26,22 @@ export default function AddProduct() {
   const [loadingSizes, setLoadingSizes] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
-    category_id: "",
+    categoryId: "",
     compound: "",
     episode: "",
-    episode_number: "",
+    epsiodeNumber: "",
     measure: "",
   });
   const [selectedSizeIds, setSelectedSizeIds] = useState<number[]>([]);
   const [generatedSlug, setGeneratedSlug] = useState("");
   const [categorySlug, setCategorySlug] = useState("");
 
-  // Загрузка категорий
   useEffect(() => {
     const loadCategories = async () => {
       try {
         const data = await categoriesApi.fetchCategories();
-        setCategories(data);
+
+        setCategories(data ? data : []);
       } catch (error) {
         toast.error("Не удалось загрузить категории");
         console.error("Ошибка загрузки категорий:", error);
@@ -52,17 +52,20 @@ export default function AddProduct() {
   }, []);
 
   useEffect(() => {
-    if (!formData.category_id) return;
+    if (!formData.categoryId) return;
 
     const loadSizes = async () => {
       setLoadingSizes(true);
       try {
         const category = categories.find(
-          (c) => c.id.toString() === formData.category_id
+          (c) => c.id.toString() === formData.categoryId
         );
+
         if (category) {
-          const sizesData = await adminApi.fetchSizesByCategoryName(category.name);
-          setSizes(sizesData);
+          const sizesData = await adminApi.fetchSizesByCategoryName(
+            category.name
+          );
+          setSizes(sizesData ? sizesData : []);
         }
       } catch (error) {
         toast.error("Не удалось загрузить размеры");
@@ -73,13 +76,13 @@ export default function AddProduct() {
     };
 
     loadSizes();
-  }, [formData.category_id, categories]);
+  }, [formData.categoryId, categories]);
 
   // Обновление slug при изменении названия или категории
   useEffect(() => {
-    if (formData.title && formData.category_id) {
+    if (formData.title && formData.categoryId) {
       const selectedCategory = categories.find(
-        (c) => c.id.toString() === formData.category_id
+        (c) => c.id.toString() === formData.categoryId
       );
       if (selectedCategory) {
         setCategorySlug(selectedCategory.slug);
@@ -93,7 +96,7 @@ export default function AddProduct() {
       setGeneratedSlug("");
       setCategorySlug("");
     }
-  }, [formData.title, formData.category_id, categories]);
+  }, [formData.title, formData.categoryId, categories]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -103,8 +106,8 @@ export default function AddProduct() {
   };
 
   const handleCategoryChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, category_id: value }));
-    setSelectedSizeIds([]); // Сбрасываем выбор размеров при смене категории
+    setFormData((prev) => ({ ...prev, categoryId: value }));
+    setSelectedSizeIds([]);
   };
 
   const handleSizeSelection = (sizeId: number) => {
@@ -118,7 +121,7 @@ export default function AddProduct() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.category_id) {
+    if (!formData.title || !formData.categoryId) {
       toast.warning("Заполните обязательные поля (название и категорию)");
       return;
     }
@@ -136,8 +139,8 @@ export default function AddProduct() {
         ...formData,
         category_slug: categorySlug,
         slug: generatedSlug,
-        episode_number: formData.episode_number
-          ? parseFloat(formData.episode_number)
+        epsiodeNumber: formData.epsiodeNumber
+          ? parseFloat(formData.epsiodeNumber)
           : null,
         size_ids: selectedSizeIds,
       });
@@ -160,6 +163,8 @@ export default function AddProduct() {
       setLoading(false);
     }
   };
+
+  console.log(sizes);
 
   return (
     <div className="bg-gray-400 h-full">
@@ -203,7 +208,7 @@ export default function AddProduct() {
                   </label>
                   <Select
                     onValueChange={handleCategoryChange}
-                    value={formData.category_id}
+                    value={formData.categoryId}
                     required
                   >
                     <SelectTrigger className="border-gray-300">
@@ -286,37 +291,20 @@ export default function AddProduct() {
 
                 <div>
                   <label
-                    htmlFor="episode_number"
+                    htmlFor="epsiodeNumber"
                     className="block text-sm font-medium mb-1"
                   >
                     Номер эпизода
                   </label>
                   <Input
-                    id="episode_number"
-                    name="episode_number"
+                    id="epsiodeNumber"
+                    name="epsiodeNumber"
                     type="number"
                     step="0.1"
-                    value={formData.episode_number}
+                    value={formData.epsiodeNumber}
                     onChange={handleInputChange}
                     className="border-gray-300"
                     placeholder="Введите номер эпизода"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="measure"
-                    className="block text-sm font-medium mb-1"
-                  >
-                    Мера измерения
-                  </label>
-                  <Input
-                    id="measure"
-                    name="measure"
-                    value={formData.measure}
-                    onChange={handleInputChange}
-                    className="border-gray-300"
-                    placeholder="Например: мл, г, шт"
                   />
                 </div>
               </div>
@@ -339,7 +327,7 @@ export default function AddProduct() {
                     }
                     onClick={() => handleSizeSelection(size.id)}
                   >
-                    {size.category_name}: {size.size} чего-то
+                    {size?.volume?.amount} {size?.volume?.unit}
                   </Button>
                 ))}
               </div>
@@ -355,10 +343,10 @@ export default function AddProduct() {
               onClick={() => {
                 setFormData({
                   title: "",
-                  category_id: "",
+                  categoryId: "",
                   compound: "",
                   episode: "",
-                  episode_number: "",
+                  epsiodeNumber: "",
                   measure: "",
                 });
                 setSelectedSizeIds([]);
@@ -372,7 +360,7 @@ export default function AddProduct() {
               disabled={
                 loading ||
                 !formData.title ||
-                !formData.category_id ||
+                !formData.categoryId ||
                 selectedSizeIds.length === 0
               }
               className="bg-blue-600 hover:bg-blue-700 text-white"

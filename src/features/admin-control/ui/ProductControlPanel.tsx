@@ -1,99 +1,88 @@
 "use client";
 
-import { productsApi } from "@/entities/product/api";
 import { useAdminStore } from "@/features/admin-control/model/useAdminStore";
-import { SelectCategoryField } from "./SelectCategoryField";
-import { cn, findCurrentProduct } from "@/shared/lib";
+import { cn } from "@/shared/lib";
 import { ProductHeading } from "./ProductHeading";
 import { ProductDetails } from "../sections/ProductDetails";
 import { PlaceholderForm } from ".";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
-import { CATEGORY_SLUG_MAP, CategoryOption } from "@/entities/category/model";
-import { ProductsByCategory } from "@/entities/product/model";
+import { Product, Size } from "@/entities/product/model";
+import { adminApi } from "../api";
 
 interface ProductControlPanelProps {
   className?: string;
-  categorizedProducts: ProductsByCategory;
 }
 
 export const ProductControlPanel: React.FC<ProductControlPanelProps> = ({
   className,
-  categorizedProducts,
 }) => {
-  const { selectedProduct, selectedCategory } = useAdminStore();
-  const [localProducts, setLocalProducts] =
-    useState<ProductsByCategory>(categorizedProducts);
+  const { selectedProductOption } = useAdminStore();
+
+  const [selectedFullProduct, setSelectedFullProduct] =
+    useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleProductUpdated = async () => {
+  const handleFetchProduct = useCallback(async () => {
+    if (!selectedProductOption) return;
     setIsLoading(true);
     try {
-      const updatedProducts = await productsApi.fetchAllGroupedProducts();
-      setLocalProducts(updatedProducts);
-      toast.success("Данные продукта обновлены");
+      const data = await adminApi.fetchFullProductById(
+        selectedProductOption.id
+      );
+      setSelectedFullProduct(data);
     } catch (error) {
-      console.error("Ошибка при обновлении данных:", error);
-      toast.error("Не удалось обновить данные продукта");
+      console.error(error);
+      toast.error("Не удалось загрузить данные продукта");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [selectedProductOption]);
 
-  const productsInAllCategories = findCurrentProduct(
-    categorizedProducts,
-    selectedProduct?.title
-  );
+  useEffect(() => {
+    handleFetchProduct();
+  }, [handleFetchProduct]);
 
-  const categoryOptions: CategoryOption[] = productsInAllCategories.map(
-    ({ categorySlug, product }, index) => ({
-      id: index,
-      title: CATEGORY_SLUG_MAP[categorySlug] || categorySlug,
-      slug: categorySlug,
-      quantity: product.categorizedQuantity,
-    })
-  );
-
-  const productDataInSelectedCategory =
-    productsInAllCategories.find(
-      (p) => p.categorySlug === selectedCategory?.slug
-    )?.product || productsInAllCategories[0]?.product;
-
-  if (!selectedProduct || productsInAllCategories.length === 0) {
+  if (!selectedProductOption) {
     return (
-      <div className={cn("min-h-[800px]", className)}>
-        <div className="flex flex-row gap-2 mb-2">
-          <div className="h-8 bg-gray-200 rounded-sm w-3/5"></div>
-          <div className="h-6 bg-gray-200 rounded-sm w-1/5 mt-2"></div>
-          <div className="h-6 bg-gray-200 rounded-sm w-10 mt-2"></div>
-        </div>
-        <div className="flex h-10 w-full bg-gray-100 items-center rounded-md mb-4">
-          <p className="text-gray-500 text-md ml-4 -mt-1">
-            Выберите продукт для просмотра деталей
-          </p>
-        </div>
-        <div className="flex h-6 w-1/6 bg-gray-200 items-center rounded-sm mb-2" />
-        <div className="flex h-[140px] w-full bg-gray-100 items-center justify-center rounded-md mb-4" />
-        <PlaceholderForm />
+      <div
+        className={cn(
+          "min-h-[800px] flex items-center justify-center text-3xl",
+          className
+        )}
+      >
+        Выбери продукт
       </div>
     );
   }
 
-  console.log(productDataInSelectedCategory);
+  if (isLoading || !selectedFullProduct) {
+    return (
+      <div className={cn("min-h-[800px]", className)}>
+        <div className="flex flex-row gap-2 mb-2">
+          <div className="h-8 bg-gray-200 rounded-sm w-3/5" />
+          <div className="h-6 bg-gray-200 rounded-sm w-1/5 mt-2" />
+          <div className="h-6 bg-gray-200 rounded-sm w-10 mt-2" />
+        </div>
+        <div className="flex h-10 w-full bg-gray-100 items-center rounded-md mb-4" />
+        <div className="flex h-6 w-1/6 bg-gray-200 items-center rounded-sm mb-2" />
+        <div className="flex h-[140px] w-full bg-gray-100 items-center justify-center rounded-md mb-4" />
+      </div>
+    );
+  }
 
   return (
     <div className={cn("", className)}>
       <ProductHeading
         className="bg-white flex flex-row gap-2"
-        productDataInSelectedCategory={productDataInSelectedCategory}
-        selectedProduct={selectedProduct}
+        selectedProductData={selectedFullProduct}
+        selectedOption={selectedProductOption}
       />
-      <SelectCategoryField options={categoryOptions} className="w-full" />
 
       <ProductDetails
         className="min-h-[800px]"
-        productDataInSelectedCategory={productDataInSelectedCategory}
-        onProductUpdated={handleProductUpdated}
+        selectedProductData={selectedFullProduct}
+        onProductUpdated={handleFetchProduct}
       />
     </div>
   );

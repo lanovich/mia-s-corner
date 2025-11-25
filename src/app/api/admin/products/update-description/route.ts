@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
 
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-
     const { productId, description } = body;
 
     if (!productId) {
@@ -14,14 +13,15 @@ export async function PUT(request: Request) {
       );
     }
 
-    const { error } = await supabase
-      .from("products")
-      .update({ description })
-      .eq("id", productId);
+    const updatedProduct = await prisma.product.update({
+      where: { id: productId },
+      data: { description },
+    });
 
-    if (error) throw error;
-
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json(
+      { success: true, product: updatedProduct },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Ошибка при обновлении описания:", error);
     return NextResponse.json(

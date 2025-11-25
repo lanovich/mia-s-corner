@@ -1,60 +1,36 @@
-import { NextRequest } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
-import { Product } from "@/entities/product/model";
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/shared/api/prisma";
+import { mapRawToShortProduct } from "@/entities/product/model";
+import { normalizeProduct } from "@/entities/product/model/transformers";
+import { productsByFilterQuery } from "@/shared/api/queries";
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ historyId: string }> }
 ) {
-  const { historyId } = await context.params;
-
   try {
-    const { data, error } = await supabase
-      .from("products")
-      .select(
-        `
-        *,
-        product_sizes:product_sizes!product_id(
-          *, size:size_id(id, size, time_of_exploitation, dimensions)
-        )
-      `
-      )
-      .eq("history_id", historyId)
-      .order("episode_number");
+    const { historyId } = await context.params;
+    const id = Number(historyId);
 
-    if (error) {
-      console.error(
-        `❌ Ошибка загрузки продуктов истории ${historyId}:`,
-        error
-      );
-      return new Response(
-        JSON.stringify({
-          error: `Ошибка загрузки продуктов истории ${historyId}`,
-        }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
+    if (isNaN(id)) {
+      return NextResponse.json({ error: "Invalid historyId" }, { status: 400 });
     }
 
-    const formattedData = (data ?? []).map((product: Product) => ({
-      ...product,
-      product_sizes: product.product_sizes.map((productSize) => ({
-        ...productSize,
-        size: productSize.size,
-      })),
-    }));
+    const raw = await prisma.product.findMany(
+      productsByFilterQuery({ historyId: id })
+    );
 
-    return new Response(JSON.stringify(formattedData), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    const shortProducts = raw.map((p) => mapRawToShortProduct(p));
+
+    return NextResponse.json(shortProducts, { status: 200 });
   } catch (err) {
     console.error(
-      `❌ Серверная ошибка при загрузке продуктов истории ${historyId}:`,
+      `Error fetching products for historyId ${context.params}:`,
       err
     );
-    return new Response(JSON.stringify({ error: "Серверная ошибка" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(
+      { error: "Failed to fetch products" },
+      { status: 500 }
+    );
   }
 }

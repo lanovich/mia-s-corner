@@ -1,11 +1,11 @@
 "use client";
 
-import { ProductSize } from "@/entities/product/model";
+import { ProductSize, ShortProductSize } from "@/entities/product/model";
 import { useCartQuantity } from "../lib";
 import { CartAddButton, CartQuantityInput } from ".";
 
 interface Props {
-  selectedSize: ProductSize | null;
+  selectedSize: ShortProductSize | null;
   className?: string;
   children?: React.ReactNode;
 }

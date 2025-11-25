@@ -9,18 +9,19 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { cn } from "@/shared/lib";
-import { ImageType } from "@/shared/model";
+import { useSelectedSizeStore } from "../model";
 
 interface Props {
   className?: string;
-  images: ImageType[];
 }
 
-export const ProductGallery: React.FC<Props> = ({ images, className }) => {
+export const ProductGallery: React.FC<Props> = ({ className }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const selectedSize = useSelectedSizeStore((state) => state.selectedSize);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     const { left, top, width, height } =
@@ -30,12 +31,20 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
     setCursorPosition({ x, y });
   };
 
+  const images = selectedSize?.images?.map((url) => ({
+    url: url ?? "/placeholder.jpg",
+    type:
+      selectedSize.volume?.amount && selectedSize.volume?.unit
+        ? `${selectedSize.volume.amount} ${selectedSize.volume.unit}`
+        : "default",
+  })) || [{ url: "/placeholder.jpg", type: "placeholder" }];
+
   const imageSizes =
     "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px";
 
   return (
     <div className={cn("flex gap-4 items-center h-[500px]", className)}>
-      {/* Миниатюры (вертикальные) */}
+      {/* Миниатюры */}
       <div className="h-[500px] hidden md:flex">
         <Swiper
           direction="vertical"
@@ -53,7 +62,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
             >
               <div className="relative w-full h-full">
                 <Image
-                  src={url ?? "/placeholder.jpg"}
+                  src={url}
                   fill
                   sizes="60px"
                   alt={`Thumbnail ${type}`}
@@ -67,10 +76,7 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
 
       {/* Основной слайдер */}
       <Swiper
-        navigation={{
-          nextEl: ".custom-next",
-          prevEl: ".custom-prev",
-        }}
+        navigation={{ nextEl: ".custom-next", prevEl: ".custom-prev" }}
         spaceBetween={8}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
@@ -81,15 +87,9 @@ export const ProductGallery: React.FC<Props> = ({ images, className }) => {
           <SwiperSlide
             key={index}
             className="!flex items-center justify-center"
-            onMouseEnter={() => {
-              if (window.innerWidth >= 768) setIsHovered(true);
-            }}
-            onMouseLeave={() => {
-              if (window.innerWidth >= 768) setIsHovered(false);
-            }}
-            onMouseMove={(e) => {
-              if (window.innerWidth >= 768) handleMouseMove(e);
-            }}
+            onMouseEnter={() => window.innerWidth >= 768 && setIsHovered(true)}
+            onMouseLeave={() => window.innerWidth >= 768 && setIsHovered(false)}
+            onMouseMove={(e) => window.innerWidth >= 768 && handleMouseMove(e)}
           >
             <div className="rounded-lg overflow-hidden w-full h-full relative">
               <Image

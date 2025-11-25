@@ -1,23 +1,24 @@
-import { CategoryOption } from "@/entities/category/model";
-import { ProductOption, SizeDetails } from "@/entities/product/model";
 import { create } from "zustand";
+import { ProductOption } from "../ui/SelectProductField";
+import { CategoryOption } from "@/entities/category/model";
+import { ProductSize } from "@/entities/product/model";
 
 interface AdminStore {
-  selectedProduct: ProductOption | null;
+  selectedProductOption: ProductOption | null;
   selectedCategory: CategoryOption | null;
-  selectedSize: SizeDetails | null;
-  setSelectedProduct: (product: ProductOption | null) => void;
+  selectedSize: ProductSize | null;
+  setSelectedProductOption: (product: ProductOption | null) => void;
   setSelectedCategory: (category: CategoryOption | null) => void;
-  setSelectedSize: (size: SizeDetails | null) => void;
+  setSelectedSize: (size: ProductSize | null) => void;
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
-  selectedProduct: null,
+  selectedProductOption: null,
   selectedCategory: null,
   selectedSize: null,
-  setSelectedProduct: (selectedProduct) =>
+  setSelectedProductOption: (selectedProductOption) =>
     set({
-      selectedProduct,
+      selectedProductOption,
       selectedSize: null,
     }),
   setSelectedCategory: (selectedCategory) =>

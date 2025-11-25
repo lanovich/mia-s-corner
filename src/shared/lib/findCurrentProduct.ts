@@ -1,8 +1,9 @@
 import { CATEGORY_SLUG_MAP, CategoryProduct } from "@/entities/category/model";
 import { ProductsByCategory } from "@/entities/product/model";
 
-interface CurrentProductResult {
+export interface CurrentProductResult {
   categorySlug: string;
+  categoryName: string;
   product: CategoryProduct;
 }
 
@@ -16,12 +17,12 @@ export const findCurrentProduct = (
 
   return Object.entries(categorizedProducts).flatMap(
     ([categorySlug, products]) =>
-      products
+      ы
         .filter((p) => p.product.title.toLowerCase() === searchTerm)
-        .map((product) => ({
+        .map((p) => ({
           categorySlug,
           categoryName: CATEGORY_SLUG_MAP[categorySlug] || categorySlug,
-          product,
+          product: p,
         }))
   );
 };

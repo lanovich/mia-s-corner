@@ -21,13 +21,13 @@ import { ProductSize } from "@/entities/product/model";
 interface Props {
   className?: string;
   sizes: ProductSize[];
-  measure: string;
+  unit: string;
 }
 
 export const MobileSizeAndBuy: React.FC<Props> = ({
   className,
   sizes,
-  measure,
+  unit,
 }) => {
   const hasSizes = sizes.length > 0;
   const { selectedSize, setSelectedSize } = useSelectedSizeStore();
@@ -45,7 +45,6 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
         className
       )}
     >
-      {/* Блок с ценами */}
       {selectedSize && (
         <div className="flex flex-col items-start">
           <div className="flex items-center gap-2">
@@ -61,7 +60,6 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
         </div>
       )}
 
-      {/* Кнопка добавления в корзину */}
       <AddToCartButton
         selectedSize={selectedSize}
         className="flex flex-1 border-2"
@@ -69,12 +67,11 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
         <span>Добавить в корзину</span>
       </AddToCartButton>
 
-      {/* Кнопка выбора размера */}
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline" className="border border-black">
             {selectedSize
-              ? `${selectedSize.size.size} ${measure}`
+              ? `${selectedSize?.volume?.amount} ${unit}`
               : "Выбрать размер"}
           </Button>
         </DialogTrigger>
@@ -90,16 +87,16 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
           </DialogHeader>
           <div className="flex flex-wrap gap-2 mx-auto md:mx-0">
             {sizes.map((size) => (
-              <div key={size.size_id} className="flex-col flex">
+              <div key={size.id} className="flex-col flex">
                 <Button
                   onClick={() => setSelectedSize(size)}
                   className={`border px-3 py-1 text-sm ${
-                    selectedSize?.size_id === size.size_id
+                    selectedSize?.id === size.id
                       ? "bg-black text-white"
                       : "bg-inherit text-black border-black"
                   }`}
                 >
-                  {`${size.size.size} ${measure}`}
+                  {`${size.volume.amount} ${unit}`}
                 </Button>
                 <p className="text-center text-xs mt-1 text-gray-700">
                   {size.price} ₽
@@ -113,7 +110,6 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
         </DialogContent>
       </Dialog>
 
-      {/* Кнопка добавления в избранное */}
       <button onClick={handleAddToFavorite} className="p-2">
         <Heart className="w-6 h-6 text-gray-600" />
       </button>

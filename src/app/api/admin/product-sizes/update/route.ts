@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
 
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
 
     const {
-      id: sizeId,
-      productId,
+      productSizeId,
       price,
       oldPrice,
       quantity,
@@ -17,36 +16,38 @@ export async function PUT(request: Request) {
       dimensions,
     } = body;
 
-    if (!sizeId || !productId) {
+    if (!productSizeId) {
       return NextResponse.json(
-        { error: "Необходимо указать ID размера и product_size" },
+        { error: "Необходимо указать ID размера продукта (productSizeId)" },
         { status: 400 }
       );
     }
 
-    const { error: productSizeError } = await supabase
-      .from("product_sizes")
-      .update({
+    const updatedProductSize = await prisma.productSize.update({
+      where: { id: productSizeId },
+      data: {
         price,
-        oldPrice: oldPrice,
-        quantity_in_stock: quantity,
-        is_default: isDefault,
-      })
-      .eq("size_id", sizeId)
-      .eq("product_id", productId);
+        oldPrice,
+        stock: quantity,
+        isDefault,
+      },
+    });
 
-    if (productSizeError) throw productSizeError;
+    if (!updatedProductSize) {
+      return NextResponse.json(
+        { error: "Размер продукта не найден" },
+        { status: 404 }
+      );
+    }
 
-    const { error: sizeError } = await supabase
-      .from("sizes")
-      .update({
-        time_of_exploitation: timeOfExploitation,
-        dimensions: dimensions,
-        size: size,
-      })
-      .eq("id", sizeId);
-
-    if (sizeError) throw sizeError;
+    if (size || timeOfExploitation || dimensions) {
+      await prisma.size.update({
+        where: { id: updatedProductSize.sizeId },
+        data: {
+          amount: size ?? undefined,
+        },
+      });
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

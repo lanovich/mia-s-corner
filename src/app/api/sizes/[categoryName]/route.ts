@@ -1,38 +1,59 @@
-import { NextRequest } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { NextResponse } from "next/server";
+import { prisma } from "@/shared/api/prisma";
+import { Size } from "@/entities/product/model";
 
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ categoryName: string }> }
-) {
-  const { categoryName } = await context.params;
+interface Params {
+  categoryName: string;
+}
+
+export async function GET(_request: Request, { params }: { params: Params }) {
+  const { categoryName } = params;
+
+  if (!categoryName) {
+    return NextResponse.json(
+      { error: "Не указано имя категории" },
+      { status: 400 }
+    );
+  }
 
   try {
-    const { data, error } = await supabase
-      .from("sizes")
-      .select("*")
-      .eq("category_name", categoryName);
+    const sizes = await prisma.size.findMany({
+      where: {
+        category: {
+          name: categoryName,
+        },
+      },
+      include: {
+        category: {
+          select: { id: true, name: true, slug: true },
+        },
+        productSizes: true,
+      },
+    });
 
-    if (error) {
-      console.error(
-        `❌ Ошибка загрузки размеров для категории "${categoryName}":`,
-        error.message
-      );
-      return new Response(
-        JSON.stringify({ error: "Ошибка загрузки размеров" }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
-    }
+    const formatted: Size[] = sizes.map((s) => {
+      const result: Size = {
+        id: s.id,
+        categoryId: s.categoryId,
+        volume: {
+          amount: s.amount !== null ? Number(s.amount) : null,
+          unit: s.unit,
+        },
+        unit: s.unit,
+      };
 
-    return new Response(JSON.stringify(data ?? []), {
+      return result;
+    });
+
+    return NextResponse.json(formatted, {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (err) {
-    console.error(`❌ Ошибка в API /sizes/by-category/${categoryName}:`, err);
-    return new Response(JSON.stringify({ error: "Серверная ошибка" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+  } catch (error) {
+    console.error(`Ошибка в API /sizes/by-category/${categoryName}:`, error);
+    return NextResponse.json(
+      { error: "Ошибка загрузки размеров" },
+      { status: 500 }
+    );
   }
 }

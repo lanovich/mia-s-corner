@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { CheckoutFormValues } from "@/entities/order/model/checkoutFormSchema";
-import { supabase } from "@/shared/api/supabase/server";
 import { cookies } from "next/headers";
+import { prisma } from "@/shared/api/prisma";
+import { CheckoutFormValues } from "@/entities/order/model/checkoutFormSchema";
 import { createPayment } from "@/entities/order/api";
 import { sendEmail } from "@/entities/mail/api";
 import { OrderReceiptEmail } from "@/entities/mail/ui";
+import { OrderItem } from "@/entities/order/model";
 
 export async function POST(req: Request) {
   try {
@@ -23,130 +24,101 @@ export async function POST(req: Request) {
       );
     }
 
-    const { data: userCart, error: cartError } = await supabase
-      .from("cart")
-      .select(
-        `
-        id,
-        token,
-        fullPrice,
-        cartItem:cartItem (
-          id,
-          product_id,
-          size_id,
-          quantity,
-          product:products (*)
-        )
-      `
-      )
-      .eq("token", cartToken)
-      .single();
+    const cart = await prisma.cart.findUnique({
+      where: { token: cartToken },
+      include: {
+        items: {
+          include: {
+            productSize: {
+              include: {
+                product: true,
+                size: true,
+              },
+            },
+          },
+        },
+      },
+    });
 
-    if (cartError || !userCart) {
-      return NextResponse.json(
-        { success: false, error: cartError?.message || "Корзина не найдена" },
-        { status: 400 }
-      );
-    }
-
-    if (userCart.fullPrice === 0 || userCart.cartItem.length === 0) {
+    if (!cart || cart.items.length === 0) {
       return NextResponse.json(
         { success: false, error: "Корзина пуста" },
         { status: 400 }
       );
     }
 
-    for (const item of userCart.cartItem) {
-      const { data: productSize } = await supabase
-        .from("product_sizes")
-        .select("price")
-        .eq("product_id", item.product_id)
-        .eq("size_id", item.size_id)
-        .single();
+    const items: OrderItem[] = cart.items.map((item) => ({
+      id: item.id,
+      productSizeId: item.productSizeId,
+      product: {
+        id: item.productSize.product.id,
+        title: item.productSize.product.title,
+        slug: item.productSize.product.slug ?? undefined,
+        isLimited: item.productSize.product.isLimited,
+        storyText: item.productSize.product.storyText ?? undefined,
+        description: item.productSize.product.description ?? undefined,
+      },
+      quantity: item.quantity,
+      price: Number(item.productSize.price),
+      images: item.productSize.images,
+    }));
 
-      (item as any).price = productSize?.price ?? 0;
+    const productTotalAmount = items.reduce(
+      (sum, i) => sum + i.price * i.quantity,
+      0
+    );
 
-      const { data: size } = await supabase
-        .from("sizes")
-        .select("size")
-        .eq("id", item.size_id)
-        .single();
+    const fullPrice = productTotalAmount + deliveryPrice;
 
-      (item as any).size = size?.size ?? null;
+    const d = checkoutFormValues;
+    let delivery: any = null;
+
+    if (d.deliveryMethod === "selfPickup") {
+      delivery = { method: "selfPickup" };
+    } else if (d.deliveryMethod === "fastDelivery") {
+      delivery = {
+        method: "fastDelivery",
+        city: d.city,
+        street: d.street,
+        building: d.building,
+        porch: d.porch,
+        sfloor: d.sfloor,
+        sflat: d.sflat,
+        comment: "comment" in d ? d.comment ?? null : null,
+      };
+    } else {
+      delivery = {
+        method: "delivery",
+        city: d.city,
+        street: d.street,
+        building: d.building,
+      };
     }
 
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .insert([
-        {
-          delivery_method: checkoutFormValues.deliveryMethod,
-          name: checkoutFormValues.name,
-          phone: checkoutFormValues.phone,
-          email: checkoutFormValues.email,
-          city:
-            checkoutFormValues.deliveryMethod === "selfPickup"
-              ? null
-              : checkoutFormValues.city,
-          street:
-            checkoutFormValues.deliveryMethod === "selfPickup"
-              ? null
-              : checkoutFormValues.street,
-          building:
-            checkoutFormValues.deliveryMethod === "selfPickup"
-              ? null
-              : checkoutFormValues.building,
-          porch:
-            checkoutFormValues.deliveryMethod === "fastDelivery"
-              ? checkoutFormValues.porch
-              : null,
-          sfloor:
-            checkoutFormValues.deliveryMethod === "fastDelivery"
-              ? checkoutFormValues.sfloor
-              : null,
-          sflat:
-            checkoutFormValues.deliveryMethod === "fastDelivery"
-              ? checkoutFormValues.sflat
-              : null,
-          comment:
-            checkoutFormValues.deliveryMethod === "fastDelivery"
-              ? checkoutFormValues.comment
-              : null,
-          fullPrice: userCart.fullPrice + deliveryPrice,
-          delivery_price: deliveryPrice,
-          items: userCart.cartItem,
-          token: cartToken,
-          created_at: new Date().toISOString(),
-        },
-      ])
-      .select()
-      .single();
+    const order = await prisma.order.create({
+      data: {
+        name: d.name,
+        phone: d.phone,
+        email: d.email,
+        wishes: d.wishes ?? null,
+        token: cartToken,
+        items: JSON.stringify(items),
+        fullPrice,
+        delivery,
+      },
+    });
 
-    if (orderError || !order) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: orderError?.message || "Ошибка при создании заказа",
-        },
-        { status: 500 }
-      );
-    }
-
-    const { error: clearCartError } = await supabase
-      .from("cartItem")
-      .delete()
-      .eq("cart_id", userCart.id);
-
-    if (clearCartError) {
-      console.error("Ошибка при очистке корзины:", clearCartError.message);
-    }
+    await prisma.cartItem.deleteMany({
+      where: { cartId: cart.id },
+    });
 
     const paymentData = await createPayment({
-      amount: order.fullPrice,
+      amount: fullPrice,
       orderId: order.id,
       description: `Оплата заказа #${order.id}`,
       customerEmail: order.email,
-      items: order.items,
-      deliveryPrice: order.delivery_price,
+      items,
+      deliveryPrice,
     });
 
     if (!paymentData?.id) {
@@ -156,10 +128,10 @@ export async function POST(req: Request) {
       );
     }
 
-    await supabase
-      .from("orders")
-      .update({ paymentId: paymentData.id })
-      .eq("id", order.id);
+    await prisma.order.update({
+      where: { id: order.id },
+      data: { paymentId: paymentData.id },
+    });
 
     const paymentUrl = paymentData.confirmation.confirmation_url;
 
@@ -169,9 +141,9 @@ export async function POST(req: Request) {
       OrderReceiptEmail,
       {
         orderId: order.id,
-        fullPrice: order.fullPrice,
-        deliveryPrice: order.delivery_price,
-        items: JSON.stringify(order.items),
+        fullPrice,
+        deliveryPrice,
+        items: JSON.stringify(items),
         paymentUrl,
       }
     );

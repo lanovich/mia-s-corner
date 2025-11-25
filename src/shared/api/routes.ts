@@ -17,13 +17,17 @@ export const API = {
     updateProductSize: `${ADMIN_BASE}/product-sizes/update`,
     addProductSize: `${ADMIN_BASE}/product-sizes/add`,
     updateDescription: `${ADMIN_BASE}/products/update-description`,
+    totals: `${ADMIN_BASE}/totals`,
+    options: `${ADMIN_BASE}/options`,
+    groupedFullProducts: `${ADMIN_BASE}/products/grouped-full-products`,
+    productById: (id: number) => `${ADMIN_BASE}/products/${id}` as const,
   },
   cart: {
     add: `${CART_BASE}/add`,
     clear: `${CART_BASE}/clear`,
     decrease: `${CART_BASE}/decrease`,
-    getProduct: (productId: number) =>
-      `${CART_BASE}/product/${productId}` as const,
+    getItem: (productSizeId: number) =>
+      `${CART_BASE}/item/${productSizeId}` as const,
     remove: `${CART_BASE}/remove`,
     getToken: `${CART_BASE}/token`,
     updatePrice: `${CART_BASE}/update-price`,

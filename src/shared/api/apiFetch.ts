@@ -3,13 +3,12 @@ type ApiFetchOptions = RequestInit & { revalidate?: number };
 export async function apiFetch<T = any>(
   url: string,
   options: ApiFetchOptions = {}
-): Promise<T> {
+): Promise<T | null> {
   const { revalidate, ...init } = options;
 
   const isServer = typeof window === "undefined";
 
   let fullUrl: string;
-
   if (url.startsWith("http")) {
     fullUrl = url;
   } else if (isServer) {
@@ -20,14 +19,21 @@ export async function apiFetch<T = any>(
     fullUrl = url;
   }
 
-  const res = await fetch(fullUrl, {
-    ...init,
-    next: revalidate ? { revalidate } : undefined,
-  });
+  try {
+    const res = await fetch(fullUrl, {
+      ...init,
+      next: revalidate ? { revalidate } : undefined,
+    });
 
-  if (!res.ok) {
-    throw new Error(`API error ${res.status} on ${url}`);
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`API error ${res.status} on ${url}: ${text}`);
+      return null;
+    }
+
+    return res.json() as Promise<T>;
+  } catch (err) {
+    console.error(`❌ Network or fetch error on ${url}:`, err);
+    return null;
   }
-
-  return res.json();
 }

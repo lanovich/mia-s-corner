@@ -47,8 +47,8 @@ export const SelectCategoryField: React.FC<SelectCategoryFieldProps> = ({
       <Select value={currentValue} onValueChange={handleSelectChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Выбери категорию">
-            {selectedCategory?.title ||
-              (options.length > 0 ? options[0].title : "Выбери категорию")}
+            {selectedCategory?.name ||
+              (options.length > 0 ? options[0].name : "Выбери категорию")}
           </SelectValue>
         </SelectTrigger>
 
@@ -63,9 +63,9 @@ export const SelectCategoryField: React.FC<SelectCategoryFieldProps> = ({
                 >
                   <div className="flex gap-10">
                     <div className="text-sm font-medium">
-                      кол-во: {category.quantity}
+                      кол-во: {category.stockQuantity}
                     </div>
-                    <div className="font-medium">{category.title}</div>
+                    <div className="font-medium">{category.name}</div>
                   </div>
                 </SelectItem>
               ))

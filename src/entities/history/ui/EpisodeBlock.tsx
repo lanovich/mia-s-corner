@@ -5,7 +5,7 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 interface EpisodeBlockProps {
-  episodeNumber: number;
+  episodeNumber: number | null;
   episodeText: string | null;
   compound?: string;
 }
@@ -17,7 +17,7 @@ export const EpisodeBlock: React.FC<EpisodeBlockProps> = ({
 }) => {
   const [expanded, setExpanded] = useState(true);
 
-  const formattedText = episodeText?.replace(/\n/g, '\n');
+  const formattedText = episodeText?.replace(/\n/g, "\n");
 
   return (
     <div className="bg-gray-100 p-4 rounded-lg">
