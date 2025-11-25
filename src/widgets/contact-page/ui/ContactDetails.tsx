@@ -60,16 +60,12 @@ export const ContactDetails = () => (
       <h2 className="text-2xl font-bold text-gray-900 mb-4">Реквизиты</h2>
       <ul className="flex flex-col  justify-between space-y-2 text-gray-700  text-end">
         <li className="flex justify-between">
-          <span className="font-medium">ИП:</span>
+          <span className="font-medium">Самозанятый:</span>
           <span>Добромыслова Мария Алексеевна</span>
         </li>
         <li className="flex justify-between">
           <span className="font-medium">ИНН: </span>
-          <span>352841176253</span>
-        </li>
-        <li className="flex justify-between">
-          <span className="font-medium">ОГРНИП: </span>
-          <span>324350000060030</span>
+          <span>35284116253</span>
         </li>
       </ul>
     </div>
