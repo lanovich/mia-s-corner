@@ -9,7 +9,7 @@ Configuration to run the project with Docker.
     Copy `.env.example` to `.env` within this (`infra/`) directory and fill in your values.
 
     ```bash
-    cp infra/env.example infra/.env
+    cp .env.example .env
     ```
 
 2.  **Navigate to Infrastructure Directory**
@@ -23,11 +23,11 @@ Configuration to run the project with Docker.
     To start all services (app, database, proxy) in the background:
 
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
 
 4.  **Stop Application**
 
     ```bash
-    docker-compose down
+    docker compose down
     ```
