@@ -10,6 +10,7 @@ import {
 } from "@/entities/product/ui";
 import { productsApi } from "@/entities/product/api";
 import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
+import { getProductPrerender } from "@/shared/api";
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
@@ -17,7 +18,7 @@ export async function generateMetadata(props: {
   params: ProductParams;
 }): Promise<Metadata> {
   const params = await props.params;
-  const product = await productsApi.fetchProduct(
+  const product = await getProductPrerender(
     params.categorySlug,
     params.productSlug
   );
@@ -100,7 +101,7 @@ function generateProductKeywords(product: Product): string[] {
 
 export default async function ProductPage(props: { params: ProductParams }) {
   const params = await props.params;
-  const product = await productsApi.fetchProduct(
+  const product = await getProductPrerender(
     params.categorySlug,
     params.productSlug
   );

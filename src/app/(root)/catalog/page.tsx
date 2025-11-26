@@ -3,8 +3,7 @@ import { CatalogCard } from "@/shared/ui";
 import { Metadata } from "next";
 import { metadata as rootMetadata } from "@/app/(root)/layout";
 import { LINKS } from "@/shared/model";
-import { historiesApi } from "@/entities/history/api";
-import { categoriesApi } from "@/entities/category/api";
+import { getCategoriesPrerender, getHistoriesPrerender } from "@/shared/api";
 
 export const metadata: Metadata = {
   ...rootMetadata,
@@ -45,8 +44,8 @@ export const metadata: Metadata = {
 };
 
 export default async function CatalogPage() {
-  const categories = await categoriesApi.fetchCategories();
-  const histories = await historiesApi.fetchHistories();
+  const categories = await getCategoriesPrerender();
+  const histories = await getHistoriesPrerender();
 
   if (!categories) {
     return <div>Не нашли категорий</div>;
