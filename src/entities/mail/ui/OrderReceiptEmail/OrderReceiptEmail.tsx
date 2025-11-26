@@ -35,7 +35,7 @@ export const OrderReceiptEmail: React.FC<EmailTemplateProps> = ({
       <h2 style={styles.sectionTitle}>Состав заказа:</h2>
       <div>
         {parsedItems.map((item) => (
-          <OrderItemCard key={item.id} item={item} size_id={item.id} />
+          <OrderItemCard key={item.id} item={item} />
         ))}
       </div>
 

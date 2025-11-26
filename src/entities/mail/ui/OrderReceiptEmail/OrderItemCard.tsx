@@ -1,25 +1,25 @@
 import { OrderItem } from "@/entities/order/model";
 import { styles } from "./styles";
+import { unitMap } from "@/shared/lib";
 
-export const OrderItemCard: React.FC<{ item: OrderItem; size_id: number }> = ({
-  item,
-  size_id,
-}) => {
+export const OrderItemCard: React.FC<{ item: OrderItem }> = ({ item }) => {
+  const { productInfo, productSizeInfo, quantityInOrder } = item;
   return (
     <div style={styles.itemContainer}>
       <img
-        src={item.product.images[0].url}
-        alt={item.product.title}
+        src={productSizeInfo.images[0]}
+        alt={productInfo.title}
         style={styles.itemImage}
       />
       <div style={styles.itemDetails}>
-        <h3 style={styles.itemTitle}>{item.product.title}</h3>
+        <h3 style={styles.itemTitle}>{productInfo.title}</h3>
         <p style={styles.itemText}>
-          Размер: {item.size || "Не указан"} {item.product.measure}
+          Размер: {productSizeInfo.volume.amount || "Не указан"}{" "}
+          {productSizeInfo.volume.unit}
         </p>
-        <p style={styles.itemText}>Состав: {item.product.compound}</p>
+        <p style={styles.itemText}>Состав: {productInfo.scentName}</p>
         <p style={styles.itemPrice}>
-          {item.price || 0} ₽ x {item.quantity} шт.
+          {productSizeInfo.price || 0} ₽ x {quantityInOrder} шт.
         </p>
       </div>
     </div>

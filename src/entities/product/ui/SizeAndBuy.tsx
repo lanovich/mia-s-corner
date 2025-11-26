@@ -36,7 +36,7 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes, unit }) => {
       {hasSizes && (
         <div className="flex gap-2 flex-wrap">
           {sizes
-            .sort((a, b) => a?.volume?.amount - b?.volume?.amount)
+            .sort((a, b) => a?.volume?.amount! - b?.volume?.amount!)
             .map((size) => (
               <Button
                 key       = {size.id}

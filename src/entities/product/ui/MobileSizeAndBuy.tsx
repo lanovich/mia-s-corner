@@ -29,7 +29,6 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
   sizes,
   unit,
 }) => {
-  const hasSizes = sizes.length > 0;
   const { selectedSize, setSelectedSize } = useSelectedSizeStore();
 
   const handleAddToFavorite = () => {
@@ -86,7 +85,7 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-wrap gap-2 mx-auto md:mx-0">
-            {sizes.map((size) => (
+            {sizes?.map((size) => (
               <div key={size.id} className="flex-col flex">
                 <Button
                   onClick={() => setSelectedSize(size)}

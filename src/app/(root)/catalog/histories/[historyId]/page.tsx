@@ -11,7 +11,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const historyId = params.historyId;
-  const histories = await historiesApi.fetchHistories();
+  const histories = (await historiesApi.fetchHistories()) || [];
   const currentHistory = histories.find((h) => h.id === Number(historyId));
 
   if (!currentHistory) {
@@ -36,8 +36,8 @@ export async function generateMetadata(props: {
 export default async function HistoriesPage(props: { params: HistoryParams }) {
   const params = await props.params;
   const historyId = params.historyId;
-  const histories = await historiesApi.fetchHistories();
-  const products = await productsApi.fetchProductsByHistory(historyId);
+  const histories = (await historiesApi.fetchHistories()) || [];
+  const products = (await productsApi.fetchProductsByHistory(historyId)) || [];
   const currentHistory = histories.find(
     (history) => history.id === Number(historyId)
   );

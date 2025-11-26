@@ -44,6 +44,7 @@ export interface ShortProduct {
   episode?: {
     number?: number;
     title?: string;
+    storyText?: string;
   };
 
   scent?: {

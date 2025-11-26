@@ -1,9 +1,9 @@
-import { ProductSize, ShortProductSize } from "@/entities/product/model";
+import { ProductSize } from "@/entities/product/model";
 import { create } from "zustand";
 
 interface SelectedSizeStore {
-  selectedSize: ShortProductSize | null;
-  setSelectedSize: (size: ShortProductSize) => void;
+  selectedSize: ProductSize | null;
+  setSelectedSize: (size: ProductSize) => void;
 }
 
 export const useSelectedSizeStore = create<SelectedSizeStore>((set) => ({

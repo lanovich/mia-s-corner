@@ -10,7 +10,7 @@ export async function generateMetadata(props: {
   params: Params;
 }): Promise<Metadata> {
   const params = await props.params;
-  const categories = await categoriesApi.fetchCategories();
+  const categories = (await categoriesApi.fetchCategories()) || [];
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];
 
@@ -71,7 +71,7 @@ export async function generateMetadata(props: {
 
 export default async function CatalogPage(props: { params: Params }) {
   const params = await props.params;
-  const categories = await categoriesApi.fetchCategories();
+  const categories = (await categoriesApi.fetchCategories()) || [];
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];
 

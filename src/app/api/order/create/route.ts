@@ -6,6 +6,12 @@ import { createPayment } from "@/entities/order/api";
 import { sendEmail } from "@/entities/mail/api";
 import { OrderReceiptEmail } from "@/entities/mail/ui";
 import { OrderItem } from "@/entities/order/model";
+import { normalizeProduct } from "@/entities/product/model";
+import {
+  baseProductWithDetailsQuery,
+  baseShortProductsQuery,
+} from "@/shared/api/queries";
+import { unitMap } from "@/shared/lib";
 
 export async function POST(req: Request) {
   try {
@@ -31,7 +37,22 @@ export async function POST(req: Request) {
           include: {
             productSize: {
               include: {
-                product: true,
+                product: {
+                  select: {
+                    id: true,
+                    episode: {
+                      select: {
+                        number: true,
+                      },
+                    },
+                    scent: {
+                      select: {
+                        name: true,
+                      },
+                    },
+                    title: true,
+                  },
+                },
                 size: true,
               },
             },
@@ -47,24 +68,33 @@ export async function POST(req: Request) {
       );
     }
 
-    const items: OrderItem[] = cart.items.map((item) => ({
-      id: item.id,
-      productSizeId: item.productSizeId,
-      product: {
-        id: item.productSize.product.id,
-        title: item.productSize.product.title,
-        slug: item.productSize.product.slug ?? undefined,
-        isLimited: item.productSize.product.isLimited,
-        storyText: item.productSize.product.storyText ?? undefined,
-        description: item.productSize.product.description ?? undefined,
-      },
-      quantity: item.quantity,
-      price: Number(item.productSize.price),
-      images: item.productSize.images,
-    }));
+    const items: OrderItem[] = cart.items.map(
+      ({ id, productSize, quantity }) => ({
+        id: id,
+        productInfo: {
+          productId: productSize.product.id,
+          title: productSize.product.title,
+          scentName: productSize.product.scent?.name,
+        },
+        productSizeInfo: {
+          productSizeId: productSize.id,
+          price: Number(productSize.price),
+          ...(productSize.oldPrice
+            ? { oldPrice: Number(productSize.oldPrice) }
+            : null),
+          images: productSize.images,
+          volume: {
+            amount: Number(productSize.size.amount),
+            unit: unitMap[productSize.size.unit],
+          },
+        },
+        quantityInOrder: quantity,
+      })
+    );
 
     const productTotalAmount = items.reduce(
-      (sum, i) => sum + i.price * i.quantity,
+      (sum, { productSizeInfo, quantityInOrder }) =>
+        sum + productSizeInfo.price * quantityInOrder,
       0
     );
 

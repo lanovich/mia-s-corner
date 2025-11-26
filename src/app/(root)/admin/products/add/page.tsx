@@ -135,15 +135,6 @@ export default function AddProduct() {
     const toastId = toast.loading("Создание товара...");
 
     try {
-      const response = await axios.post("/api/admin/products", {
-        ...formData,
-        category_slug: categorySlug,
-        slug: generatedSlug,
-        epsiodeNumber: formData.epsiodeNumber
-          ? parseFloat(formData.epsiodeNumber)
-          : null,
-        size_ids: selectedSizeIds,
-      });
 
       toast.success("Товар успешно создан!", { id: toastId });
 
@@ -163,8 +154,6 @@ export default function AddProduct() {
       setLoading(false);
     }
   };
-
-  console.log(sizes);
 
   return (
     <div className="bg-gray-400 h-full">
@@ -318,7 +307,7 @@ export default function AddProduct() {
               <p>Загрузка размеров...</p>
             ) : sizes.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {sizes.map((size) => (
+                {sizes?.map((size) => (
                   <Button
                     key={size.id}
                     type="button"

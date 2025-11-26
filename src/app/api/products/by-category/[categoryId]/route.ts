@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/shared/api/prisma";
 import { productsByFilterQuery } from "@/shared/api/queries";
 import { mapRawToShortProduct } from "@/entities/product/model";
-import { normalizeProduct } from "@/entities/product/model/transformers";
 
 export async function GET(
   req: NextRequest,

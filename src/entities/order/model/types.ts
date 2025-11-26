@@ -1,3 +1,9 @@
+import {
+  Product,
+  ShortProduct,
+  ShortProductSize,
+} from "@/entities/product/model";
+
 export interface Delivery {
   deliveryPrice: number;
   method: string;
@@ -11,16 +17,23 @@ export interface Delivery {
 }
 
 export interface OrderItem {
-  productSizeId: number;
-  quantity: number;
-  price: number;
-  images: string[];
-  product: {
-    id: number;
+  id: number;
+  productInfo: {
+    productId: number;
     title: string;
-    slug?: string;
-    isLimited: boolean;
+    scentName?: string;
   };
+  productSizeInfo: {
+    productSizeId: number;
+    price: number;
+    oldPrice?: number;
+    images: string[];
+    volume: {
+      amount: number;
+      unit: string;
+    };
+  };
+  quantityInOrder: number;
 }
 
 export interface Order {

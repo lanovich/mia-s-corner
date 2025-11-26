@@ -10,80 +10,73 @@ datasource db {
 }
 
 model Cart {
-  id        Int      @id @default(autoincrement())
-  token     String   @unique
-  createdAt DateTime @default(now())
-  fullPrice Decimal  @default(0) @db.Decimal(10, 2)
-
-  items CartItem[]
+  id        Int        @id @default(autoincrement())
+  token     String     @unique
+  createdAt DateTime   @default(now())
+  fullPrice Decimal    @default(0) @db.Decimal(10, 2)
+  items     CartItem[]
 }
 
 model CartItem {
-  id            Int      @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   cartId        Int
   productSizeId Int
-  quantity      Int      @default(1)
-  createdAt     DateTime @default(now())
-
-  cart        Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  productSize ProductSize @relation(fields: [productSizeId], references: [id])
+  quantity      Int         @default(1)
+  createdAt     DateTime    @default(now())
+  cart          Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productSize   ProductSize @relation(fields: [productSizeId], references: [id])
 
   @@unique([cartId, productSizeId])
 }
 
 model Category {
-  id    Int     @id @default(autoincrement())
-  name  String
-  slug  String  @unique
-  image String?
-  order Int     @default(0)
-
-  sizes    Size[]
+  id       Int       @id @default(autoincrement())
+  name     String
+  slug     String    @unique
+  image    String?
+  order    Int       @default(0)
   products Product[]
+  sizes    Size[]
 }
 
 model Product {
-  id          Int     @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   title       String
-  slug        String? @unique
-  isLimited   Boolean @default(false)
+  slug        String?       @unique
+  isLimited   Boolean       @default(false)
   storyText   String?
   description String?
-
-  episodeId  Int?
-  categoryId Int
-  historyId  Int?
-  scentId    Int?
-
-  sizes    ProductSize[]
-  category Category      @relation(fields: [categoryId], references: [id])
-  history  History?      @relation(fields: [historyId], references: [id], onDelete: SetNull)
-  scent    Scent?        @relation(fields: [scentId], references: [id], onDelete: SetNull)
-  episode  Episode?      @relation(fields: [episodeId], references: [id], onDelete: SetNull)
+  episodeId   Int?
+  categoryId  Int
+  historyId   Int?
+  scentId     Int?
+  category    Category      @relation(fields: [categoryId], references: [id])
+  episode     Episode?      @relation(fields: [episodeId], references: [id])
+  history     History?      @relation(fields: [historyId], references: [id])
+  scent       Scent?        @relation(fields: [scentId], references: [id])
+  sizes       ProductSize[]
 }
 
 model History {
-  id          Int     @id @default(autoincrement())
-  title       String  @unique
-  slug        String? @unique
+  id          Int       @id @default(autoincrement())
+  title       String    @unique
+  slug        String?   @unique
   description String?
   order       Int?
   imageUrl    String?
-
-  episodes Episode[]
-  products Product[]
+  episodes    Episode[]
+  products    Product[]
 }
 
 model Episode {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   historyId Int
   title     String?
-  number    Decimal? @db.Decimal
-  storyText String?
+  number    Decimal?  @db.Decimal
   imageUrl  String?
-
-  history  History   @relation(fields: [historyId], references: [id], onDelete: Cascade)
-  products Product[]
+  storyText String?
+  history   History   @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  products  Product[]
 }
 
 model Scent {
@@ -95,50 +88,45 @@ model Scent {
 }
 
 model ProductSize {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   productId Int
   sizeId    Int
-  price     Decimal  @db.Decimal(10, 2)
-  oldPrice  Decimal  @db.Decimal(10, 2)
+  price     Decimal    @db.Decimal(10, 2)
+  oldPrice  Decimal?   @db.Decimal(10, 2)
   stock     Int
+  isDefault Boolean    @default(false)
   images    String[]
-  isDefault Boolean  @default(false)
   props     Json?
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  size    Size    @relation(fields: [sizeId], references: [id])
-
   cartItems CartItem[]
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      Size       @relation(fields: [sizeId], references: [id])
 
   @@unique([productId, sizeId])
 }
 
 model Size {
-  id         Int      @id @default(autoincrement())
-  categoryId Int
-  amount     Decimal? @db.Decimal
-  unit       Unit
-
-  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  id           Int           @id @default(autoincrement())
+  categoryId   Int
+  amount       Decimal?      @db.Decimal
+  unit         Unit
   productSizes ProductSize[]
+  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }
 
 model Order {
-  id      String  @id @default(uuid()) @db.Uuid
-  name    String
-  phone   String
-  email   String
-  wishes  String?
-  comment String?
-  token   String
-
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String
+  phone     String
+  email     String
+  wishes    String?
+  comment   String?
+  token     String
   items     Json
   fullPrice Decimal     @db.Decimal(10, 2)
   paymentId String?
   status    OrderStatus @default(PENDING)
-
   delivery  Json?
-  createdAt DateTime @default(now())
+  createdAt DateTime    @default(now())
 }
 
 enum Unit {

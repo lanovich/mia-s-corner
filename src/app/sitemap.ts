@@ -1,18 +1,16 @@
 import { MetadataRoute } from "next";
 import { Category } from "@/entities/category/model";
 import { HistoryData } from "@/entities/history/model";
-import {
-  getAllProducts,
-  getCategories,
-  getHistories,
-} from "@/shared/api/queries";
+import { categoriesApi } from "@/entities/category/api";
+import { historiesApi } from "@/entities/history/api";
+import { productsApi } from "@/entities/product/api";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://www.mias-corner.ru";
   const currentDate = new Date();
 
-  const categories = await getCategories();
-  const histories = await getHistories();
+  const categories = await categoriesApi.fetchCategories();
+  const histories = await historiesApi.fetchHistories();
 
   const staticPages = [
     {
@@ -47,27 +45,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const categoryPages = categories.map((category: Category) => ({
-    url: `${baseUrl}/catalog/${category.slug}`,
-    lastModified: currentDate,
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }));
+  const categoryPages = categories
+    ? categories.map((category: Category) => ({
+        url: `${baseUrl}/catalog/${category.slug}`,
+        lastModified: currentDate,
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      }))
+    : [];
 
-  const historyPages = histories.map((history: HistoryData) => ({
-    url: `${baseUrl}/catalog/histories/${history.id}`,
-    lastModified: currentDate,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
+  const historyPages = histories
+    ? histories.map((history: HistoryData) => ({
+        url: `${baseUrl}/catalog/histories/${history.id}`,
+        lastModified: currentDate,
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      }))
+    : [];
 
-  const products = await getAllProducts();
-  const productPages = products.map((product) => ({
-    url: `${baseUrl}/catalog/${product.category_slug}/product/${product.slug}`,
-    lastModified: new Date(currentDate),
-    changeFrequency: "daily" as const,
-    priority: 0.7,
-  }));
+  const products = await productsApi.fetchAllProducts();
+  const productPages = products
+    ? products.map((product) => ({
+        url: `${baseUrl}/catalog/${product.categorySlug}/product/${product.slug}`,
+        lastModified: new Date(currentDate),
+        changeFrequency: "daily" as const,
+        priority: 0.7,
+      }))
+    : [];
 
   return [...staticPages, ...categoryPages, ...historyPages, ...productPages];
 }

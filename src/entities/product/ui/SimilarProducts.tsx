@@ -23,8 +23,6 @@ export const SimilarProducts: React.FC<Props> = async ({
     );
   }
 
-  console.log(similarProducts);
-
   if (!similarProducts || similarProducts.length === 0) {
     return null;
   }

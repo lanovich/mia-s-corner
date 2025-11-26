@@ -7,8 +7,6 @@ export async function GET() {
   try {
     const raw = await prisma.category.findMany(categoryWithShortProductsQuery);
 
-    console.log(raw);
-
     const grouped = raw.map(mapCategoryToGroupedShortProducts);
     return NextResponse.json(grouped);
   } catch (err) {

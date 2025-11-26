@@ -15,8 +15,6 @@ export const calculateTotals = (cart: CartItem[] | []) => {
 
   const fullPrice = calcFullPrice(productTotalAmount).finalAmount;
 
-  console.log(fullPrice);
-
   return { productTotalAmount, fullPrice, itemsCount };
 };
 

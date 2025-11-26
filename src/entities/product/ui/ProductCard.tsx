@@ -13,8 +13,6 @@ interface Props {
 export const ProductCard: React.FC<Props> = memo(({ product }) => {
   const { size } = product;
 
-  console.log(size);
-
   const imageUrl = product?.size?.image
     ? product?.size?.image
     : "/placeholder.jpg";
@@ -43,11 +41,11 @@ export const ProductCard: React.FC<Props> = memo(({ product }) => {
 
           <div className="p-2 bg-slate-50">
             <div>
-              <span className="text-sm line-clamp-1 font-medium">
-                {product.scent?.name}
+              <span className="text-sm line-clamp-2 font-medium">
+                {product.title}
               </span>
               <p className="text-xs text-black/50 line-clamp-1">
-                {product.title}
+                {product.scent?.name}
               </p>
             </div>
 
@@ -74,7 +72,7 @@ export const ProductCard: React.FC<Props> = memo(({ product }) => {
         </CustomLink>
 
         <div className="px-2 pb-2 bg-slate-50 rounded-b-lg">
-          <AddToCartButton selectedSize={size} className="w-full">
+          <AddToCartButton selectedSize={size}>
             Добавить в корзину
           </AddToCartButton>
         </div>

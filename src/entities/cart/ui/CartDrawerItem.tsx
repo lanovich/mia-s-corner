@@ -15,9 +15,7 @@ interface Props {
 
 export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
   const { modifyItemQuantity, removeFromCart } = useCartStore();
-  const { shortProduct, quantity, productSizeId } = cartItem;
-
-  console.log(shortProduct);
+  const { shortProduct, quantity } = cartItem;
 
   const selectedSize = shortProduct.size;
 

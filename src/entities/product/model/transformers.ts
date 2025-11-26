@@ -125,6 +125,9 @@ export function mapRawToShortProduct(raw: ShortProductRaw): ShortProduct {
                 }
               : {}),
             ...(raw.episode.title ? { title: raw.episode.title } : {}),
+            ...(raw.episode.storyText
+              ? { storyText: raw.episode.storyText }
+              : {}),
           },
         }
       : {}),

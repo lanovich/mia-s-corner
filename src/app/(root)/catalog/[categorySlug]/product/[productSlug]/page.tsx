@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { Breadcrumbs, Container } from "@/shared/ui";
-import { Product, useSelectedSizeStore } from "@/entities/product/model";
+import { Product } from "@/entities/product/model";
 import {
   AboutProduct,
   BuySection,
@@ -30,26 +30,28 @@ export async function generateMetadata(props: {
     };
   }
 
-  const productType = CATEGORY_SLUG_MAP[product.category.slug];
+  const productCategorySlug = product.category?.slug ?? "товар";
+  const productType = CATEGORY_SLUG_MAP[productCategorySlug] ?? "Продукт";
 
   const metadata: Metadata = {
-    title: `${product.title} | ${productType} | Mia's Corner`,
-    description: `${product?.description?.slice(
-      0,
-      160
-    )}... Купить в Санкт-Петербурге с доставкой.`,
+    title: `${product.title ?? "Продукт"} | ${productType} | Mia's Corner`,
+    description: `${
+      product.description?.slice(0, 160) ?? ""
+    }... Купить в Санкт-Петербурге с доставкой.`,
     alternates: {
       canonical: `https://www.mias-corner.ru/catalog/${params.categorySlug}/product/${params.productSlug}`,
     },
     openGraph: {
-      title: `${product.title} | Mia's Corner | ${productType} ручной работы`,
-      description: `${product?.description?.slice(0, 160)}`,
+      title: `${
+        product.title ?? "Продукт"
+      } | Mia's Corner | ${productType} ручной работы`,
+      description: `${product.description?.slice(0, 160) ?? ""}`,
       images: [
         {
-          url: `${product.mainImage}`,
+          url: product.mainImage ?? "",
           width: 800,
           height: 600,
-          alt: `${product.title} - ${productType}`,
+          alt: `${product.title ?? "Продукт"} - ${productType}`,
         },
       ],
       type: "article",
@@ -64,8 +66,9 @@ export async function generateMetadata(props: {
 
 function generateProductKeywords(product: Product): string[] {
   const keywords = [];
-  const productName = product.title.toLowerCase();
-  const productType = CATEGORY_SLUG_MAP[product.category.slug];
+  const productName = (product.title ?? "товар").toLowerCase();
+  const productCategorySlug = product.category?.slug ?? "product";
+  const productType = CATEGORY_SLUG_MAP[productCategorySlug] ?? "Продукт";
 
   keywords.push(
     `купить ${productName} СПб`,
@@ -73,12 +76,12 @@ function generateProductKeywords(product: Product): string[] {
     `${productName} цена`
   );
 
-  product.sizes.forEach(({ price, oldPrice, volume }) => {
-    if (volume.amount) keywords.push(`${productName} ${volume.unit}`);
+  product.sizes?.forEach(({ price, volume }) => {
+    if (volume?.amount) keywords.push(`${productName} ${volume.unit ?? ""}`);
     if (price) keywords.push(`${productName} за ${price} руб`);
   });
 
-  if (product.category.slug === "candles") {
+  if (productCategorySlug === "candles") {
     keywords.push(
       "соевые свечи ручной работы",
       "свечи в стеклянных банках",
@@ -105,7 +108,8 @@ export default async function ProductPage(props: { params: ProductParams }) {
   if (!product) {
     return <div className="container mx-auto px-4 py-6">Продукт не найден</div>;
   }
-  if (product.sizes.length === 0) {
+
+  if (!product.sizes?.length) {
     return (
       <div className="container mx-auto px-4 py-6">
         У этого товара нет размеров
@@ -120,25 +124,25 @@ export default async function ProductPage(props: { params: ProductParams }) {
       <Breadcrumbs
         categoryInfo={{
           slug: params.categorySlug,
-          name: product.category.name || product.category.slug,
+          name: product.category?.name ?? product.category?.slug ?? "Категория",
         }}
-        productTitle={product.title}
+        productTitle={product.title ?? "Продукт"}
       />
       <Container className="max-w-[1380px] px-5">
         <div className="flex flex-col md:flex-row gap-6">
           <div className="md:w-1/2">
             <ProductGallery />
             <BuySection
-              scent={product.scent?.name}
+              scent={product.scent?.name ?? ""}
               episodeId={product.episode?.id}
               episodeText={
                 product.isLimited
-                  ? product.storyText
-                  : product.episode?.storyText
+                  ? product.storyText ?? ""
+                  : product.episode?.storyText ?? ""
               }
-              title={product.title}
-              unit={defaultSize?.volume?.unit || ""}
-              sizes={product.sizes}
+              title={product.title ?? "Продукт"}
+              unit={defaultSize?.volume?.unit ?? ""}
+              sizes={product.sizes ?? []}
               className="mt-5 md:hidden sticky top-4 mb-5 flex"
             />
             <AboutProduct
@@ -148,16 +152,16 @@ export default async function ProductPage(props: { params: ProductParams }) {
           </div>
           <div className="md:w-full">
             <BuySection
-              scent={product.scent?.name}
+              scent={product.scent?.name ?? ""}
               episodeId={product.episode?.id}
               episodeText={
                 product.isLimited
-                  ? product.storyText
-                  : product.episode?.storyText
+                  ? product.storyText ?? ""
+                  : product.episode?.storyText ?? ""
               }
-              title={product.title}
-              unit={defaultSize?.volume?.unit || ""}
-              sizes={product.sizes}
+              title={product.title ?? "Продукт"}
+              unit={defaultSize?.volume?.unit ?? ""}
+              sizes={product.sizes ?? []}
               className="hidden md:flex sticky top-4 mb-5"
             />
             <AboutProduct
@@ -169,16 +173,16 @@ export default async function ProductPage(props: { params: ProductParams }) {
 
         <div className="w-full">
           <SimilarProducts
-            historyId={product.episode ? product?.episode?.historyId : null}
+            historyId={product.episode?.historyId ?? null}
             className="mt-7"
-            productId={product.id}
+            productId={product.id ?? ""}
           />
         </div>
 
         <div className="flex md:hidden">
           <MobileSizeAndBuy
-            sizes={product.sizes}
-            unit={defaultSize?.volume?.unit || ""}
+            sizes={product.sizes ?? []}
+            unit={defaultSize?.volume?.unit ?? ""}
           />
         </div>
       </Container>

@@ -31,50 +31,55 @@ export const ProductGallery: React.FC<Props> = ({ className }) => {
     setCursorPosition({ x, y });
   };
 
-  const images = selectedSize?.images?.map((url) => ({
-    url: url ?? "/placeholder.jpg",
-    type:
-      selectedSize.volume?.amount && selectedSize.volume?.unit
-        ? `${selectedSize.volume.amount} ${selectedSize.volume.unit}`
-        : "default",
-  })) || [{ url: "/placeholder.jpg", type: "placeholder" }];
+  let images =
+    selectedSize?.images?.map((image) => ({
+      url: image ?? "/placeholder.jpg",
+      type:
+        selectedSize.volume?.amount && selectedSize.volume?.unit
+          ? `${selectedSize.volume.amount} ${selectedSize.volume.unit}`
+          : "default",
+    })) || [];
+
+  if (images?.length === 0) {
+    images = [{ url: "/placeholder.jpg", type: "placeholder" }];
+  }
 
   const imageSizes =
     "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px";
 
   return (
     <div className={cn("flex gap-4 items-center h-[500px]", className)}>
-      {/* Миниатюры */}
-      <div className="h-[500px] hidden md:flex">
-        <Swiper
-          direction="vertical"
-          spaceBetween={8}
-          slidesPerView={4}
-          freeMode={true}
-          watchSlidesProgress
-          onSwiper={setThumbsSwiper}
-          className="w-[70px] h-[500px]"
-        >
-          {images.map(({ type, url }, index) => (
-            <SwiperSlide
-              key={index}
-              className="cursor-pointer !h-[calc(25%-6px)]"
-            >
-              <div className="relative w-full h-full">
-                <Image
-                  src={url}
-                  fill
-                  sizes="60px"
-                  alt={`Thumbnail ${type}`}
-                  className="rounded-md object-cover"
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+      {images.length > 1 && (
+        <div className="h-[500px] hidden md:flex">
+          <Swiper
+            direction="vertical"
+            spaceBetween={8}
+            slidesPerView={4}
+            freeMode={true}
+            watchSlidesProgress
+            onSwiper={setThumbsSwiper}
+            className="w-[70px] h-[500px]"
+          >
+            {images.map(({ type, url }, index) => (
+              <SwiperSlide
+                key={`${type}-${index}`}
+                className="cursor-pointer !h-[calc(25%-6px)]"
+              >
+                <div className="relative w-full h-full min-w-[70px]">
+                  <Image
+                    src={url}
+                    fill
+                    sizes="60px"
+                    alt={`Thumbnail ${type}`}
+                    className="rounded-md object-cover"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
 
-      {/* Основной слайдер */}
       <Swiper
         navigation={{ nextEl: ".custom-next", prevEl: ".custom-prev" }}
         spaceBetween={8}
@@ -96,7 +101,7 @@ export const ProductGallery: React.FC<Props> = ({ className }) => {
                 src={url}
                 fill
                 sizes={imageSizes}
-                alt={`Product image ${index}`}
+                alt={`Product image ${type}`}
                 className="object-cover rounded-lg transition-transform duration-300"
                 style={{
                   transform:

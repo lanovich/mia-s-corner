@@ -1,8 +1,7 @@
-import { SizeDetails } from "@/entities/product/model";
 import { InputField } from "../ui";
 interface DimensionInputsProps {
-  dimensions: SizeDetails["dimensions"];
-  onChange: (dimensions: SizeDetails["dimensions"]) => void;
+  dimensions: any;
+  onChange: (dimensions: any) => void;
   isChanged?: boolean;
 }
 

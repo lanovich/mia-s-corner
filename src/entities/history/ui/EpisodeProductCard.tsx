@@ -8,7 +8,6 @@ interface ProductCardProps {
 }
 
 export const EpisodeProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  console.log(product);
   return (
     <CustomLink
       href={`${LINKS.CATALOG}/${product.categorySlug}/${LINKS.PRODUCT}/${product.slug}`}

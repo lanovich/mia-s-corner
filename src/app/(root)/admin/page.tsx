@@ -1,5 +1,6 @@
-import { AdminPanel } from "@/features/admin-control/ui";
+import { redirect } from "next/navigation";
 
 export default function AdminPage() {
-  return <AdminPanel />;
+  redirect("/");
+  return <div />;
 }

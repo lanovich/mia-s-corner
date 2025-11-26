@@ -23,6 +23,8 @@ export const Episodes: React.FC<ProductsGridProps> = ({
     return acc;
   }, {} as Record<number, ShortProduct[]>);
 
+  console.log(groupedProducts)
+
   return (
     <div className={cn("grid grid-cols-1 gap-8 px-5", className)}>
       {Object.entries(groupedProducts).map(
@@ -33,7 +35,7 @@ export const Episodes: React.FC<ProductsGridProps> = ({
             <div key={episodeNumber} className="space-y-4">
               <EpisodeBlock
                 episodeNumber={firstProduct.episode?.number ?? null}
-                episodeText={firstProduct.episode?.title || ""}
+                episodeText={firstProduct.episode?.storyText || ""}
                 compound={firstProduct.scent?.name ?? ""}
               />
 

@@ -6,13 +6,11 @@ import { CartAddButton, CartQuantityInput } from ".";
 
 interface Props {
   selectedSize: ShortProductSize | null;
-  className?: string;
   children?: React.ReactNode;
 }
 
 export const AddToCartButton: React.FC<Props> = ({
   selectedSize,
-  className,
   children,
 }) => {
   const {

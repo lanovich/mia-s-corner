@@ -17,19 +17,33 @@ export const baseShortProductsQuery =
           oldPrice: true,
           images: true,
           stock: true,
+          props: true,
           size: {
             select: {
               id: true,
               amount: true,
               unit: true,
-              props: true,
             },
           },
         },
       },
-      episode: { select: { number: true, title: true, historyId: true } },
+      episode: {
+        select: { number: true, title: true, historyId: true, storyText: true },
+      },
       scent: { select: { name: true } },
       category: { select: { slug: true } },
+    },
+  });
+
+export const makeShortProductsQueryBySizeId = (productSizeId: number) =>
+  Prisma.validator<Prisma.ProductFindManyArgs>()({
+    ...baseShortProductsQuery,
+    select: {
+      ...baseShortProductsQuery.select,
+      sizes: {
+        ...baseShortProductsQuery.select.sizes,
+        where: { id: productSizeId },
+      },
     },
   });
 

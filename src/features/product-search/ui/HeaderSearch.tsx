@@ -25,8 +25,6 @@ export const HeaderSearch = ({ className, autoFocus, onClose }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  console.log(query);
-
   useClickOutside(containerRef, () => {
     setIsDropdownOpen(false);
   });

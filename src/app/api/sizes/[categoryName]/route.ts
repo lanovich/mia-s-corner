@@ -6,8 +6,11 @@ interface Params {
   categoryName: string;
 }
 
-export async function GET(_request: Request, { params }: { params: Params }) {
-  const { categoryName } = params;
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<Params> }
+) {
+  const { categoryName } = await params;
 
   if (!categoryName) {
     return NextResponse.json(

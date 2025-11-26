@@ -24,8 +24,6 @@ export interface UpdateDescriptionPayload {
 }
 
 export const adminApi = {
-  fetchSummary: () => apiFetch<Product[]>(API.admin.getProductSummary),
-
   fetchTotals: () => apiFetch<TotalsResponse>(API.admin.totals),
 
   fetchProductOptions: () => apiFetch<ProductOption[]>(API.admin.options),

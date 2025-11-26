@@ -13,7 +13,6 @@ const SIZES_BASE = `${BASE_API_URL}/sizes`;
 
 export const API = {
   admin: {
-    getProductSummary: `${ADMIN_BASE}/products`,
     updateProductSize: `${ADMIN_BASE}/product-sizes/update`,
     addProductSize: `${ADMIN_BASE}/product-sizes/add`,
     updateDescription: `${ADMIN_BASE}/products/update-description`,

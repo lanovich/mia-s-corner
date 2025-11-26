@@ -38,7 +38,9 @@ export const AboutProduct: React.FC<Props> = ({ className, product }) => {
     if (dimensions) {
       items.push({
         label: "Габариты",
-        value: `${dimensions.width} x ${dimensions.height} x ${dimensions.length} мм`,
+        value: `${[dimensions.width, dimensions.height, dimensions.length]
+          .filter(Boolean)
+          .join("x")} мм`,
       });
     }
 

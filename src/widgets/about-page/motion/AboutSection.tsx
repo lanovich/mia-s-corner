@@ -27,8 +27,6 @@ const AboutSection = () => {
     }
   }, [isTextInView, animate]);
 
-  console.log("AboutSection loaded");
-
   return (
     <section ref={scope} className="w-full mb-16">
       <div className="relative flex flex-col md:flex-row justify-between overflow-hidden px-4 md:px-4 text-center md:text-start">

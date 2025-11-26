@@ -11,7 +11,7 @@ export interface HistoryData {
 export interface Episode {
   id: number;
   historyId: number;
-  title: string;
+  title?: string;
   number?: number;
   storyText?: string;
   imageUrl?: string;

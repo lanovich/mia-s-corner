@@ -16,7 +16,7 @@ export const HorizontalProductCard: React.FC<Props> = ({ shortProduct }) => {
     <div className="relative shadow-lg border flex h-40 w-full rounded-xl transition-transform duration-300 hover:scale-[102%]">
       {/* Product Image */}
       <CustomLink
-        href={`${LINKS.CATALOG}/${shortProduct.categorySlug}/shortProduct/${shortProduct.slug}`}
+        href={`${LINKS.CATALOG}/${shortProduct.categorySlug}/product/${shortProduct.slug}`}
         className="group block"
       >
         <div className="relative h-full w-40 flex-shrink-0 overflow-hidden">
@@ -41,7 +41,7 @@ export const HorizontalProductCard: React.FC<Props> = ({ shortProduct }) => {
           <span
             className={cn(
               "text-md font-bold",
-              shortProduct?.size.oldPrice ? "text-red-500 font-bold" : ""
+              shortProduct?.size?.oldPrice ? "text-red-500 font-bold" : ""
             )}
           >
             {shortProduct.size?.price} ₽

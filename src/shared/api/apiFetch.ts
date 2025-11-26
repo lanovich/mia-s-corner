@@ -26,14 +26,14 @@ export async function apiFetch<T = any>(
     });
 
     if (!res.ok) {
-      const text = await res.text();
-      console.error(`API error ${res.status} on ${url}: ${text}`);
+      const text = await res.text().catch(() => "");
+      console.error(`API fetch error ${res.status} on ${fullUrl}: ${text}`);
       return null;
     }
 
-    return res.json() as Promise<T>;
-  } catch (err) {
-    console.error(`❌ Network or fetch error on ${url}:`, err);
+    return (await res.json()) as T;
+  } catch (error) {
+    console.error("API fetch error:", error);
     return null;
   }
 }
