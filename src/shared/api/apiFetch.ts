@@ -12,8 +12,8 @@ export async function apiFetch<T = any>(
   if (url.startsWith("http")) {
     fullUrl = url;
   } else if (isServer) {
-    const host = process.env.NEXT_PUBLIC_SITE_URL;
-    if (!host) throw new Error("NEXT_PUBLIC_SITE_URL is not defined on server");
+    const host = process.env.NEXT_PUBLIC_BASE_URL;
+    if (!host) throw new Error("NEXT_PUBLIC_BASE_URL is not defined on server");
     fullUrl = host + url;
   } else {
     fullUrl = url;
