@@ -1,0 +1,142 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../node_modules/.prisma/client"
+  previewFeatures = []
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  token     String     @unique
+  createdAt DateTime   @default(now())
+  fullPrice Decimal    @default(0) @db.Decimal(10, 2)
+  items     CartItem[]
+}
+
+model CartItem {
+  id            Int         @id @default(autoincrement())
+  cartId        Int
+  productSizeId Int
+  quantity      Int         @default(1)
+  createdAt     DateTime    @default(now())
+  cart          Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productSize   ProductSize @relation(fields: [productSizeId], references: [id])
+
+  @@unique([cartId, productSizeId])
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String
+  slug     String    @unique
+  image    String?
+  order    Int       @default(0)
+  products Product[]
+  sizes    Size[]
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  title       String
+  slug        String?       @unique
+  isLimited   Boolean       @default(false)
+  storyText   String?
+  description String?
+  episodeId   Int?
+  categoryId  Int
+  historyId   Int?
+  scentId     Int?
+  category    Category      @relation(fields: [categoryId], references: [id])
+  episode     Episode?      @relation(fields: [episodeId], references: [id])
+  history     History?      @relation(fields: [historyId], references: [id])
+  scent       Scent?        @relation(fields: [scentId], references: [id])
+  sizes       ProductSize[]
+}
+
+model History {
+  id          Int       @id @default(autoincrement())
+  title       String    @unique
+  slug        String?   @unique
+  description String?
+  order       Int?
+  imageUrl    String?
+  episodes    Episode[]
+  products    Product[]
+}
+
+model Episode {
+  id        Int       @id @default(autoincrement())
+  historyId Int
+  title     String?
+  number    Decimal?  @db.Decimal
+  imageUrl  String?
+  storyText String?
+  history   History   @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  products  Product[]
+}
+
+model Scent {
+  id           Int       @id @default(autoincrement())
+  name         String
+  scentPyramid Json?
+  description  String?
+  products     Product[]
+}
+
+model ProductSize {
+  id        Int        @id @default(autoincrement())
+  productId Int
+  sizeId    Int
+  price     Decimal    @db.Decimal(10, 2)
+  oldPrice  Decimal?   @db.Decimal(10, 2)
+  stock     Int
+  isDefault Boolean    @default(false)
+  images    String[]
+  props     Json?
+  cartItems CartItem[]
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      Size       @relation(fields: [sizeId], references: [id])
+
+  @@unique([productId, sizeId])
+}
+
+model Size {
+  id           Int           @id @default(autoincrement())
+  categoryId   Int
+  amount       Decimal?      @db.Decimal
+  unit         Unit
+  productSizes ProductSize[]
+  category     Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String
+  phone     String
+  email     String
+  wishes    String?
+  comment   String?
+  token     String
+  items     Json
+  fullPrice Decimal     @db.Decimal(10, 2)
+  paymentId String?
+  status    OrderStatus @default(PENDING)
+  delivery  Json?
+  createdAt DateTime    @default(now())
+}
+
+enum Unit {
+  ML
+  G
+  PCS
+}
+
+enum OrderStatus {
+  SUCCEEDED
+  CANCELLED
+  PENDING
+}

@@ -1,1 +1,1 @@
-export * from "./HistoryData";
+export * from "./types";

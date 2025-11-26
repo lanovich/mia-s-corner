@@ -1,149 +1,93 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
+import { mapRawToShortProduct, ShortProduct } from "@/entities/product/model";
+import {
+  baseShortProductsQuery,
+  makeShortProductsQueryBySizeId,
+} from "@/shared/api/queries";
 
 export async function POST(req: Request) {
-  const authHeader = req.headers.get("Authorization");
-  const token = authHeader?.split(" ")[1];
-
-  if (!token) {
-    return NextResponse.json({ error: "No token" }, { status: 401 });
-  }
-
-  const { productId, sizeId, delta } = await req.json();
-
   try {
-    const { data: cart, error: cartError } = await supabase
-      .from("cart")
-      .select("id")
-      .eq("token", token)
-      .maybeSingle();
+    const authHeader = req.headers.get("Authorization");
+    const token = authHeader?.split(" ")[1];
 
-    if (cartError) {
-      console.error("Ошибка поиска корзины:", cartError.message);
-      return NextResponse.json({ error: "DB error" }, { status: 500 });
+    if (!token) {
+      return NextResponse.json({ error: "No token" }, { status: 401 });
     }
 
-    let cartId: number;
+    const { productSizeId, delta } = await req.json();
+    const productSizeIdNum = Number(productSizeId);
+    const deltaNum = Number(delta);
 
-    if (!cart) {
-      const { data: newCart, error: createError } = await supabase
-        .from("cart")
-        .insert({ token })
-        .select("id")
-        .single();
-
-      if (createError || !newCart) {
-        console.error("Ошибка при создании корзины:", createError?.message);
-        return NextResponse.json(
-          { error: "Cart create failed" },
-          { status: 500 }
-        );
-      }
-
-      cartId = newCart.id;
-    } else {
-      cartId = cart.id;
+    if (isNaN(productSizeIdNum) || isNaN(deltaNum)) {
+      return NextResponse.json(
+        { error: "Некорректные данные" },
+        { status: 400 }
+      );
     }
 
-    const { data: cartItem, error: itemError } = await supabase
-      .from("cartItem")
-      .select("id, quantity")
-      .eq("cart_id", cartId)
-      .eq("product_id", productId)
-      .eq("size_id", sizeId)
-      .maybeSingle();
+    const cart = await prisma.cart.upsert({
+      where: { token },
+      update: {},
+      create: { token },
+    });
 
-    if (itemError) {
-      console.error("Ошибка при получении товара:", itemError.message);
-      return NextResponse.json({ error: itemError.message }, { status: 500 });
+    const shortProduct = await prisma.product.findFirst({
+      where: {
+        sizes: {
+          some: {
+            id: productSizeIdNum,
+          },
+        },
+      },
+      ...makeShortProductsQueryBySizeId(productSizeIdNum),
+    });
+
+    if (!shortProduct) {
+      return NextResponse.json({ newItem: null });
     }
 
-    let newQuantity = delta;
-
-    if (cartItem) {
-      newQuantity = cartItem.quantity + delta;
-    }
-
-    if (newQuantity > 0) {
-      if (cartItem) {
-        const { error: updateError } = await supabase
-          .from("cartItem")
-          .update({ quantity: newQuantity })
-          .eq("id", cartItem.id);
-
-        if (updateError) {
-          console.error(
-            "Ошибка при обновлении количества:",
-            updateError.message
-          );
-          return NextResponse.json(
-            { error: updateError.message },
-            { status: 500 }
-          );
-        }
-      } else {
-        const { error: insertError } = await supabase.from("cartItem").insert({
-          cart_id: cartId,
-          product_id: productId,
-          size_id: sizeId,
-          quantity: newQuantity,
-        });
-
-        if (insertError) {
-          console.error("Ошибка при добавлении товара:", insertError.message);
-          return NextResponse.json(
-            { error: insertError.message },
-            { status: 500 }
-          );
-        }
-      }
-    } else if (cartItem) {
-      const { error: deleteError } = await supabase
-        .from("cartItem")
-        .delete()
-        .eq("id", cartItem.id);
-
-      if (deleteError) {
-        console.error("Ошибка при удалении товара:", deleteError.message);
-        return NextResponse.json(
-          { error: deleteError.message },
-          { status: 500 }
-        );
-      }
-
-      newQuantity = 0;
-    }
-
-    const { data, error } = await supabase
-      .from("products")
-      .select(`*, product_sizes:product_sizes!product_id(*, size:size_id(*))`)
-      .eq("id", productId)
-      .single();
-
-    if (error || !data) {
-      console.error("Ошибка при получении товара:", error?.message);
-      return NextResponse.json({ error: error?.message }, { status: 500 });
-    }
-
-    const product = {
-      ...data,
-      sizes: data.product_sizes.map((ps: any) => ({
-        ...ps.size,
-        price: ps.price,
-        oldPrice: ps.oldPrice,
-        is_default: ps.is_default,
-      })),
-    };
-
-    return NextResponse.json({
-      newItem: {
-        product,
-        size_id: sizeId,
-        quantity: newQuantity,
+    let cartItem = await prisma.cartItem.findUnique({
+      where: {
+        cartId_productSizeId: {
+          cartId: cart.id,
+          productSizeId: productSizeIdNum,
+        },
       },
     });
+
+    if (cartItem) {
+      const newQty = cartItem.quantity + deltaNum;
+      if (newQty <= 0) {
+        await prisma.cartItem.delete({ where: { id: cartItem.id } });
+        return NextResponse.json({ newItem: null });
+      }
+      cartItem = await prisma.cartItem.update({
+        where: { id: cartItem.id },
+        data: { quantity: newQty },
+      });
+    } else if (deltaNum > 0) {
+      cartItem = await prisma.cartItem.create({
+        data: {
+          cartId: cart.id,
+          productSizeId: productSizeIdNum,
+          quantity: deltaNum,
+        },
+      });
+    } else {
+      return NextResponse.json({ newItem: null });
+    }
+
+    const newItem = {
+      id: cartItem.id,
+      productSizeId: productSizeIdNum,
+      quantity: cartItem.quantity,
+      shortProduct: mapRawToShortProduct(shortProduct),
+    };
+
+    return NextResponse.json({ newItem });
   } catch (err: any) {
-    console.error("Unexpected error:", err.message);
+    console.error(err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

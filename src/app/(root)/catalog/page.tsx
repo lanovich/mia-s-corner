@@ -2,10 +2,8 @@ import { Breadcrumbs, Container } from "@/shared/ui";
 import { CatalogCard } from "@/shared/ui";
 import { Metadata } from "next";
 import { metadata as rootMetadata } from "@/app/(root)/layout";
-import { categoriesApi } from "@/entities/category/api";
-import { historiesApi } from "@/entities/history/api";
 import { LINKS } from "@/shared/model";
-import { getCategories, getHistories } from "@/shared/api/queries";
+import { getCategoriesPrerender, getHistoriesPrerender } from "@/shared/api";
 
 export const metadata: Metadata = {
   ...rootMetadata,
@@ -46,8 +44,16 @@ export const metadata: Metadata = {
 };
 
 export default async function CatalogPage() {
-  const categories = await getCategories();
-  const histories = await getHistories();
+  const categories = await getCategoriesPrerender();
+  const histories = await getHistoriesPrerender();
+
+  if (!categories) {
+    return <div>Не нашли категорий</div>;
+  }
+
+  if (!histories) {
+    return <div>Не нашли историй</div>;
+  }
 
   return (
     <>
@@ -63,7 +69,7 @@ export default async function CatalogPage() {
               key={category.slug}
               slug={category.slug}
               title={category.name}
-              image={category.image}
+              image={category?.image}
               href={`/catalog/${category.slug}`}
             />
           ))}
@@ -81,7 +87,7 @@ export default async function CatalogPage() {
               description={history.description}
               image={history.imageUrl || "/Placeholder.jpg"}
               href={`${LINKS.CATALOG}/${LINKS.HISTORIES}/${history.id}`}
-              slug={history.history_slug}
+              slug={history.slug}
             />
           ))}
         </div>

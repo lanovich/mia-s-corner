@@ -10,18 +10,18 @@ import { ProductSize } from "@/entities/product/model";
 
 interface Props {
   className?: string;
-  measure: string;
+  unit: string;
   sizes: ProductSize[];
 }
 
-export const SizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
+export const SizeAndBuy: React.FC<Props> = ({ className, sizes, unit }) => {
   const hasSizes = sizes && sizes.length > 0;
   const { selectedSize, setSelectedSize } = useSelectedSizeStore();
 
   useEffect(() => {
     if (!hasSizes) return;
 
-    const defaultSize = sizes.find((s) => s.is_default) || sizes[0];
+    const defaultSize = sizes.find((s) => s.isDefault) || sizes[0];
     setSelectedSize(defaultSize);
   }, [sizes, hasSizes, setSelectedSize]);
 
@@ -33,28 +33,26 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
 
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
-      {/* Размеры */}
       {hasSizes && (
         <div className="flex gap-2 flex-wrap">
           {sizes
-            .sort((a, b) => a.size.size - b.size.size)
+            .sort((a, b) => a?.volume?.amount! - b?.volume?.amount!)
             .map((size) => (
               <Button
-                key={size.size_id}
-                onClick={() => setSelectedSize(size)}
-                className={`border px-3 py-1 text-sm hover:text-white ${
-                  selectedSize?.size_id === size.size_id
+                key       = {size.id}
+                onClick   = {() => setSelectedSize(size)}
+                className = {`border px-3 py-1 text-sm hover:text-white ${
+                  selectedSize?.id === size.id
                     ? "bg-black text-white"
                     : "bg-inherit text-black border-black"
                 }`}
               >
-                {`${size.size.size} ${measure}`}
+                {`${size?.volume?.amount} ${unit}`}
               </Button>
             ))}
         </div>
       )}
 
-      {/* Цена */}
       <div className="flex items-center gap-2">
         <span
           className={`mt-3 text-3xl ${
@@ -71,12 +69,8 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes, measure }) => {
         )}
       </div>
 
-      {/* Кнопка добавления в корзину и избранное */}
       <div className="flex items-center gap-4 mr-10 md:min-w-80">
-        <AddToCartButton
-          selectedSize={selectedSize}
-          className="flex flex-1"
-        >
+        <AddToCartButton selectedSize={selectedSize}>
           <p className="text-lg">Добавить в корзину</p>
         </AddToCartButton>
 

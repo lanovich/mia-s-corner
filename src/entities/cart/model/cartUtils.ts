@@ -1,41 +1,34 @@
-import { CartItem } from "./CartItem";
 import { findSelectedSize } from "@/shared/lib";
 import { calcFullPrice } from "@/shared/lib/calcFullPrice";
 import { cartService } from "./cartService";
+import { CartItem } from ".";
 
 export const calculateTotals = (cart: CartItem[] | []) => {
   if (!cart) return { productTotalAmount: 0, fullPrice: 0, itemsCount: 0 };
 
   const itemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-  const productTotalAmount = cart.reduce(
-    (acc, item) =>
-      acc +
-      (findSelectedSize(item.product, item.size_id)?.price || 0) *
-        item.quantity,
-    0
-  );
+
+  const productTotalAmount = cart.reduce((acc, item) => {
+    const price = item.shortProduct.size.price;
+    return acc + price * item.quantity;
+  }, 0);
+
   const fullPrice = calcFullPrice(productTotalAmount).finalAmount;
+
   return { productTotalAmount, fullPrice, itemsCount };
 };
 
-export const findCartItemIndex = (
-  cart: CartItem[],
-  productId: number,
-  sizeId: number
-) =>
-  cart.findIndex(
-    (item) => item.product.id === productId && item.size_id === sizeId
-  );
+export const findCartItemIndex = (cart: CartItem[], productSizeId: number) =>
+  cart.findIndex((item) => item.productSizeId === productSizeId);
 
 export const updateCartQuantity = (
   cart: CartItem[],
-  productId: number,
-  sizeId: number,
+  productSizeId: number,
   delta: number,
   newItem?: CartItem
 ) => {
   const newCart = [...cart];
-  const index = findCartItemIndex(newCart, productId, sizeId);
+  const index = findCartItemIndex(newCart, productSizeId);
 
   if (delta > 0) {
     if (index !== -1) {
@@ -43,10 +36,14 @@ export const updateCartQuantity = (
     } else if (newItem) {
       newCart.push(newItem);
     }
-  } else {
-    if (index !== -1) {
-      newCart[index].quantity += delta;
-      if (newCart[index].quantity <= 0) newCart.splice(index, 1);
+    return newCart;
+  }
+
+  if (index !== -1) {
+    newCart[index].quantity += delta;
+
+    if (newCart[index].quantity <= 0) {
+      newCart.splice(index, 1);
     }
   }
 
@@ -54,15 +51,13 @@ export const updateCartQuantity = (
 };
 
 export const modifyQuantityAPI = async (
-  productId: number,
-  sizeId: number,
+  productSizeId: number,
   delta: number
 ): Promise<CartItem | undefined> => {
   if (delta > 0) {
-    const { newItem } = await cartService.addToCart(productId, sizeId, delta);
-    return newItem;
+    return await cartService.addToCart(productSizeId, delta);
   } else {
-    await cartService.decreaseQuantity(productId, sizeId, delta);
+    await cartService.decreaseQuantity(productSizeId, delta);
     return undefined;
   }
 };

@@ -16,6 +16,9 @@ export async function geocodeCity(
         body: JSON.stringify({ name: city, type: "city" }),
       }
     );
+    if (!data) {
+      throw new Error("Not found geocode data");
+    }
 
     if (!data.points || data.points.length === 0) return { points: [] };
 

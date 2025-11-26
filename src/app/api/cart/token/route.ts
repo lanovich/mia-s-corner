@@ -1,6 +1,6 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
 
 export async function GET(req: NextRequest) {
   const tokenCookie = req.cookies.get("user_token")?.value;
@@ -10,31 +10,27 @@ export async function GET(req: NextRequest) {
   if (!token) {
     token = uuidv4();
 
-    const { error } = await supabase
-      .from("cart")
-      .upsert([{ token }], { onConflict: "token" });
-
-    if (error) {
-      console.error("Ошибка создания корзины:", error.message);
-      return new Response(
-        JSON.stringify({ error: "Ошибка создания корзины" }),
-        {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
-        }
+    try {
+      await prisma.cart.create({
+        data: { token },
+      });
+    } catch (err: any) {
+      console.error("Ошибка создания корзины:", err);
+      return NextResponse.json(
+        { error: "Ошибка создания корзины" },
+        { status: 500 }
       );
     }
   }
 
-  const res = new Response(JSON.stringify({ token }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  const res = NextResponse.json({ token });
 
-  res.headers.set(
-    "Set-Cookie",
-    `user_token=${token}; Path=/; Max-Age=${60 * 60 * 24 * 365}`
-  );
+  res.cookies.set({
+    name: "user_token",
+    value: token,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 365,
+  });
 
   return res;
 }

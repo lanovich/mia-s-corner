@@ -1,23 +1,36 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
 
-export async function GET(
-  req: Request,
-  context: { params: Promise<{ slug: string }> }
-) {
-  const { slug } = await context.params;
+interface Params {
+  slug: string;
+}
 
-  const { data, error } = await supabase
-    .from("categories")
-    .select("name")
-    .eq("slug", slug)
-    .single();
+export async function GET(_request: Request, { params }: { params: Promise<Params> }) {
+  try {
+    const { slug } = await params;
 
-  if (error) {
+    if (!slug) {
+      return NextResponse.json(
+        { error: "Не указан slug категории" },
+        { status: 400 }
+      );
+    }
+
+    const category = await prisma.category.findUnique({
+      where: { slug },
+      select: { name: true },
+    });
+
+    if (!category) {
+      return NextResponse.json(null, { status: 200 });
+    }
+
+    return NextResponse.json(category.name, { status: 200 });
+  } catch (error) {
     console.error("Ошибка в /api/categories/[slug]:", error);
-    console.error("Slug в /api/histories/[slug]:", slug);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Ошибка сервера" },
+      { status: 500 }
+    );
   }
-
-  return NextResponse.json(data ? data.name : null);
 }

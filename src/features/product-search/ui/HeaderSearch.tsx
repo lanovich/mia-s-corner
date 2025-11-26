@@ -8,7 +8,7 @@ import {
   useClickOutside,
   useProductSearch,
 } from "@/features/product-search/lib";
-import { Product } from "@/entities/product/model";
+import { Product, ShortProduct } from "@/entities/product/model";
 import { SearchDropdown, SearchInput } from "@/widgets/header/ui";
 
 interface Props {
@@ -25,8 +25,6 @@ export const HeaderSearch = ({ className, autoFocus, onClose }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  console.log(query);
-
   useClickOutside(containerRef, () => {
     setIsDropdownOpen(false);
   });
@@ -40,9 +38,9 @@ export const HeaderSearch = ({ className, autoFocus, onClose }: Props) => {
     category === "all" ? undefined : category
   );
 
-  const handleSelectProduct = (product: Product) => {
+  const handleSelectProduct = (product: ShortProduct) => {
     router.push(
-      `${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`
+      `${LINKS.CATALOG}/${product.categorySlug}/product/${product.slug}`
     );
     setQuery("");
     setCategory("all");

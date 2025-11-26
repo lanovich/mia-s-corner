@@ -1,4 +1,2 @@
-export * from "./Order";
-export * from "./OrderItem";
-export * from "./OrderStatus";
+export * from "./types";
 export * from "./checkoutFormSchema";

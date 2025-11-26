@@ -1,45 +1,38 @@
 import { sendEmail } from "@/entities/mail/api";
 import { NewOrderAlertEmail, SuccessEmail } from "@/entities/mail/ui";
-import { Order, OrderStatus } from "@/entities/order/model";
+import { Delivery, OrderItem, OrderStatus } from "@/entities/order/model";
 import { YookassaOrderStatus } from "@/entities/yookassa/model";
-import { supabase } from "@/shared/api/supabase/server";
 import { LINKS } from "@/shared/model";
 import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/shared/api/prisma";
 
 export async function POST(req: NextRequest) {
   try {
-    console.log("Request received:", req);
     const body: YookassaOrderStatus = await req.json();
-    console.log("Body received:", body);
+    const orderId = body.object.metadata.order_id;
 
-    const { data: order, error } = await supabase
-      .from("orders")
-      .select("*")
-      .eq("id", body.object.metadata.order_id)
-      .single<Order>();
+    const orderFromDb = await prisma.order.findUnique({
+      where: { id: orderId },
+    });
 
-    if (error || !order) {
-      console.error("Order not found:", error);
-      return NextResponse.json({ error: "Order not found" });
+    if (!orderFromDb) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    console.log("Order found:", order);
+    const order = {
+      ...orderFromDb,
+      items: orderFromDb.items as unknown as OrderItem[],
+      delivery: orderFromDb.delivery as unknown as Delivery,
+    };
 
     const isSucceeded = body.object.status === "succeeded";
-    console.log("Order status:", isSucceeded ? "SUCCEEDED" : "CANCELLED");
 
-    const { data, error: updateError } = await supabase
-      .from("orders")
-      .update({
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
         status: isSucceeded ? OrderStatus.SUCCEEDED : OrderStatus.CANCELLED,
-      })
-      .eq("id", order.id);
-
-    if (updateError) {
-      console.error("Error updating order status:", updateError);
-    } else {
-      console.log("Order status updated successfully:", data);
-    }
+      },
+    });
 
     if (isSucceeded) {
       await sendEmail(
@@ -48,34 +41,34 @@ export async function POST(req: NextRequest) {
         SuccessEmail,
         {
           orderId: order.id,
-          deliveryPrice: order.delivery_price,
           fullPrice: order.fullPrice,
+          deliveryPrice: order.delivery?.deliveryPrice ?? 0,
           items: JSON.stringify(order.items),
         }
       );
 
       await sendEmail(
         LINKS.GMAIL,
-        `Новый заказ на ${order.fullPrice}; ${order.delivery_method}`,
+        `Новый заказ на ${order.fullPrice}`,
         NewOrderAlertEmail,
         {
           orderId: order.id,
-          deliveryPrice: order.delivery_price,
           fullPrice: order.fullPrice,
+          deliveryPrice: order.delivery?.deliveryPrice ?? 0,
           items: JSON.stringify(order.items),
-          deliveryMethod: order.delivery_method,
+          deliveryMethod: order.delivery?.method ?? "unknown",
           customerName: order.name,
           customerPhone: order.phone,
           customerEmail: order.email,
-          deliveryComment: order.comment,
-          wishes: order.wishes,
+          deliveryComment: order.delivery?.comment ?? null,
+          wishes: order.wishes ?? null,
           deliveryAddress: {
-            city: order.city,
-            street: order.street,
-            building: order.building,
-            porch: order.porch,
-            floor: order.sfloor,
-            flat: order.sflat,
+            city: order.delivery?.city ?? null,
+            street: order.delivery?.street ?? null,
+            building: order.delivery?.building ?? null,
+            porch: order.delivery?.porch ?? null,
+            floor: order.delivery?.sfloor ?? null,
+            flat: order.delivery?.sflat ?? null,
           },
         }
       );
@@ -83,7 +76,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (e) {
-    console.log("Checkout Callback Error:", e);
-    return NextResponse.json({ error: "Server error" });
+    console.error("Checkout Callback Error:", e);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

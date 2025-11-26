@@ -10,18 +10,18 @@ import {
   useEffect,
 } from "react";
 import { toast } from "sonner";
-import { ProductSize } from "@/entities/product/model";
+import { ShortProductSize } from "@/entities/product/model";
 import { findCartItem } from "../lib";
 
-export function useCartQuantity(selectedSize: ProductSize | null) {
+export function useCartQuantity(selectedSize: ShortProductSize | null) {
   const { modifyItemQuantity, cart } = useCartStore();
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState<string | null>(null);
 
-  const cartItem = useMemo(
-    () => findCartItem(cart, selectedSize),
-    [cart, selectedSize]
-  );
+  const cartItem = useMemo(() => {
+    if (!selectedSize) return null;
+    return findCartItem(cart, selectedSize.id);
+  }, [cart, selectedSize]);
 
   const updateQuantity = useCallback(
     async (newQuantity: number) => {
@@ -47,11 +47,7 @@ export function useCartQuantity(selectedSize: ProductSize | null) {
 
       setIsLoading(true);
       try {
-        await modifyItemQuantity(
-          selectedSize.product_id,
-          selectedSize.size_id,
-          delta
-        );
+        await modifyItemQuantity(selectedSize.id, delta);
         toast.success("Количество товара изменено", { position: "top-center" });
         setInputValue(null);
       } catch {
@@ -96,11 +92,7 @@ export function useCartQuantity(selectedSize: ProductSize | null) {
       }
       setIsLoading(true);
       try {
-        await modifyItemQuantity(
-          selectedSize.product_id,
-          selectedSize.size_id,
-          1
-        );
+        await modifyItemQuantity(selectedSize.id, 1);
         toast.success("Товар добавлен в корзину", { position: "top-center" });
       } catch {
         toast.error("Ошибка при добавлении товара!", {

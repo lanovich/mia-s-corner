@@ -1,0 +1,74 @@
+[
+  {
+    "categoryInfo": {
+      "id": 1,
+      "name": "Ароматические свечи",
+      "slug": "candles",
+      "image": "https://bnwhijouenwykeezlhxx.supabase.co/storage/v1/object/sign/photos/categories/category_candles.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvY2F0ZWdvcmllcy9jYXRlZ29yeV9jYW5kbGVzLmpwZyIsImlhdCI6MTc0NDE5MzkzNSwiZXhwIjoxNzc1NzI5OTM1fQ.QgzXIIzmzBC4SPP2ehrDl1FoEMpZgkVsmKiixPF_oH4",
+      "order": 1
+    },
+    "products": [
+      {
+        "id": 6,
+        "title": "Каждое слово будто оживляло забытые мечты",
+        "slug": "kazhdoe-slovo-budto-ozhivlyalo-zabytye-mechty-candle",
+        "isLimited": false,
+        "episode": {
+          "number": 5.3,
+          "title": "Каждое слово будто оживляло забытые мечты"
+        },
+        "scent": { "name": "розовые кристаллы сахара" },
+        "size": { "price": 1200, "oldPrice": 1500 },
+        "categorySlug": "candles"
+      }
+    ]
+  },
+  {
+    "categoryInfo": {
+      "id": 2,
+      "name": "Диффузоры",
+      "slug": "aroma-diffusers",
+      "image": "https://bnwhijouenwykeezlhxx.supabase.co/storage/v1/object/sign/photos/categories/category_diffusors.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvY2F0ZWdvcmllcy9jYXRlZ29yeV9kaWZmdXNvcnMuanBnIiwiaWF0IjoxNzQyNjMxMTYzLCJleHAiOjE3NzQxNjcxNjN9.eHQTYMkTXJ9eU3Vkv29x26TV_pY1IH69X59lcrKY2ME",
+      "order": 2
+    },
+    "products": [
+      {
+        "id": 7,
+        "title": "Каждое слово будто оживляло забытые мечты",
+        "slug": "kazhdoe-slovo-budto-ozhivlyalo-zabytye-mechty-aroma-diffuser",
+        "isLimited": false,
+        "episode": {
+          "number": 5.3,
+          "title": "Каждое слово будто оживляло забытые мечты"
+        },
+        "scent": { "name": "розовые кристаллы сахара" },
+        "size": { "price": 1500, "oldPrice": 1800 },
+        "categorySlug": "aroma-diffusers"
+      }
+    ]
+  },
+  {
+    "categoryInfo": {
+      "id": 3,
+      "name": "Саше",
+      "slug": "aroma-sachet",
+      "image": "https://bnwhijouenwykeezlhxx.supabase.co/storage/v1/object/sign/photos/categories/category_sachet.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvY2F0ZWdvcmllcy9jYXRlZ29yeV9zYWNoZXQuanBnIiwiaWF0IjoxNzQyNjMxMTcxLCJleHAiOjE3NzQxNjcxNzF9.FYhmHUa4-7-o8ImantjeheQVwfIx-zE1jj7lGG_ZBjo",
+      "order": 3
+    },
+    "products": [
+      {
+        "id": 8,
+        "title": "Каждое слово будто оживляло забытые мечты",
+        "slug": "kazhdoe-slovo-budto-ozhivlyalo-zabytye-mechty-aroma-sachet",
+        "isLimited": false,
+        "episode": {
+          "number": 5.3,
+          "title": "Каждое слово будто оживляло забытые мечты"
+        },
+        "scent": { "name": "розовые кристаллы сахара" },
+        "size": { "price": 800, "oldPrice": 1000 },
+        "categorySlug": "aroma-sachet"
+      }
+    ]
+  }
+]

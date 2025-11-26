@@ -54,7 +54,7 @@ export const MapWithPickupPoints: React.FC<Props> = ({ geoId }) => {
       setEmpty(false);
       fetchedRef.current[geoId] = true;
       try {
-        const points = await getPickupPoints(geoId);
+        const points = await getPickupPoints(geoId) || [];
         cacheRef.current[geoId] = points;
         setPickupPoints(points);
         setPickupPoints(points);

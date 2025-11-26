@@ -1,41 +1,23 @@
-import { NextRequest } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
-import { Product } from "@/entities/product/model";
+import { NextResponse } from "next/server";
+import { prisma } from "@/shared/api/prisma";
+import {
+  mapCategoryToGroupedShortProducts,
+  mapRawToShortProduct,
+} from "@/entities/product/model";
+import { baseShortProductsQuery } from "@/shared/api/queries";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const { data, error } = await supabase
-      .from("products")
-      .select(
-        `
-        *,
-        category:categories!category_id(slug)
-      `
-      )
-      .not("category.slug", "is", null);
+    const raw = await prisma.product.findMany(baseShortProductsQuery);
 
-    if (error) {
-      console.error("❌ Ошибка загрузки продуктов:", error);
-      return new Response(
-        JSON.stringify({ error: "Ошибка загрузки продуктов" }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
-    }
+    const products = raw.map((product) => mapRawToShortProduct(product));
 
-    const products: Product[] = data.map((product) => ({
-      ...product,
-      category_slug: product.category.slug,
-    }));
-
-    return new Response(JSON.stringify(products), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(products);
   } catch (err) {
-    console.error("❌ Ошибка в API /products:", err);
-    return new Response(JSON.stringify({ error: "Серверная ошибка" }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    console.error("Error fetching grouped products:", err);
+    return NextResponse.json(
+      { error: "Failed to fetch products" },
+      { status: 500 }
+    );
   }
 }

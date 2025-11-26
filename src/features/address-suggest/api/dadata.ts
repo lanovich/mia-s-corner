@@ -39,5 +39,5 @@ export async function fetchAddressSuggestions(
     }
   );
 
-  return data.suggestions ?? [];
+  return data?.suggestions ?? [];
 }

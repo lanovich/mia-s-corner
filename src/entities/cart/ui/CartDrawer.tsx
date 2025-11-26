@@ -55,7 +55,8 @@ export const CartDrawer: React.FC<Props> = ({ children }) => {
     <>
       <SheetHeader className="border-b pb-2">
         <SheetTitle>
-          В корзине <span className="font-bold">{formatCartItemsText(itemsCount)}</span>
+          В корзине{" "}
+          <span className="font-bold">{formatCartItemsText(itemsCount)}</span>
         </SheetTitle>
         <SheetDescription className="text-sm text-gray-500">
           Проверьте список товаров перед оформлением заказа.

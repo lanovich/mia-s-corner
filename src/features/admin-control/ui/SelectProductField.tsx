@@ -10,12 +10,20 @@ import {
 } from "@/shared/shadcn-ui/select";
 import { Input } from "@/shared/shadcn-ui";
 import { useAdminStore } from "@/features/admin-control/model/useAdminStore";
-import { ProductOption } from "@/entities/product/model";
+import { Category } from "@/entities/category/model";
+
+export interface ProductOption {
+  id: number;
+  title: string;
+  scentName?: string | null;
+  quantity: number;
+  categoryInfo: Category;
+}
 
 interface SelectProductFieldProps {
   className?: string;
   value?: ProductOption;
-  options?: ProductOption[];
+  options: ProductOption[] | null;
 }
 
 export const SelectProductField: React.FC<SelectProductFieldProps> = ({
@@ -24,18 +32,23 @@ export const SelectProductField: React.FC<SelectProductFieldProps> = ({
   options = [],
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { setSelectedProduct } = useAdminStore();
+  const { setSelectedProductOption } = useAdminStore();
 
-  const filteredOptions = options.filter(
-    (option) =>
-      option.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      option.compound?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  if (!options) return <div>Не смогли получитт варианты</div>;
+
+  const filteredOptions = options.filter((option) => {
+    const term = searchTerm.toLowerCase();
+
+    return (
+      option.title.toLowerCase().includes(term) ||
+      option.scentName?.toLowerCase().includes(term)
+    );
+  });
 
   const handleSelectChange = async (id: string) => {
     const selected = options.find((opt) => opt.id.toString() === id);
     if (selected) {
-      setSelectedProduct(selected);
+      setSelectedProductOption(selected);
     }
   };
 
@@ -43,7 +56,7 @@ export const SelectProductField: React.FC<SelectProductFieldProps> = ({
     <div className={className}>
       <Select value={value?.id.toString()} onValueChange={handleSelectChange}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Выбери продукт"></SelectValue>
+          <SelectValue placeholder="Выбери продукт" />
         </SelectTrigger>
 
         <SelectContent>
@@ -66,15 +79,22 @@ export const SelectProductField: React.FC<SelectProductFieldProps> = ({
                 >
                   <div className="flex gap-10">
                     <div className="text-sm font-medium">
-                      кол-во:{" "}
-                      {(Number(product.quantity) < 10
+                      кол-во:
+                      {product.quantity < 10
                         ? `0${product.quantity}`
-                        : product.quantity) ?? 0}
+                        : product.quantity}
                     </div>
+
                     <div className="font-medium">{product.title}</div>
-                    {product.compound && (
-                      <div className="text-sm text-gray-500">
-                        {product.compound}
+
+                    {product.scentName && (
+                      <div className="text-sm text-gray-500 truncate max-w-[400px]">
+                        {product.scentName}
+                      </div>
+                    )}
+                    {product.categoryInfo.name && (
+                      <div className="text-sm text-gray-500 truncate max-w-[400px]">
+                        {product.categoryInfo.name}
                       </div>
                     )}
                   </div>

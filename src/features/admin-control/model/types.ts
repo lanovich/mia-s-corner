@@ -14,7 +14,6 @@ export interface ProductInfo {
   category_slug: string;
 }
 
-
 export interface CategoryQuantityResult {
   categoryId: number;
   categorySlug: string;
@@ -35,4 +34,16 @@ export interface FinalResult {
   products: ProductSummary[];
   totalAllProductsPrice: number;
   totalOfTotals: number;
+}
+
+export interface TotalsResponse {
+  totalStockQuantity: number;
+  totalAllProductsPrice: number;
+  categories: CategoryTotals[];
+}
+
+export interface CategoryTotals {
+  categoryName: string;
+  totalQuantity: number;
+  totalPrice: number;
 }

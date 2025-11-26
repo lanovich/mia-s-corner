@@ -5,49 +5,39 @@ export const cartApi = {
   fetchUserToken: () =>
     apiFetch<{ token: string }>(API.cart.getToken, { revalidate: 60 }),
 
-  getProductById: (productId: number, token: string) =>
-    apiFetch<CartItem>(API.cart.getProduct(productId), {
+  getItemByProductSizeId: (productSizeId: number, token: string) =>
+    apiFetch<CartItem>(API.cart.getItem(productSizeId), {
       headers: { Authorization: `Bearer ${token}` },
     }),
 
-  addToCart: (
-    productId: number,
-    sizeId: number,
-    delta: number,
-    token: string
-  ) =>
+  addToCart: (productSizeId: number, delta: number, token: string) =>
     apiFetch<{ newItem: CartItem }>(API.cart.add, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ productId, sizeId, delta }),
+      body: JSON.stringify({ productSizeId, delta }),
     }),
 
-  decreaseQuantity: (
-    productId: number,
-    sizeId: number,
-    delta: number,
-    token: string
-  ) =>
-    apiFetch<Promise<{ message: string }>>(API.cart.decrease, {
+  decreaseQuantity: (productSizeId: number, delta: number, token: string) =>
+    apiFetch<{ message: string }>(API.cart.decrease, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ productId, sizeId, delta }),
+      body: JSON.stringify({ productSizeId, delta }),
     }),
 
-  removeFromCart: (productId: number, sizeId: number, token: string) =>
+  removeFromCart: (productSizeId: number, token: string) =>
     apiFetch<void>(API.cart.remove, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ productId, sizeId }),
+      body: JSON.stringify({ productSizeId }),
     }),
 
   clearCart: (token: string) =>

@@ -76,10 +76,14 @@ export default function CheckoutPage() {
 
       setSubmitting(true);
 
-      const { paymentUrl, success, error } = await orderApi.createOrder(
-        data,
-        deliveryPrice
-      );
+      const response = await orderApi.createOrder(data, deliveryPrice);
+
+      if (!response) {
+        toast.error("Не удалось создать заказ");
+        throw new Error("Пустой ответ от сервера");
+      }
+
+      const { success, paymentUrl, error } = response;
 
       if (!success || !paymentUrl) {
         toast.error("Не удалось получить платежную ссылку");
@@ -169,7 +173,7 @@ export default function CheckoutPage() {
               className="w-full bg-black text-white rounded-lg transition-all duration-150 hover:scale-105 active:scale-95"
               type="submit"
               form="orderForm"
-              disabled={!openSubmit}
+              disabled={!openSubmit || fullPrice === 0}
             >
               {submitting ? "Оформление..." : "Подтвердить заказ"}
             </Button>

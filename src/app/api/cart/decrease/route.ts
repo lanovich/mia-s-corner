@@ -1,71 +1,74 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
 
 export async function POST(req: Request) {
-  const authHeader = req.headers.get("Authorization");
-  const token = authHeader?.split(" ")[1];
+  try {
+    const authHeader = req.headers.get("Authorization");
+    const token = authHeader?.split(" ")[1];
 
-  if (!token) {
-    return NextResponse.json({ error: "Token not found" }, { status: 401 });
-  }
-
-  const { productId, sizeId, delta } = await req.json();
-
-  const { data: cart, error: cartError } = await supabase
-    .from("cart")
-    .select("id")
-    .eq("token", token)
-    .maybeSingle();
-
-  if (cartError || !cart) {
-    return NextResponse.json({ error: "Корзина не найдена" }, { status: 404 });
-  }
-
-  const cartId = cart.id;
-
-  const { data: cartItem, error: itemError } = await supabase
-    .from("cartItem")
-    .select("id, quantity")
-    .eq("cart_id", cartId)
-    .eq("product_id", productId)
-    .eq("size_id", sizeId)
-    .maybeSingle();
-
-  if (itemError || !cartItem) {
-    return NextResponse.json(
-      { error: "Товар не найден в корзине", itemError },
-      { status: 404 }
-    );
-  }
-
-  const newQuantity = cartItem.quantity + delta;
-
-  if (newQuantity > 0) {
-    const { error: updateError } = await supabase
-      .from("cartItem")
-      .update({ quantity: newQuantity })
-      .eq("id", cartItem.id);
-
-    if (updateError) {
-      console.error("Ошибка при обновлении количества:", updateError.message);
-      return NextResponse.json({ error: updateError.message }, { status: 500 });
+    if (!token) {
+      return NextResponse.json({ error: "Token not found" }, { status: 401 });
     }
 
-    return NextResponse.json({
-      message: "Количество обновлено",
-      quantity: newQuantity,
+    const { productSizeId, delta } = await req.json();
+    const productSizeIdNum = Number(productSizeId);
+    const deltaNum = Number(delta);
+
+    if (isNaN(productSizeIdNum) || isNaN(deltaNum)) {
+      return NextResponse.json(
+        { error: "Некорректные данные" },
+        { status: 400 }
+      );
+    }
+
+    const cart = await prisma.cart.findUnique({
+      where: { token },
     });
-  } else {
-    const { error: deleteError } = await supabase
-      .from("cartItem")
-      .delete()
-      .eq("id", cartItem.id);
 
-    if (deleteError) {
-      console.error("Ошибка при удалении товара:", deleteError.message);
-      return NextResponse.json({ error: deleteError.message }, { status: 500 });
+    if (!cart) {
+      return NextResponse.json(
+        { error: "Корзина не найдена" },
+        { status: 404 }
+      );
     }
+
+    const cartItem = await prisma.cartItem.findUnique({
+      where: {
+        cartId_productSizeId: {
+          cartId: cart.id,
+          productSizeId: productSizeIdNum,
+        },
+      },
+    });
+
+    if (!cartItem) {
+      return NextResponse.json(
+        { error: "Товар не найден в корзине" },
+        { status: 404 }
+      );
+    }
+
+    const newQty = cartItem.quantity + deltaNum;
+
+    if (newQty > 0) {
+      const updated = await prisma.cartItem.update({
+        where: { id: cartItem.id },
+        data: { quantity: newQty },
+      });
+
+      return NextResponse.json({
+        message: "Количество обновлено",
+        quantity: updated.quantity,
+      });
+    }
+
+    await prisma.cartItem.delete({
+      where: { id: cartItem.id },
+    });
 
     return NextResponse.json({ message: "Товар удалён", quantity: 0 });
+  } catch (err: any) {
+    console.error(err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

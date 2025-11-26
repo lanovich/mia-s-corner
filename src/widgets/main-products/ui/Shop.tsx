@@ -1,8 +1,21 @@
+import { productsApi } from "@/entities/product/api";
 import { ShopCarousel } from "./ShopCarousel";
-import { getCategoriesWithProducts } from "@/shared/api/queries";
+import { getAllGroupedProductsPrerender } from "@/shared/api";
 
 export async function Shop() {
-  const categoriesWithProducts = await getCategoriesWithProducts();
+  const groupedProducts = await getAllGroupedProductsPrerender();
 
-  return <ShopCarousel categoriesWithProducts={categoriesWithProducts} />;
+  if (!groupedProducts || groupedProducts.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-10 text-center text-gray-700">
+        <h2 className="text-xl font-semibold mb-2">Товары недоступны</h2>
+        <p>
+          К сожалению, сейчас мы не можем показать товары. Попробуйте обновить
+          страницу позже.
+        </p>
+      </div>
+    );
+  }
+
+  return <ShopCarousel groupedProducts={groupedProducts} />;
 }

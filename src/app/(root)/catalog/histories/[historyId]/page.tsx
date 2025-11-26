@@ -1,6 +1,6 @@
-import { historiesApi } from "@/entities/history/api";
 import { Episodes, Histories } from "@/entities/history/ui";
 import { productsApi } from "@/entities/product/api";
+import { getHistoriesPrerender } from "@/shared/api";
 import { Breadcrumbs, Container } from "@/shared/ui";
 import { Metadata } from "next";
 
@@ -11,9 +11,8 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const historyId = params.historyId;
-  const histories = await historiesApi.fetchHistories();
+  const histories = await getHistoriesPrerender();
   const currentHistory = histories.find((h) => h.id === Number(historyId));
-  const products = await productsApi.fetchProductsByHistory(historyId);
 
   if (!currentHistory) {
     return {
@@ -25,10 +24,7 @@ export async function generateMetadata(props: {
 
   return {
     title: `${currentHistory.title} | Mia's Corner | История ароматов`,
-    description: `Купить свечи в СПб с историями, наша ароматическая продукция разделена на истории со своими эпизодами. Найдите свою уникальную историю. ${currentHistory.description.slice(
-      0,
-      160
-    )}... в этой истории сейчас ${products.length} продуктов.`,
+    description: `Купить свечи в СПб с историями, наша ароматическая продукция разделена на истории со своими эпизодами. Найдите свою уникальную историю.`,
     keywords: [
       `${currentHistory.title.toLowerCase()} купить`,
       `ароматическая история ${currentHistory.order}`,
@@ -40,13 +36,11 @@ export async function generateMetadata(props: {
 export default async function HistoriesPage(props: { params: HistoryParams }) {
   const params = await props.params;
   const historyId = params.historyId;
-  const histories = await historiesApi.fetchHistories();
-  const products = await productsApi.fetchProductsByHistory(historyId);
+  const histories = await getHistoriesPrerender();
+  const products = (await productsApi.fetchProductsByHistory(historyId)) || [];
   const currentHistory = histories.find(
     (history) => history.id === Number(historyId)
   );
-
-  console.log(histories);
 
   return (
     <>

@@ -5,7 +5,7 @@ export const PlaceholderForm = () => {
         <div className="flex flex-row gap-2">
           <span className="bg-gray-200 rounded w-8 h-8 my-auto"></span>
           <span className="flex h-10 bg-gray-100 rounded flex-1 items-center">
-            <p className="text-gray-500 text-md ml-4 -mt-1">Выберите размер, чтобы открыть параметры</p>
+            <p className="text-gray-500 text-md ml-4 -mt-1"></p>
           </span>
         </div>
       </div>

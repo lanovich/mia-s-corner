@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { productsApi } from "@/entities/product/api";
-import { Product } from "@/entities/product/model";
+import { Product, ShortProduct } from "@/entities/product/model";
 
 export const useProductSearch = (
   query: string,
@@ -8,7 +8,7 @@ export const useProductSearch = (
   delay = 400
 ) => {
   const [debouncedQuery, setDebouncedQuery] = useState(query);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ShortProduct[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

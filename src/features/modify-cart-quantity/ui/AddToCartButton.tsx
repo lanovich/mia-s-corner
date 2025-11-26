@@ -1,18 +1,16 @@
 "use client";
 
-import { ProductSize } from "@/entities/product/model";
+import { ProductSize, ShortProductSize } from "@/entities/product/model";
 import { useCartQuantity } from "../lib";
 import { CartAddButton, CartQuantityInput } from ".";
 
 interface Props {
-  selectedSize: ProductSize | null;
-  className?: string;
+  selectedSize: ShortProductSize | null;
   children?: React.ReactNode;
 }
 
 export const AddToCartButton: React.FC<Props> = ({
   selectedSize,
-  className,
   children,
 }) => {
   const {

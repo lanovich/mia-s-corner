@@ -7,6 +7,7 @@ import { CartItem } from "@/entities/cart/model";
 import { ChangeQuantityButton } from "./ChangeQuantityButton";
 import { LINKS } from "@/shared/model";
 import { CustomLink } from "@/shared/ui";
+import { findSelectedSize } from "@/shared/lib";
 
 interface Props {
   cartItem: CartItem;
@@ -14,24 +15,20 @@ interface Props {
 
 export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
   const { modifyItemQuantity, removeFromCart } = useCartStore();
-  const { product, quantity, size_id } = cartItem;
+  const { shortProduct, quantity } = cartItem;
 
-  const selectedSize = product.product_sizes.find(
-    (size) => size.size_id === size_id
-  );
+  const selectedSize = shortProduct.size;
 
   return (
     <div className="flex flex-col border-b pb-4">
-      {/* Верхний блок: Изображение + Информация + Удаление */}
       <div className="flex items-center gap-4">
-        {/* Изображение товара */}
         <CustomLink
-          href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
+          href={`${LINKS.CATALOG}/${shortProduct.categorySlug}/shortProduct/${shortProduct.slug}`}
         >
           <div className="relative w-20 h-20 flex-shrink-0">
             <Image
-              src={product.images?.[0]?.url || "/fallback-image.jpg"}
-              alt={product.title}
+              src={shortProduct.size.image || "/fallback-image.jpg"}
+              alt={shortProduct.title}
               fill
               sizes="160px"
               className="object-cover rounded-md"
@@ -39,24 +36,21 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
           </div>
         </CustomLink>
 
-        {/* Информация о товаре */}
         <div className="flex-1">
-          <h4 className="text-sm font-medium">{product.title}</h4>
+          <h4 className="text-sm font-medium">{shortProduct.title}</h4>
           {selectedSize && (
             <p className="text-xs text-gray-700">
-              Размер: {`${selectedSize.size.size} ${product.measure}`}
+              Размер:{" "}
+              {`${selectedSize.volume.amount} ${selectedSize.volume.unit}`}
             </p>
           )}
           <p className="text-xs text-gray-500">
-            {product.compound || "Состав не указан"}
+            {shortProduct.scent?.name || "Состав не указан"}
           </p>
         </div>
 
-        {/* Удаление товара */}
         <button
-          onClick={() =>
-            selectedSize && removeFromCart(product.id, selectedSize.size_id)
-          }
+          onClick={() => selectedSize && removeFromCart(shortProduct.size.id)}
           className="text-gray-400 hover:text-gray-600"
           disabled={!selectedSize}
         >
@@ -64,7 +58,6 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
         </button>
       </div>
 
-      {/* Нижний блок: Количество + Управление количеством */}
       {selectedSize && (
         <div className="flex items-center justify-between mt-3">
           <p className="text-sm text-black/50">
@@ -75,24 +68,12 @@ export const CartDrawerItem: React.FC<Props> = ({ cartItem }) => {
             <ChangeQuantityButton
               type="decrease"
               quantity={quantity}
-              onDecrease={() =>
-                modifyItemQuantity(
-                  selectedSize.product_id,
-                  selectedSize.size_id,
-                  -1
-                )
-              }
+              onDecrease={() => modifyItemQuantity(selectedSize.id, -1)}
             />
             <ChangeQuantityButton
               type="increase"
               quantity={quantity}
-              onIncrease={() =>
-                modifyItemQuantity(
-                  selectedSize.product_id,
-                  selectedSize.size_id,
-                  1
-                )
-              }
+              onIncrease={() => modifyItemQuantity(selectedSize.id, 1)}
             />
           </div>
         </div>

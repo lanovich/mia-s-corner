@@ -1,8 +1,7 @@
-import { Product } from "@/entities/product/model";
+import { Product, ShortProduct } from "@/entities/product/model";
 
-export function findSelectedSize(product: Product, sizeId: number) {
-  if (!product.product_sizes) {
-    return null;
-  }
-  return product.product_sizes.find((size) => size.size_id === sizeId) || null;
+export function findSelectedSize(product: ShortProduct, productSizeId: number) {
+  if (!product?.size) return null;
+
+  return product.size.id === productSizeId || null;
 }

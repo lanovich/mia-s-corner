@@ -1,33 +1,35 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/shared/api/supabase/server";
+import { prisma } from "@/shared/api/prisma";
 
 export async function POST(req: Request) {
-  const authHeader = req.headers.get("Authorization");
-  const token = authHeader?.split(" ")[1];
+  try {
+    const authHeader = req.headers.get("Authorization");
+    const token = authHeader?.split(" ")[1];
 
-  if (!token) {
-    return NextResponse.json({ error: "No token" }, { status: 401 });
+    if (!token) {
+      return NextResponse.json({ error: "No token" }, { status: 401 });
+    }
+
+    const cart = await prisma.cart.findUnique({
+      where: { token },
+    });
+
+    if (!cart) {
+      return NextResponse.json(
+        { error: "Корзина не найдена" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.cartItem.deleteMany({
+      where: {
+        cartId: cart.id,
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (err: any) {
+    console.error("Ошибка при очистке корзины:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
-
-  const { data: cart, error: cartError } = await supabase
-    .from("cart")
-    .select("id")
-    .eq("token", token)
-    .maybeSingle();
-
-  if (cartError || !cart) {
-    return NextResponse.json({ error: "Корзина не найдена" }, { status: 404 });
-  }
-
-  const { error } = await supabase
-    .from("cartItem")
-    .delete()
-    .eq("cart_id", cart.id);
-
-  if (error) {
-    console.error("Ошибка при очистке корзины:", error.message);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ success: true });
 }

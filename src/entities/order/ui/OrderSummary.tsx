@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/shared/shadcn-ui/card";
 import { Skeleton } from "@/shared/shadcn-ui";
 import Image from "next/image";
 import React from "react";
-import { findSelectedSize } from "@/shared/lib";
 import { CustomLink } from "@/shared/ui";
 import { LINKS } from "@/shared/model";
+import { ShortProductSize } from "@/entities/product/model";
 
 interface Props {
   className?: string;
@@ -25,34 +25,36 @@ export const OrderSummary: React.FC<Props> = ({ className }) => {
         </div>
       ) : (
         <div className="mt-4 space-y-4">
-          {cart.map(({ product, quantity, size_id }) => {
-            const selectedSize = findSelectedSize(product, size_id);
-            const price = selectedSize ? selectedSize.price : 0;
-            const measure = product.measure;
+          {cart.map(({ shortProduct, quantity }) => {
+            const size: ShortProductSize | null = shortProduct.size;
+            const price = size ? size.price : 0;
+            const measure = size?.volume.unit || "";
 
             return (
               <Card
-                key={`${product.id}-${size_id}`}
+                key={`${shortProduct.id}-${size?.id}`}
                 className="border-gray-300"
               >
                 <CardContent className="flex items-center justify-between gap-2 py-2">
                   <CustomLink
-                    href={`${LINKS.CATALOG}/${product.category_slug}/product/${product.slug}`}
+                    href={`${LINKS.CATALOG}/${shortProduct.categorySlug}/product/${shortProduct.slug}`}
                   >
-                    <Image
-                      src={product.images[0].url}
-                      width={60}
-                      height={60}
-                      alt={product.title}
-                      className="rounded-sm object-cover"
-                    />
+                    {size?.image && (
+                      <Image
+                        src={size.image}
+                        width={60}
+                        height={60}
+                        alt={shortProduct.title}
+                        className="rounded-sm object-cover"
+                      />
+                    )}
                   </CustomLink>
 
                   <div className="flex-1">
-                    <p className="font-medium">{product.title}</p>
+                    <p className="font-medium">{shortProduct.title}</p>
                     <p className="text-xs text-gray-400">
-                      {selectedSize
-                        ? `Размер: ${selectedSize.size.size} ${measure}`
+                      {size
+                        ? `Размер: ${size.volume.amount ?? "-"} ${measure}`
                         : "Размер не выбран"}
                     </p>
                     <p className="text-xs text-gray-400">

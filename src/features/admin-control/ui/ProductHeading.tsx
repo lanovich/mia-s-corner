@@ -1,31 +1,38 @@
-import { CategoryProduct } from "@/entities/category/model";
-import { ProductOption } from "@/entities/product/model";
 import React from "react";
+import { ProductOption } from "./SelectProductField";
+import { Product } from "@/entities/product/model";
+import { cn } from "@/shared/lib";
 
 interface Props {
   className?: string;
-  productDataInSelectedCategory: CategoryProduct | null;
-  selectedProduct: ProductOption | null;
+  selectedProductData: Product | null;
+  selectedOption: ProductOption | null;
 }
 
 export const ProductHeading: React.FC<Props> = ({
   className,
-  productDataInSelectedCategory,
-  selectedProduct,
+  selectedProductData,
+  selectedOption,
 }) => {
+  const title =
+    selectedProductData?.title || selectedOption?.title || "Продукт";
+  const category = selectedProductData?.category.name || "Без категории";
+  const scent = selectedOption?.scentName
+    ? `(${selectedOption.scentName})`
+    : "";
+  const quantity = selectedOption?.quantity ?? 0;
+
   return (
-    <div className={className}>
-      <h2 className="text-xl font-semibold mb-4">
-        {productDataInSelectedCategory?.product.title || selectedProduct?.title}
-      </h2>
-      {selectedProduct?.compound && (
-        <span className="text-sm mt-2 text-gray-500">
-          ({selectedProduct?.compound})
+    <div className={cn(className, "flex justify-between")}>
+      <div>
+        <h2 className="text-xl font-semibold">{title}</h2>
+        <span className="text-md mb-2 justify-between">
+          {category} {scent && <span>{scent} </span>}
         </span>
-      )}
-      <span className="text-sm mt-2 text-gray-500">
-        ({selectedProduct?.quantity || 0})
-      </span>
+      </div>
+      <div className="text-sm text-gray-500 items-center flex">
+        <span>Количество: {quantity}</span>
+      </div>
     </div>
   );
 };

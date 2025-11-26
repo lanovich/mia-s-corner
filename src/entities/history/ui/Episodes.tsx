@@ -1,10 +1,10 @@
-import { Product } from "@/entities/product/model";
+import { Product, ShortProduct } from "@/entities/product/model";
 import { EpisodeBlock } from "./EpisodeBlock";
 import { EpisodeProductCard } from "./EpisodeProductCard";
 import { cn } from "@/shared/lib";
 
 interface ProductsGridProps {
-  products: Product[];
+  products: ShortProduct[];
   className?: string;
 }
 
@@ -13,12 +13,17 @@ export const Episodes: React.FC<ProductsGridProps> = ({
   className,
 }) => {
   const groupedProducts = products.reduce((acc, product) => {
-    if (!acc[product.episode_number]) {
-      acc[product.episode_number] = [];
+    const episodeNumber = product.episode?.number ?? 0;
+
+    if (!acc[episodeNumber]) {
+      acc[episodeNumber] = [];
     }
-    acc[product.episode_number].push(product);
+
+    acc[episodeNumber].push(product);
     return acc;
-  }, {} as Record<number, Product[]>);
+  }, {} as Record<number, ShortProduct[]>);
+
+  console.log(groupedProducts)
 
   return (
     <div className={cn("grid grid-cols-1 gap-8 px-5", className)}>
@@ -28,14 +33,12 @@ export const Episodes: React.FC<ProductsGridProps> = ({
 
           return (
             <div key={episodeNumber} className="space-y-4">
-              {/* Блок эпизода */}
               <EpisodeBlock
-                episodeNumber={firstProduct.episode_number}
-                episodeText={firstProduct.episode}
-                compound={firstProduct.compound}
+                episodeNumber={firstProduct.episode?.number ?? null}
+                episodeText={firstProduct.episode?.storyText || ""}
+                compound={firstProduct.scent?.name ?? ""}
               />
 
-              {/* Сетка продуктов */}
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {episodeProducts.map((product) => (
                   <EpisodeProductCard key={product.id} product={product} />

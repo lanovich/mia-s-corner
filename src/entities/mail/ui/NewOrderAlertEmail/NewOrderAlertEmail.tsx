@@ -40,7 +40,7 @@ export const NewOrderAlertEmail: React.FC<NewOrderAlertEmailProps> = ({
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Новый заказ #{String(orderId).slice(0,6)}</h1>
+      <h1 style={styles.title}>Новый заказ #{String(orderId).slice(0, 6)}</h1>
       <p style={styles.description}>
         Поступил новый заказ, который требует обработки. Ниже приведены детали
         заказа:
@@ -102,7 +102,7 @@ export const NewOrderAlertEmail: React.FC<NewOrderAlertEmailProps> = ({
       <h2 style={styles.sectionTitle}>Детали заказа:</h2>
       <div>
         {parsedItems.map((item) => (
-          <OrderItemCard key={item.id} item={item} size_id={item.size_id} />
+          <OrderItemCard key={item.productInfo.productId} item={item} />
         ))}
       </div>
 

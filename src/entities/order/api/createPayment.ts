@@ -43,23 +43,29 @@ export async function createPayment(details: PaymentParams) {
       throw new Error("Order amount must be greater than zero");
     }
 
-    const receiptItems: YooKassaReceiptItem[] = details.items.map((item) => {
-      if (!item.product) {
-        throw new Error(`Product data missing for item ${item.id}`);
-      }
+    const receiptItems: YooKassaReceiptItem[] = details.items.map(
+      ({ productInfo, productSizeInfo, id, quantityInOrder }) => {
+        if (!productInfo) {
+          throw new Error(`Product data missing for item ${id}`);
+        }
 
-      return {
-        description: `${item.product.title} (${item.size})`.substring(0, 128),
-        quantity: Math.max(1, item.quantity).toFixed(0),
-        amount: {
-          value: Math.max(0, item.price).toFixed(2),
-          currency: "RUB",
-        },
-        vat_code: 1,
-        payment_mode: "full_payment",
-        payment_subject: "commodity",
-      };
-    });
+        return {
+          description:
+            `${productInfo.title} (${productSizeInfo.volume.amount})`.substring(
+              0,
+              128
+            ),
+          quantity: Math.max(1, quantityInOrder).toFixed(0),
+          amount: {
+            value: Math.max(0, productSizeInfo.price).toFixed(2),
+            currency: "RUB",
+          },
+          vat_code: 1,
+          payment_mode: "full_payment",
+          payment_subject: "commodity",
+        };
+      }
+    );
 
     if (details.deliveryPrice && details.deliveryPrice > 0) {
       receiptItems.push({
