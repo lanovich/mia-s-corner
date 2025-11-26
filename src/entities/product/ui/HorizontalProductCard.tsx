@@ -57,7 +57,6 @@ export const HorizontalProductCard: React.FC<Props> = ({ shortProduct }) => {
         </div>
         <AddToCartButton
           selectedSize={defaultSize || null}
-          className="w-full max-w-[220px]"
         >
           Добавить в корзину
         </AddToCartButton>

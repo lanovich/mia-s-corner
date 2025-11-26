@@ -70,7 +70,7 @@ export const SizeAndBuy: React.FC<Props> = ({ className, sizes, unit }) => {
       </div>
 
       <div className="flex items-center gap-4 mr-10 md:min-w-80">
-        <AddToCartButton selectedSize={selectedSize} className="flex flex-1">
+        <AddToCartButton selectedSize={selectedSize}>
           <p className="text-lg">Добавить в корзину</p>
         </AddToCartButton>
 

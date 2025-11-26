@@ -61,7 +61,6 @@ export const MobileSizeAndBuy: React.FC<Props> = ({
 
       <AddToCartButton
         selectedSize={selectedSize}
-        className="flex flex-1 border-2"
       >
         <span>Добавить в корзину</span>
       </AddToCartButton>
