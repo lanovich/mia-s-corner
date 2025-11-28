@@ -19,6 +19,11 @@ export async function apiFetch<T = any>(
     fullUrl = url;
   }
 
+  if (isServer && !process.env.NEXT_PUBLIC_BASE_URL) {
+    console.warn(`Build-time API fetch skipped: ${fullUrl}`);
+    return null;
+  }
+
   try {
     const res = await fetch(fullUrl, {
       ...init,

@@ -1,6 +1,9 @@
+import { historiesApi } from "@/entities/history/api";
+import { HistoryData } from "@/entities/history/model";
 import { Episodes, Histories } from "@/entities/history/ui";
 import { productsApi } from "@/entities/product/api";
-import { getHistoriesPrerender } from "@/shared/api";
+import { ShortProduct } from "@/entities/product/model";
+import { apiFetchServer, API } from "@/shared/api";
 import { Breadcrumbs, Container } from "@/shared/ui";
 import { Metadata } from "next";
 
@@ -11,7 +14,14 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const historyId = params.historyId;
-  const histories = await getHistoriesPrerender();
+
+  const histories = await apiFetchServer<HistoryData[]>(
+    API.histories.getHistories,
+    {
+      revalidate: 3600,
+      fallback: [],
+    }
+  );
   const currentHistory = histories.find((h) => h.id === Number(historyId));
 
   if (!currentHistory) {
@@ -36,8 +46,20 @@ export async function generateMetadata(props: {
 export default async function HistoriesPage(props: { params: HistoryParams }) {
   const params = await props.params;
   const historyId = params.historyId;
-  const histories = await getHistoriesPrerender();
-  const products = (await productsApi.fetchProductsByHistory(historyId)) || [];
+  const histories = await apiFetchServer<HistoryData[]>(
+    API.histories.getHistories,
+    {
+      revalidate: 3600,
+      fallback: [],
+    }
+  );
+  const products = await apiFetchServer<ShortProduct[]>(
+    API.products.getProductsByHistory(historyId),
+    {
+      revalidate: 3600,
+      fallback: [],
+    }
+  );
   const currentHistory = histories.find(
     (history) => history.id === Number(historyId)
   );

@@ -1,18 +1,27 @@
 import { MetadataRoute } from "next";
 import { Category } from "@/entities/category/model";
 import { HistoryData } from "@/entities/history/model";
-import {
-  getAllProductsPrerender,
-  getCategoriesPrerender,
-  getHistoriesPrerender,
-} from "@/shared/api";
+import { API, apiFetchServer } from "@/shared/api";
+import { ShortProduct } from "@/entities/product/model";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://www.mias-corner.ru";
+  const baseUrl = process.env.SITE_URL!;
   const currentDate = new Date().toISOString();
 
-  const categories = await getCategoriesPrerender();
-  const histories = await getHistoriesPrerender();
+  const [categories, histories, products] = await Promise.all([
+    apiFetchServer<Category[]>(API.categories.getCategories, {
+      revalidate: 3600,
+      fallback: [],
+    }),
+    apiFetchServer<HistoryData[]>(API.histories.getHistories, {
+      revalidate: 3600,
+      fallback: [],
+    }),
+    apiFetchServer<ShortProduct[]>(API.products.getProducts, {
+      revalidate: 3600,
+      fallback: [],
+    }),
+  ]);
 
   const staticPages = [
     {
@@ -65,7 +74,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }))
     : [];
 
-  const products = await getAllProductsPrerender();
   const productPages = products
     ? products.map((product) => ({
         url: `${baseUrl}/catalog/${product.categorySlug}/product/${product.slug}`,
