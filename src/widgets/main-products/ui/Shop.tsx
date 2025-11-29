@@ -1,18 +1,8 @@
-import { apiFetchServer } from "@/shared/api/apiFetchServer";
-import { API } from "@/shared/api";
-import { ShopCarousel } from "./ShopCarousel";
-import { GroupedShortProducts } from "@/entities/product/model";
-
-export const dynamic = "force-dynamic";
+import { productsApi } from "@/entities/product/api";
+import ShopCarousel from "./ShopCarousel";
 
 export async function Shop() {
-  const groupedProducts = await apiFetchServer<GroupedShortProducts[]>(
-    API.products.getGroupedProducts,
-    {
-      revalidate: 3600,
-      fallback: [],
-    }
-  );
+  const groupedProducts = (await productsApi.fetchAllGroupedProducts()) || [];
 
   if (!Array.isArray(groupedProducts) || groupedProducts.length === 0) {
     return (

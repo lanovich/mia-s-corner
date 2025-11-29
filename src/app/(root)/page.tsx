@@ -5,9 +5,8 @@ import {
   СhapterContainer,
   HeroSection,
 } from "@/shared/ui";
-import { Shop } from "@/widgets/main-products/ui";
 import { AboutSection } from "@/widgets/about-page/motion";
-
+import { Shop } from "@/widgets/main-products/ui";
 export default function Home() {
   return (
     <>

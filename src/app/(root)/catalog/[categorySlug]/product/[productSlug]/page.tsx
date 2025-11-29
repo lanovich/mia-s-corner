@@ -10,7 +10,9 @@ import {
 } from "@/entities/product/ui";
 import { CATEGORY_SLUG_MAP } from "@/entities/category/model";
 import { productsApi } from "@/entities/product/api";
-import { API, apiFetchServer } from "@/shared/api";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 type ProductParams = Promise<{ categorySlug: string; productSlug: string }>;
 
@@ -19,13 +21,16 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
 
-  const product = await apiFetchServer<Product | null>(
-    API.products.getProduct(params.categorySlug, params.productSlug),
-    {
-      revalidate: 3600,
-      fallback: null,
-    }
-  );
+  let product: Product | null = null;
+  try {
+    product = await productsApi.fetchProduct(
+      params.categorySlug,
+      params.productSlug
+    );
+  } catch (err) {
+    console.error("Failed to fetch product for metadata:", err);
+  }
+
   if (!product) {
     return {
       title:
@@ -104,12 +109,9 @@ function generateProductKeywords(product: Product): string[] {
 
 export default async function ProductPage(props: { params: ProductParams }) {
   const params = await props.params;
-  const product = await apiFetchServer<Product | null>(
-    API.products.getProduct(params.categorySlug, params.productSlug),
-    {
-      revalidate: 3600,
-      fallback: null,
-    }
+  const product = await productsApi.fetchProduct(
+    params.categorySlug,
+    params.productSlug
   );
 
   if (!product) {

@@ -5,9 +5,6 @@ import { metadata as rootMetadata } from "@/app/(root)/layout";
 import { LINKS } from "@/shared/model";
 import { categoriesApi } from "@/entities/category/api";
 import { historiesApi } from "@/entities/history/api";
-import { API, apiFetchServer } from "@/shared/api";
-import { Category } from "@/entities/category/model";
-import { HistoryData } from "@/entities/history/model";
 
 export const metadata: Metadata = {
   ...rootMetadata,
@@ -48,21 +45,9 @@ export const metadata: Metadata = {
 };
 
 export default async function CatalogPage() {
-  const categories = await apiFetchServer<Category[]>(
-    API.categories.getCategories,
-    {
-      revalidate: 3600,
-      fallback: [],
-    }
-  );
+  const categories = (await categoriesApi.fetchCategories()) || [];
 
-  const histories = await apiFetchServer<HistoryData[]>(
-    API.histories.getHistories,
-    {
-      revalidate: 3600,
-      fallback: [],
-    }
-  );
+  const histories = (await historiesApi.fetchHistories()) || [];
 
   if (!categories) {
     return <div>Не нашли категорий</div>;

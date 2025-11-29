@@ -2,8 +2,11 @@ import { Metadata } from "next";
 import { Container } from "@/shared/ui";
 import { Categories } from "@/entities/category/ui";
 import { CatalogProductsLoader } from "@/widgets/catalog/ui";
-import { apiFetchServer, API } from "@/shared/api";
+import { categoriesApi } from "@/entities/category/api";
 import { Category } from "@/entities/category/model";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 type Params = Promise<{ categorySlug: string }>;
 
@@ -11,13 +14,13 @@ export async function generateMetadata(props: {
   params: Params;
 }): Promise<Metadata> {
   const params = await props.params;
-  const categories = await apiFetchServer<Category[]>(
-    API.categories.getCategories,
-    {
-      revalidate: 3600,
-      fallback: [],
-    }
-  );
+  let categories: Category[] = [];
+
+  try {
+    categories = (await categoriesApi.fetchCategories()) || [];
+  } catch (err) {
+    console.error("Failed to fetch categories for metadata:", err);
+  }
 
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];
@@ -79,18 +82,13 @@ export async function generateMetadata(props: {
 
 export default async function CatalogPage(props: { params: Params }) {
   const params = await props.params;
-  const categories = await apiFetchServer<Category[]>(
-    API.categories.getCategories,
-    {
-      revalidate: 3600,
-      fallback: [],
-    }
-  );
+  const categories = (await categoriesApi.fetchCategories()) || [];
   const currentCategory =
     categories.find((cat) => cat.slug === params.categorySlug) || categories[0];
 
   return (
     <>
+      а
       <Categories
         categories={categories}
         categoryInfo={{

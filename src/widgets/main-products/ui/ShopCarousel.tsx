@@ -2,17 +2,36 @@
 
 import { useEffect, useCallback, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ProductCategories } from "./ProductCategories";
+import dynamic from "next/dynamic";
 import { GoToButton } from "@/shared/ui";
-import { ProductGroupList } from "./ProductGroupList";
 import { LINKS } from "@/shared/model";
 import { GroupedShortProducts } from "@/entities/product/model";
+import {
+  SkeletonProductCategories,
+  SkeletonProductGroupList,
+} from "./Skeletons";
+
+const ProductCategories = dynamic(
+  () => import("./ProductCategories").then((mod) => mod.ProductCategories),
+  {
+    ssr: false,
+    loading: () => <SkeletonProductCategories />,
+  }
+);
+
+const ProductGroupList = dynamic(
+  () => import("./ProductGroupList").then((mod) => mod.ProductGroupList),
+  {
+    ssr: false,
+    loading: () => <SkeletonProductGroupList />,
+  }
+);
 
 interface Props {
   groupedProducts: GroupedShortProducts[];
 }
 
-export function ShopCarousel({ groupedProducts }: Props) {
+function ShopCarousel({ groupedProducts }: Props) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
     containScroll: "trimSnaps",
@@ -69,3 +88,5 @@ export function ShopCarousel({ groupedProducts }: Props) {
     </>
   );
 }
+
+export default ShopCarousel;
